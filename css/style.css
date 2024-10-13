@@ -74,7 +74,10 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   margin-top: 0;
-  margin-bottom: 1rem; }
+  margin-bottom: 1rem; 
+  color: #000; /* 검정색 텍스트 */
+  opacity: 1; /* 완전한 불투명도 */
+  font-weight: bold; /* 볼드체 */}
 
 abbr[title],
 abbr[data-original-title] {
