@@ -63,6 +63,133 @@
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 		color: black; /* 글자색 검은색으로 설정 */
 	}
+	
+	/* 통일된 버튼 스타일 - 모든 버튼이 흰색 배경에서 시작 */
+	.btn-theme {
+		background: white;
+		border: 2px solid #3e64ff;
+		color: #3e64ff;
+		font-weight: 700;
+		font-size: 16px;
+		padding: 10px 20px;
+		border-radius: 25px;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 10px rgba(62, 100, 255, 0.2);
+	}
+	
+	.btn-theme:hover {
+		background: #3e64ff;
+		border-color: #3e64ff;
+		color: white;
+		text-decoration: none;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 15px rgba(62, 100, 255, 0.3);
+	}
+	
+	.btn-theme i {
+		font-size: 18px;
+	}
+	
+	/* 아이콘 버튼 스타일 */
+	.btn-icon {
+		background: white;
+		border: 2px solid #3e64ff;
+		color: #3e64ff;
+		font-weight: 700;
+		font-size: 16px;
+		padding: 10px 20px;
+		border-radius: 25px;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 10px rgba(62, 100, 255, 0.2);
+	}
+	
+	.btn-icon:hover {
+		background: #3e64ff;
+		color: white;
+		text-decoration: none;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 15px rgba(62, 100, 255, 0.3);
+	}
+	
+	.btn-icon i {
+		font-size: 18px;
+	}
+	
+	/* 링크 버튼 스타일 */
+	.btn-link-theme {
+		background: white;
+		border: 2px solid #3e64ff;
+		color: #3e64ff;
+		font-weight: 700;
+		font-size: 16px;
+		padding: 10px 20px;
+		border-radius: 25px;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		transition: all 0.3s ease;
+		box-shadow: 0 2px 10px rgba(62, 100, 255, 0.2);
+	}
+	
+	.btn-link-theme:hover {
+		background: #3e64ff;
+		border-color: #3e64ff;
+		color: white;
+		text-decoration: none;
+		transform: translateY(-2px);
+		box-shadow: 0 4px 15px rgba(62, 100, 255, 0.3);
+	}
+	
+	.btn-link-theme i {
+		font-size: 18px;
+	}
+	
+	/* 버튼 컨테이너 스타일 */
+	.d-flex .btn-icon,
+	.d-flex .btn-theme,
+	.d-flex .btn-link-theme {
+		margin-left: 10px;
+		margin-bottom: 5px;
+	}
+	
+	/* 반응형 버튼 크기 조정 */
+	@media (max-width: 768px) {
+		.btn-icon,
+		.btn-theme,
+		.btn-link-theme {
+			padding: 8px 16px;
+			font-size: 15px;
+		}
+		
+		.btn-icon i,
+		.btn-theme i,
+		.btn-link-theme i {
+			font-size: 16px;
+		}
+		
+		.d-flex .btn-icon,
+		.d-flex .btn-theme,
+		.d-flex .btn-link-theme {
+			margin-left: 5px;
+		}
+	}
+	
+	/* 버튼 애니메이션 개선 */
+	.btn-icon:active,
+	.btn-theme:active,
+	.btn-link-theme:active {
+		transform: translateY(0);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	}
 	</style>
 
 	<!-- Navigation bar -->
@@ -76,16 +203,16 @@
 
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav nav ml-auto">
-					<li class="nav-item"><a href="#home-section" class="nav-link"><span>Home</span></a></li>
+					<li class="nav-item"><a href="#home-section" class="nav-link"><span style="font-weight: bold;">Home</span></a></li>
 					<!-- <li class="nav-item"><a href="#about-section" class="nav-link"><span>About</span></a></li> -->
-					<li class="nav-item"><a href="#education-section" class="nav-link"><span>Education</span></a></li>
-					<li class="nav-item"><a href="#work-section" class="nav-link"><span>Work Experience</span></a></li>
-					<li class="nav-item"><a href="#projects-section" class="nav-link"><span>Projects</span></a></li>
-					<li class="nav-item"><a href="#skills-section" class="nav-link"><span>Skills</span></a></li>
-					<li class="nav-item"><a href="#side-projects-section" class="nav-link"><span>Side Projects</span></a>
+					<li class="nav-item"><a href="#education-section" class="nav-link"><span style="font-weight: bold;">Education</span></a></li>
+					<li class="nav-item"><a href="#work-section" class="nav-link"><span style="font-weight: bold;">Work Experience</span></a></li>
+					<li class="nav-item"><a href="#projects-section" class="nav-link"><span style="font-weight: bold;">Projects</span></a></li>
+					<li class="nav-item"><a href="#skills-section" class="nav-link"><span style="font-weight: bold;">Skills</span></a></li>
+					<li class="nav-item"><a href="#side-projects-section" class="nav-link"><span style="font-weight: bold;">Side Projects</span></a>
 					</li>
-					<!-- <li class="nav-item"><a href="#blog-section" class="nav-link"><span>My Blog</span></a></li> -->
-					<li class="nav-item"><a href="#contact-section" class="nav-link"><span>Contact</span></a></li>
+					<li class="nav-item"><a href="#blog-section" class="nav-link"><span style="font-weight: bold;">My Blog</span></a></li>
+					<li class="nav-item"><a href="#contact-section" class="nav-link"><span style="font-weight: bold;">Contact</span></a></li>
 				</ul>
 			</div>
 		</div>
@@ -129,20 +256,20 @@
 						</div> -->
 					</div>
 				</div>
-				<div class="col-md-6 col-lg-6 pl-md-5 py-5">
-					<div class="row justify-content-start pb-3">
+				<div class="col-md-6 col-lg-6 pl-md-5 py-3">
+					<div class="row justify-content-start pb-1">
 						<div class="col-md-12 heading-section ftco-animate">
 							<!-- <h1 class="big">About</h1> -->
-							<h2 class="mb-4">About Me</h2>
+							<h2 class="mb-2">About Me</h2>
 							<p>최신 AI 및 머신러닝 기술을 활용하여 데이터를  <br> 현실에 적용 가능한 모델로 구현하고, 제품의 성능을 최적화하는<br> 숙련된 머신러닝 엔지니어가 되고 싶습니다.</p>
-							<ul class="about-info mt-4 px-md-0 px-2">
+							<ul class="about-info mt-2 px-md-0 px-2">
 								<li class="d-flex"><span>Name:</span> <p>정우혁</p></li>
 								<li class="d-flex"><span>Email:</span> <p>cj0336j@gmail.com</p></li>
 								<li class="d-flex"><span>Github:</span> <p><a href="https://github.com/Jacob-9909" target="_blank">https://github.com/Jacob-9909</a></p></li>
 							</ul>
 						</div>
 					</div>
-					<div class="counter-wrap ftco-animate d-flex mt-md-3">
+					<div class="counter-wrap ftco-animate d-flex mt-md-2">
 						<div class="text">
 							<!-- <p class="mb-4">
 								<span class="number" data-number="7">0</span>
@@ -274,7 +401,7 @@
 							<div class="text pl-3">
 								<span class="date">2024.09-2024.12(4개월)</span>
 								<h2>Intern : Associate Product Manager</h2>
-								<span class="position">원데이원커뮤니케이션</span>
+								<span class="position">원데이원커뮤니케이션 : ODOC</span>
 								<p>AX-ONE 생성형 AI 교육 플랫폼 서비스<br /></p>
 								<p>A-Bridge 디지털 퍼포먼스 마케팅 교육 플랫폼 서비스<br /></p>
 								<b class="text-primary">기술 스택</b>
@@ -351,9 +478,8 @@
 								<span class="date">2024.10~2024.11</span>
 								<div class="d-flex">
 									<h2>제2회국민대학교AI빅데이터분석경진대회</h2>
-									<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-									class="btn btn-outline-secondary"
-									href="https://hsmoon2020.notion.site/AI-125e1e62380e80569353f70e6d09b51e">Notion</a>
+									<div>&nbsp;<a class="btn-theme" target="_blank"
+									href="https://hsmoon2020.notion.site/AI-125e1e62380e80569353f70e6d09b51e"><i class="icon-file-text"></i>Notion</a>
 									</div>
 								</div>
 								<span class="position">국민대학교</span>
@@ -371,13 +497,11 @@
 								<span class="date">2024.04~2024.11</span>
 								<div class="d-flex">
 									<h2>인공지능 기반의 K리그 승률예측 프로그램 개발</h2>
-									<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-									class="btn btn-outline-secondary"
-									href="https://github.com/Jacob-9909/K_league_soccer_AI">Github</a>
+									<div>&nbsp;<a class="btn-icon" target="_blank"
+									href="https://github.com/Jacob-9909/K_league_soccer_AI"><i class="icon-github"></i>Github</a>
 									</div>
-									<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-										class="btn btn-outline-secondary"
-										href="https://youtu.be/CRZJHyEIVEk?si=A8kmmgZGdbYJezqY">Youtube</a>
+									<div>&nbsp;<a class="btn-icon" target="_blank"
+										href="https://youtu.be/CRZJHyEIVEk?si=A8kmmgZGdbYJezqY"><i class="icon-youtube"></i>Youtube</a>
 										</div>
 								</div>
 								<span class="position">한이음</span>
@@ -394,9 +518,8 @@
 								<span class="date">2024.07~2024.09</span>
 								<div class="d-flex">
 									<h2>LG Aimers : Automotive Display Glass <br>불량 예측 AI모델 개발 </h2>
-									<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-									class="btn btn-outline-secondary"
-									href="https://github.com/Jacob-9909/LG_aimers">Github</a>
+									<div>&nbsp;<a class="btn-icon" target="_blank"
+									href="https://github.com/Jacob-9909/LG_aimers"><i class="icon-github"></i>Github</a>
 									</div>
 								</div>
 								<span class="position">LG</span>
@@ -430,9 +553,8 @@
 								<span class="date">2023.06~2023.08</span>
 								<div class="d-flex">
 								<h2>2023 K-Water 대국민 물 빅데이터 공모전</h2>
-								<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-										class="btn btn-outline-secondary"
-										href="https://drive.google.com/file/d/10xv5OkwS867kudIYXibXxxYiwniu4B3N/view?usp=drive_link">Link</a>
+								<div>&nbsp;<a class="btn-link-theme" target="_blank"
+										href="https://drive.google.com/file/d/10xv5OkwS867kudIYXibXxxYiwniu4B3N/view?usp=drive_link"><i class="icon-link"></i>Link</a>
 									</div>
 							</div>
 								<span class="position">K Water</span>
@@ -450,9 +572,8 @@
 								<span class="date">2023.04~2023.06</span>
 								<div class="d-flex">
 									<h2>2023 BDA 데이터분석 활용 공모전</h2>
-									<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-											class="btn btn-outline-secondary"
-											href="https://github.com/Jacob-9909/CJ_bda_proj">Github</a>
+									<div>&nbsp;<a class="btn-icon" target="_blank"
+											href="https://github.com/Jacob-9909/CJ_bda_proj"><i class="icon-github"></i>Github</a>
 									</div>
 								</div>
 								<span class="position"> CJ 제일제당, 한국빅데이터학회</span>
@@ -471,30 +592,84 @@
 							.spacing {
 								height: 35px; 
 							}
+							.btn-outline-secondary {
+								transition: all 0.3s ease;
+							}
+							.btn-outline-secondary:hover {
+								background-color: #e3f2fd !important;
+								border-color: #1976d2 !important;
+								color: #1976d2 !important;
+								box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+								transform: translateY(-2px);
+							}
 						</style>
 						<div class="d-flex">
 							<div class="certifications">
 								<h3 class="font-weight-bold">Tableau Dashboard</h3>
 							</div>
-								<div>&nbsp;<a class="btn btn-outline-secondary" target="_blank"
-										class="btn btn-outline-secondary"
-										href="https://public.tableau.com/app/profile/woohyuck.jeong/vizzes">Link</a>
+								<div>&nbsp;<a class="btn-link-theme" target="_blank"
+										href="https://public.tableau.com/app/profile/woohyuck.jeong/vizzes"><i class="icon-link"></i>Link</a>
 								</div>
 							</div>
 
 						<!-- 빈 div 요소로 간격 생성 -->
-    					<!-- <div class="spacing"></div>		 -->
+    					<div class="spacing"></div>		
 
 						<div class="certifications">
-							<h3 class="font-weight-bold">Certifications</h3>
-							<ul>
-								<li class="font-weight-bold">빅데이터분석기사</li>
-								<li class="font-weight-bold">데이터분석 준전문가(ADsP)</li>
-								<li class="font-weight-bold">SQL 개발자(SQLD)</li>
-								<li class="font-weight-bold">컴퓨터활용능력 1급</li>
-								<li class="font-weight-bold">TOEIC 880(2024-05-12)</li>
-								<li class="font-weight-bold">운전면허 1종 보통</li>
-							</ul>
+							<h3 class="font-weight-bold mb-4">Certifications</h3>
+							<style>
+								.certification-item {
+									background-color: #fff;
+									border-radius: 8px;
+									box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+									height: 100px;
+									display: flex;
+									align-items: center;
+									justify-content: center;
+									transition: all 0.3s ease;
+									cursor: pointer;
+								}
+								.certification-item:hover {
+									background-color: #e3f2fd;
+									box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+									transform: translateY(-2px);
+								}
+								.certification-item:hover span {
+									color: #1976d2;
+								}
+							</style>
+							<div class="row">
+								<div class="col-md-4 mb-3">
+									<div class="certification-item text-center p-3">
+										<span class="font-weight-bold">빅데이터 분석기사</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-3">
+									<div class="certification-item text-center p-3">
+										<span class="font-weight-bold">데이터분석 준전문가(ADsP)</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-3">
+									<div class="certification-item text-center p-3">
+										<span class="font-weight-bold">SQL 개발자(SQLD)</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-3">
+									<div class="certification-item text-center p-3">
+										<span class="font-weight-bold">컴퓨터활용능력 1급</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-3">
+									<div class="certification-item text-center p-3">
+										<span class="font-weight-bold">TOEIC 880(2024-05-12)</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-3">
+									<div class="certification-item text-center p-3">
+										<span class="font-weight-bold">운전면허 1종 보통</span>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -579,17 +754,32 @@
 		</div>
 	</section>
 
-	<!-- <section class="ftco-section" id="blog-section">
+	<section class="ftco-section" id="blog-section">
 		<div class="container">
 			<div class="row justify-content-center mb-5 pb-5">
 				<div class="col-md-7 heading-section text-center ftco-animate">
 					<h1 class="big big-2">Blog</h1>
 					<h2 class="mb-4">My Blog</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+					<p>데이터 분석과 머신러닝에 대한 기술 블로그입니다.</p>
 				</div>
 			</div>
-			<div class="row d-flex">
-				<div class="col-md-4 d-flex ftco-animate">
+			<div class="row justify-content-center">
+				<div class="col-md-8 text-center">
+					<div class="blog-link-container ftco-animate">
+						<div class="blog-card p-5" style="background-color: #fff; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: all 0.3s ease;">
+							<div class="icon mb-4">
+								<span class="icon-globe" style="font-size: 3rem; color: #F96D00;"></span>
+								<h3 class="mb-3">기술 블로그</h3>
+								<p class="mb-4">데이터 분석, 머신러닝, AI 관련 기술과 경험을 공유하는 블로그입니다.</p>
+								<a href="https://jacob-log.vercel.app/" target="_blank" class="btn btn-primary py-3 px-5" style="font-weight: bold; border-radius: 25px;">
+									블로그 방문하기
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- <div class="row d-flex"> -->
+				<!-- <div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry justify-content-end">
 						<a href="single.html" class="block-20" style="background-image: url('images/image_1.jpg');">
 						</a>
@@ -602,13 +792,14 @@
 									<a href="#" class="mr-2">Admin</a>
 									<a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a>
 								</p>
+
 							</div>
 							<p>A small river named Duden flows by their place and supplies it with the necessary
 								regelialia.</p>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-4 d-flex ftco-animate">
+				</div> -->
+				<!-- <div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry justify-content-end">
 						<a href="single.html" class="block-20" style="background-image: url('images/image_2.jpg');">
 						</a>
@@ -626,8 +817,8 @@
 								regelialia.</p>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-4 d-flex ftco-animate">
+				</div> -->
+				<!-- <div class="col-md-4 d-flex ftco-animate">
 					<div class="blog-entry">
 						<a href="single.html" class="block-20" style="background-image: url('images/image_3.jpg');">
 						</a>
@@ -645,10 +836,10 @@
 								regelialia.</p>
 						</div>
 					</div>
-				</div>
-			</div>
+				</div> -->
+			<!-- </div> -->
 		</div>
-	</section> -->
+	</section>
 
 	<!-- Contact -->
 	<section class="ftco-section contact-section ftco-no-pb" id="contact-section">
@@ -693,7 +884,7 @@
 							</div>
 							<div>
 								<h3 class="mb-4">Email Address</h3>
-								<p><a href="mailto:cj0336j@gmail.com">cj0336j@gmail.com</a></p>
+								<p><a href="mailto:cj0336j@gmail.com" target="_blank" style="word-break: break-all;">cj0336j@gmail.com</a></p>
 							</div>
 						</div>
 					</div>
@@ -706,7 +897,7 @@
 							<div>
 								<h3 class="mb-4">Github</h3>
 								<p>
-									<a href="https://github.com/Jacob-9909" target="_blank" style="word-break: break-all;">https://github.com/ <br> Jacob-9909</a>
+									<a href="https://github.com/Jacob-9909" target="_blank" style="word-break: break-all;">https://github.com/Jacob-9909</a>
 								</p>
 							</div>
 						</div>
