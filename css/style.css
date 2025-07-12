@@ -1825,6 +1825,10 @@ textarea.form-control {
   .was-validated .custom-control-input:valid ~ .custom-control-label::before, .custom-control-input.is-valid ~ .custom-control-label::before {
     border-color: #28a745; }
 
+.was-validated .custom-control-input:valid ~ .custom-control-label::before, .custom-control-input.is-valid ~ .custom-control-label::before {
+  border-color: #34ce57;
+  background-color: #34ce57; }
+
 .was-validated .custom-control-input:valid ~ .valid-feedback,
 .was-validated .custom-control-input:valid ~ .valid-tooltip, .custom-control-input.is-valid ~ .valid-feedback,
 .custom-control-input.is-valid ~ .valid-tooltip {
@@ -8395,7 +8399,10 @@ h1, h2, h3, h4, h5,
   height: 100%;
   position: inherit;
   background-size: cover;
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+  padding-top: 60px !important;
+  padding-bottom: 60px !important;
+  min-height: 70vh !important; }
   .hero-wrap .overlay {
     position: absolute;
     top: 0;
@@ -8407,11 +8414,15 @@ h1, h2, h3, h4, h5,
     width: 50%;
     background: #3e64ff; }
   .hero-wrap .text {
-    width: 100%; }
+    width: 100%;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important; }
 
 .slider-text .subheading {
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 800;
   color: #3e64ff;
   letter-spacing: 4px; }
@@ -8426,8 +8437,7 @@ h1, h2, h3, h4, h5,
 .slider-text h2 {
   font-weight: 800; }
   .slider-text h2 span {
-    color: #3e64ff;
-    text-decoration: underline; }
+    color: #3e64ff;}
 
 .slider-text p {
   font-size: 20px;
@@ -8714,7 +8724,7 @@ h1, h2, h3, h4, h5,
   .resume-wrap .icon {
     width: 50px;
     height: 50px;
-    background: #3e64ff;
+    background: none;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
