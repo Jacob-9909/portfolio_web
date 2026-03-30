@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #3b4261 #1a1b26;
+  }
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
+  *::-webkit-scrollbar-track {
+    background: #1a1b26;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #3b4261;
+    border-radius: 3px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #565f89;
+  }
+  ::selection {
+    background: rgba(212, 151, 108, 0.2);
+    color: #d4976c;
+  }
+}
+
+@layer components {
+  .text-glow-amber {
+    text-shadow:
+      0 0 8px rgba(212, 151, 108, 0.3),
+      0 0 24px rgba(212, 151, 108, 0.06);
+  }
+  .text-glow-blue {
+    text-shadow:
+      0 0 8px rgba(122, 162, 247, 0.3),
+      0 0 24px rgba(122, 162, 247, 0.06);
+  }
+  .text-glow-green {
+    text-shadow:
+      0 0 8px rgba(158, 206, 106, 0.3),
+      0 0 24px rgba(158, 206, 106, 0.06);
+  }
+
+  .section-divider {
+    @apply flex items-center gap-3 text-t-muted text-xs uppercase tracking-widest;
+  }
+  .section-divider::after {
+    content: "";
+    @apply flex-1 h-px bg-t-border;
+  }
+
+  .card-surface {
+    @apply bg-t-surface border border-t-border rounded-lg transition-colors duration-200;
+  }
+  .card-surface:hover {
+    @apply border-t-amber/40;
+  }
+
+  .tag-pill {
+    @apply text-xs px-2 py-0.5 rounded bg-t-border/50 text-t-text/80;
+  }
+}
