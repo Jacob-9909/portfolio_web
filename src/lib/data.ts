@@ -55,6 +55,7 @@ export const CAREER: CareerItem[] = [
       "MCP",
     ],
     tasks: [
+      "농협은행 BestBanker 실적 계산 멀티 에이전트 개발",
       "농협중앙회 & 삼일PWC & 삼정KPMG & Google: 범농협 AI 도입 및 생성형 AI 구축",
       "농협은행 마케팅허브: 데이터 기반 자연어 SQL 생성 Text-to-SQL",
       "자체 솔루션 Agent Builder 개발",

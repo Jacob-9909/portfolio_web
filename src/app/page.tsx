@@ -36,6 +36,7 @@ export default function Home() {
   const [showOutput, setShowOutput] = useState(false);
 
   const mainRef = useRef<HTMLElement>(null);
+  const outputRef = useRef<HTMLDivElement>(null);
 
   const handleBootComplete = useCallback(() => {
     setBootComplete(true);
@@ -94,6 +95,13 @@ export default function Home() {
     setShowOutput(true);
   }, []);
 
+  // 새 커맨드 실행 시 출력 패널 맨 아래로 스크롤
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [entries]);
+
   return (
     <div className="flex flex-col h-full overflow-hidden bg-t-bg">
       <AmbientBackground />
@@ -130,7 +138,7 @@ export default function Home() {
 
       {/* Terminal output panel */}
       {showOutput && entries.length > 0 && (
-        <div className="relative z-50 max-h-[40vh] overflow-y-auto bg-t-bg/95 backdrop-blur-sm border-t border-t-border px-4 md:px-8 py-3 space-y-3 shrink-0">
+        <div ref={outputRef} className="relative z-50 max-h-[40vh] overflow-y-auto bg-t-bg/95 backdrop-blur-sm border-t border-t-border px-4 md:px-8 py-3 space-y-3 shrink-0">
           {entries.map((entry) => (
             <div key={entry.id}>
               <div className="text-xs font-mono">
