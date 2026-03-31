@@ -9,7 +9,7 @@ export const PROFILE = {
   github: "https://github.com/Jacob-9909",
   blog: "https://jacob-log.vercel.app/",
   resume:
-    "https://drive.google.com/file/d/110q5VSFxhxKPYFGYUgyG1galGn08nOc-/view?usp=sharing",
+    "https://drive.google.com/file/d/1h3EYq_e8S_4B-c6785679ikwz2ZJepdw/view?usp=sharing",
   coreStack: [
     "Python",
     "LangGraph",
