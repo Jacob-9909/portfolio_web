@@ -163,8 +163,8 @@ export default function SidebarPanel({ activeSection }: SidebarPanelProps) {
         <div className="space-y-1.5 pt-1 pb-2.5 border-b border-t-border/50">
           <Row label="region"  value="Seoul, KR"       cls="text-t-blue" />
           <Row label="runtime" value="Python 3.13"     cls="text-t-text" />
-          <Row label="agent"   value="LangGraph"       cls="text-t-text" />
-          <Row label="infra"   value="GCP"   cls="text-t-text" />
+          <Row label="package" value="uv"             cls="text-t-text" />
+          <Row label="tool"    value="Claude Code"    cls="text-t-text" />
         </div>
 
         {/* CI / Deploy */}
