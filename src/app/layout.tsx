@@ -11,7 +11,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Jacob | AI Researcher & Agent Architect",
   description:
-    "Portfolio of Woohyuck Jeong (Jacob) — AI Researcher at Didim365 specializing in Multi-Agent Systems, RAG, and LLM Applications.",
+    "Portfolio of Woohyuck Jeong (Jacob) — AI Researcher at Didim specializing in Multi-Agent Systems, RAG, and LLM Applications.",
 };
 
 export default function RootLayout({

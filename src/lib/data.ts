@@ -2,7 +2,7 @@ export const PROFILE = {
   name: "WOOHYUCK JEONG",
   alias: "Jacob",
   role: "AI Researcher",
-  company: "Didim365",
+  company: "Didim",
   narrative:
     "회계의 정밀함에서 에이전트의 지능까지, 새로운 가치를 만들다.",
   email: "cj0336j@gmail.com",
@@ -36,7 +36,7 @@ export interface CareerItem {
 
 export const CAREER: CareerItem[] = [
   {
-    company: "Didim365",
+    company: "Didim",
     role: "AI Researcher (LLM, ML)",
     period: "2025.01 → now",
     active: true,
@@ -120,7 +120,7 @@ export const PROJECTS: ProjectItem[] = [
     title: "범농협 생성형 AI 도입 및 구축",
     org: "농협중앙회 · 삼일PWC · 삼정KPMG · Google",
     period: "2025.04 → 2025.08",
-    stack: ["Python", "GCP", "Google ADK", "LangGraph","React", "MCP"],
+    stack: ["Python", "GCP", "Google ADK", "LangGraph", "React", "MCP"],
     description:
       "범농협 AI 도입 — 영업점 질의사항 대응 어시스턴트 (GCP Vertex AI) 및 대화형 상품 큐레이션 챗봇"
   },
@@ -202,16 +202,16 @@ export const SKILLS: { category: string; items: string[] }[] = [
   { category: "Languages", items: ["Python", "Java", "SQL"] },
   {
     category: "AI / ML",
-    items: ["LangGraph", "RAG", "Fine-tuning", "Google ADK", "Pytorch","MCP"],
+    items: ["LangGraph", "RAG", "Fine-tuning", "Google ADK", "Pytorch", "MCP"],
   },
-  { category: "Backend", items: ["FastAPI","PostgreSQL"] },
+  { category: "Backend", items: ["FastAPI", "PostgreSQL"] },
   {
     category: "Cloud",
     items: ["GCP"],
   },
   { category: "DevOps", items: ["Docker", "Kubernetes"] },
   { category: "Frontend", items: ["React", "html", "css",] },
-  { category: "Tools", items: ["Tableau", "Figma", "Datagrip", "Git","Claude Code"] },
+  { category: "Tools", items: ["Tableau", "Figma", "Datagrip", "Git", "Claude Code"] },
 ];
 
 export const CERTIFICATIONS = [
