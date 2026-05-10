@@ -103,7 +103,7 @@ export interface ProjectItem {
 export const PROJECTS: ProjectItem[] = [
 
   {
-    title: "자연어 기반 SQL 생성 (Text-to-SQL)",
+    title: "선일다이파스 자연어 기반 SQL 생성 (Text-to-SQL)",
     org: "선일다이파스 , Didim",
     period: "2026.04 → 진행중",
     stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG"],
@@ -119,7 +119,7 @@ export const PROJECTS: ProjectItem[] = [
       "농협은행 영업점 직원 내규 문서 기반 실적 계산 에이전트 개발. GCP Vertex AI 기반 어시스턴트 개발",
   },
   {
-    title: "자연어 기반 SQL 생성 (Text-to-SQL)",
+    title: "농협은행 자연어 기반 SQL 생성 (Text-to-SQL)",
     org: "농협은행 마케팅허브 , Didim",
     period: "2025.09 → 2026.02",
     stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG", "Fine-tuning"],
