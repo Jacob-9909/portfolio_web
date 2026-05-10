@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, BookOpen, FileDown, Code2 } from "lucide-react";
 import { PROFILE } from "@/lib/data";
@@ -11,8 +11,25 @@ interface BootingHeroProps {
 
 const INIT_CMD = "jacob --init";
 
-const STATUS_LINES = [
-  { text: "[2026.03] JACOB_AGENT_SYSTEM v2.0", type: "header" },
+type StatusLineType = "header" | "info" | "ok" | "success" | "spacer";
+
+type StatusLine = {
+  text: string;
+  type: StatusLineType;
+};
+
+/** 서울 기준 YYYY.MM.DD — 부트 시퀀스에 표시되는 날짜 */
+function formatSeoulYmdDots(d: Date): string {
+  const ymd = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+  return ymd.replace(/-/g, ".");
+}
+
+const STATUS_LINES_TAIL: readonly StatusLine[] = [
   { text: "[BOOT] Initializing modules...", type: "info" },
   { text: "[  OK  ] Python 3.13 \u00b7 LangGraph \u00b7 FastAPI", type: "ok" },
   { text: "[  OK  ] GCP Vertex AI \u00b7 Cloud Run", type: "ok" },
@@ -20,9 +37,7 @@ const STATUS_LINES = [
   { text: "[  OK  ] RAG Engine: Online", type: "ok" },
   { text: "", type: "spacer" },
   { text: "[BOOT] All systems operational.", type: "success" },
-] as const;
-
-type StatusLine = (typeof STATUS_LINES)[number];
+];
 
 const READY_TEXT = "> READY";
 type Phase = "init" | "status" | "ready" | "hero";
@@ -46,6 +61,14 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
   const [phase, setPhase] = useState<Phase>("init");
   const [typedInit, setTypedInit] = useState("");
   const [typedReady, setTypedReady] = useState("");
+
+  const statusLines = useMemo<StatusLine[]>(() => {
+    const header: StatusLine = {
+      text: `[${formatSeoulYmdDots(new Date())}] JACOB_AGENT_SYSTEM v3.0`,
+      type: "header",
+    };
+    return [header, ...STATUS_LINES_TAIL];
+  }, []);
 
   // Phase 2 — character-by-character per line
   const [ss, setSs] = useState<StatusState>({
@@ -82,12 +105,12 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
     const { lineIdx, charIdx, completed } = ss;
 
     // Safety: past last line
-    if (lineIdx >= STATUS_LINES.length) {
+    if (lineIdx >= statusLines.length) {
       setSs((s) => ({ ...s, done: true }));
       return;
     }
 
-    const line = STATUS_LINES[lineIdx];
+    const line = statusLines[lineIdx];
 
     // Spacer / empty — appear instantly, jump to next line
     if (!line.text) {
@@ -122,7 +145,7 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
       }));
     }, pause);
     return () => clearTimeout(t);
-  }, [phase, ss]);
+  }, [phase, ss, statusLines]);
 
   // ── Phase 3: type "> READY" ───────────────────────────────────
   useEffect(() => {
@@ -143,8 +166,8 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
 
   // Current (in-progress) line text
   const currentLine =
-    phase === "status" && !ss.done && ss.lineIdx < STATUS_LINES.length
-      ? STATUS_LINES[ss.lineIdx]
+    phase === "status" && !ss.done && ss.lineIdx < statusLines.length
+      ? statusLines[ss.lineIdx]
       : null;
   const currentTyped = currentLine?.text.slice(0, ss.charIdx) ?? "";
 

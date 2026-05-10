@@ -18,8 +18,9 @@ export const PROFILE = {
     "PostgreSQL",
     "Docker",
     "GCP",
-    "RAG",
-    "Pytorch",
+    "RAG-Pipeline",
+    "vLLM",
+    "PyTorch",
     "Fine-tuning",
   ],
 };
@@ -40,7 +41,7 @@ export const CAREER: CareerItem[] = [
     role: "AI Researcher (LLM, ML)",
     period: "2025.01 → now",
     active: true,
-    description: "AI · Big Data · Cloud 매니지먼트 전문기업",
+    description: "AI , Big Data , Cloud 매니지먼트 전문기업",
     stack: [
       "Python",
       "Java",
@@ -56,7 +57,7 @@ export const CAREER: CareerItem[] = [
     ],
     tasks: [
       "농협은행 BestBanker 실적 계산 멀티 에이전트 개발",
-      "농협중앙회 & 삼일PWC & 삼정KPMG & Google: 범농협 AI 도입 및 생성형 AI 구축",
+      "범농협 (농협중앙회 , 삼일PWC , 삼정KPMG , Google) AI 도입 및 생성형 AI 구축",
       "농협은행 마케팅허브: 데이터 기반 자연어 SQL 생성 Text-to-SQL",
       "자체 솔루션 Agent Builder 개발",
       "Altair: 솔루션 기반 데이터 시각화 및 ML 모델링",
@@ -68,7 +69,7 @@ export const CAREER: CareerItem[] = [
     period: "2024.09 → 2024.12",
     active: false,
     description: "AX-ONE 생성형 AI 교육 플랫폼 서비스",
-    stack: ["Python", "SQL", "Datagrip", "Jira", "Figma"],
+    stack: ["Python", "SQL", "DataGrip", "Jira", "Figma"],
     tasks: [
       "Contents Data 영상 수집 및 DB화",
       "교육 플랫폼 Curriculum 기획",
@@ -100,17 +101,34 @@ export interface ProjectItem {
 }
 
 export const PROJECTS: ProjectItem[] = [
+
   {
     title: "자연어 기반 SQL 생성 (Text-to-SQL)",
-    org: "농협은행 마케팅허브 · 디딤365",
-    period: "2025.07 → 2025.11",
-    stack: ["Python", "LangGraph", "FastAPI", "Pgvector", "RAG", "Fine-tuning"],
+    org: "선일다이파스 , Didim",
+    period: "2026.04 → 진행중",
+    stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG"],
+    description:
+      "선일다이파스 제조업 기반 자연어 기반 SQL 생성 에이전트 개발",
+  },
+  {
+    title: "농협은행 BestBanker",
+    org: "농협은행 , Didim",
+    period: "2026.02 → 2026.04",
+    stack: ["Python", "Google ADK", "PgVector", "RAG", "GCP"],
+    description:
+      "농협은행 영업점 직원 내규 문서 기반 실적 계산 에이전트 개발. GCP Vertex AI 기반 어시스턴트 개발",
+  },
+  {
+    title: "자연어 기반 SQL 생성 (Text-to-SQL)",
+    org: "농협은행 마케팅허브 , Didim",
+    period: "2025.09 → 2026.02",
+    stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG", "Fine-tuning"],
     description:
       "마케팅허브 데이터 기반 LLM 활용 SQL 생성 서비스 개발 및 금융 데이터 Fine-tuning을 통한 모델 성능 향상",
   },
   {
     title: "Agent Builder (내부 솔루션)",
-    org: "디딤365",
+    org: "Didim",
     period: "2025.06 → 2025.07",
     stack: ["Python", "TypeScript", "Google ADK", "MCP"],
     description:
@@ -118,7 +136,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     title: "범농협 생성형 AI 도입 및 구축",
-    org: "농협중앙회 · 삼일PWC · 삼정KPMG · Google",
+    org: "범농협 (농협중앙회 , 삼일PWC , 삼정KPMG , Google)",
     period: "2025.04 → 2025.08",
     stack: ["Python", "GCP", "Google ADK", "LangGraph", "React", "MCP"],
     description:
@@ -128,7 +146,7 @@ export const PROJECTS: ProjectItem[] = [
     title: "Altair 솔루션 기반 시각화 및 모델링",
     org: "Altair",
     period: "2025.01 → 2025.04",
-    stack: ["Python", "PostgreSQL", "Altair", "ML", "Pytorch"],
+    stack: ["Python", "PostgreSQL", "Altair", "ML", "PyTorch"],
     description:
       "AI Studio & Panopticon 활용 주식/산불 예측 모델링 및 Artbox 데이터 기반 재고 관리 모델 개발",
   },
@@ -165,7 +183,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     title: "미래에셋 AI Data Festival",
-    org: "미래에셋증권 · Naver Cloud",
+    org: "미래에셋증권 , Naver Cloud",
     period: "2024.07 → 2024.08",
     stack: ["Python", "Tableau"],
     description:
@@ -187,7 +205,7 @@ export const PROJECTS: ProjectItem[] = [
   },
   {
     title: "BDA 데이터분석 활용 공모전",
-    org: "CJ제일제당 · 한국빅데이터학회",
+    org: "CJ제일제당 , 한국빅데이터학회",
     period: "2023.04 → 2023.06",
     stack: ["Excel", "Python", "Tableau"],
     description:
@@ -202,7 +220,7 @@ export const SKILLS: { category: string; items: string[] }[] = [
   { category: "Languages", items: ["Python", "Java", "SQL"] },
   {
     category: "AI / ML",
-    items: ["LangGraph", "RAG", "Fine-tuning", "Google ADK", "Pytorch", "MCP"],
+    items: ["LangGraph", "RAG", "Fine-tuning", "Google ADK", "PyTorch", "MCP"],
   },
   { category: "Backend", items: ["FastAPI", "PostgreSQL"] },
   {
@@ -210,8 +228,8 @@ export const SKILLS: { category: string; items: string[] }[] = [
     items: ["GCP"],
   },
   { category: "DevOps", items: ["Docker", "Kubernetes"] },
-  { category: "Frontend", items: ["React", "html", "css",] },
-  { category: "Tools", items: ["Tableau", "Figma", "Datagrip", "Git", "Claude Code"] },
+  { category: "Frontend", items: ["React", "HTML", "CSS"] },
+  { category: "Tools", items: ["Tableau", "Figma", "Git", "Claude Code"] },
 ];
 
 export const CERTIFICATIONS = [
@@ -226,31 +244,39 @@ export const CERTIFICATIONS = [
 export interface SideProjectItem {
   title: string;
   url: string;
+  /** 한 줄 요약: 참여 맥락,역할,제출 등 (면접관 스캔용) */
+  note: string;
 }
 
 export const SIDE_PROJECTS: SideProjectItem[] = [
   {
     title: "고객 대출등급 분류 ML Model",
     url: "https://dacon.io/competitions/official/236214/overview/description",
+    note: "DACON 공식 경진 , 분류,검증 파이프라인 설계 후 제출",
   },
   {
     title: "소득 예측 ML Model",
     url: "https://dacon.io/competitions/official/236230/data",
+    note: "DACON 공식 경진 , 회귀,특성 엔지니어링 중심으로 제출",
   },
   {
     title: "웹 로그 기반 조회수 예측 ML Model",
     url: "https://dacon.io/competitions/official/236226/overview/description",
+    note: "DACON 공식 경진 , 로그,시계열 특성 가공 및 모델 제출",
   },
   {
     title: "제주 특산물 가격 예측 ML Model",
     url: "https://dacon.io/competitions/official/236176/overview/description",
+    note: "DACON 공식 경진 , 시계열,파생 변수 반영 후 제출",
   },
   {
     title: "FSI AIxData Challenge 2024",
     url: "https://dacon.io/competitions/official/236297/overview/description",
+    note: "금융 도메인 경진 , 데이터 생성,모델링 제출",
   },
   {
     title: "Samsung AI Challenge: Black-box Optimization",
     url: "https://dacon.io/competitions/official/236323/overview/description",
+    note: "블랙박스 최적화 트랙 , 탐색,제약 반영 실험 및 제출",
   },
 ];

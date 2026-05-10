@@ -22,8 +22,13 @@ export default function SideProjects() {
             transition={{ delay: (i % 3) * 0.06, duration: 0.3 }}
             className="card-surface p-4 flex items-start justify-between gap-2 group"
           >
-            <span className="text-t-text/80 text-xs leading-relaxed group-hover:text-t-amber transition-colors">
-              {project.title}
+            <span className="flex flex-col gap-1 min-w-0">
+              <span className="text-t-text/80 text-xs leading-relaxed group-hover:text-t-amber transition-colors">
+                {project.title}
+              </span>
+              <span className="text-t-muted text-[11px] leading-snug line-clamp-2">
+                {project.note}
+              </span>
             </span>
             <ExternalLink
               size={12}
