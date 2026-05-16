@@ -2,12 +2,17 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { PROJECTS } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 export default function ProjectGrid() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const { PROJECTS } = t;
+
   return (
     <section id="projects" className="px-4 md:px-6 lg:px-8 py-16">
-      <div className="section-divider mb-10">Projects</div>
+      <div className="section-divider mb-10">{t.SECTIONS.projects}</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
         {PROJECTS.map((project, i) => (

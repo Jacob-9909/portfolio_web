@@ -2,12 +2,17 @@
 
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { SIDE_PROJECTS } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 export default function SideProjects() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const { SIDE_PROJECTS } = t;
+
   return (
     <section id="side-projects" className="px-4 md:px-6 lg:px-8 py-16">
-      <div className="section-divider mb-10">Side Projects</div>
+      <div className="section-divider mb-10">{t.SECTIONS.sideProjects}</div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
         {SIDE_PROJECTS.map((project, i) => (

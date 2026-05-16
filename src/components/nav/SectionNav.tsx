@@ -1,23 +1,28 @@
 "use client";
 
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
+
 interface SectionNavProps {
   activeSection: string;
   scrollRoot: React.RefObject<HTMLElement | null>;
 }
 
-const TABS = [
-  { id: "home", label: "~" },
-  { id: "career", label: "Career" },
-  { id: "projects", label: "Projects" },
-  { id: "skills", label: "Skills" },
-  { id: "side-projects", label: "Side Projects" },
-  { id: "contact", label: "Contact" },
-] as const;
-
 export default function SectionNav({
   activeSection,
   scrollRoot,
 }: SectionNavProps) {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+
+  const TABS = [
+    { id: "home", label: "~" },
+    { id: "career", label: t.SECTIONS.career },
+    { id: "projects", label: t.SECTIONS.projects },
+    { id: "skills", label: t.SECTIONS.skills },
+    { id: "side-projects", label: t.SECTIONS.sideProjects },
+    { id: "contact", label: t.SECTIONS.contact },
+  ] as const;
   const scrollTo = (id: string) => {
     const container = scrollRoot?.current;
     const el = document.getElementById(id);

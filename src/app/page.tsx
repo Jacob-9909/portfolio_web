@@ -11,6 +11,7 @@ import SideProjects from "@/components/sections/SideProjects";
 import ContactSection from "@/components/sections/ContactSection";
 import CommandBar from "@/components/terminal/CommandBar";
 import SidebarPanel from "@/components/sidebar/SidebarPanel";
+import LanguageToggle from "@/components/LanguageToggle";
 import { processCommand } from "@/lib/commands";
 
 interface TerminalEntry {
@@ -108,7 +109,10 @@ export default function Home() {
 
       {/* Sticky nav — appears after boot */}
       {bootComplete && (
-        <SectionNav activeSection={activeSection} scrollRoot={mainRef} />
+        <>
+          <LanguageToggle />
+          <SectionNav activeSection={activeSection} scrollRoot={mainRef} />
+        </>
       )}
 
       {/* Content area: left scroll + right sidebar */}

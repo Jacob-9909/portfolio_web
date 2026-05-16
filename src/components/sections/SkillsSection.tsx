@@ -1,13 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SKILLS, CERTIFICATIONS } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 export default function SkillsSection() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const { SKILLS, CERTIFICATIONS } = t;
+
   return (
     <section id="skills" className="px-4 md:px-6 lg:px-8 py-16">
       {/* ── Tech Stack ── */}
-      <div className="section-divider mb-10">Tech Stack</div>
+      <div className="section-divider mb-10">{t.SECTIONS.skills}</div>
 
       <motion.div
         initial={{ opacity: 0, y: 14 }}
@@ -39,7 +44,7 @@ export default function SkillsSection() {
       </motion.div>
 
       {/* ── Certifications ── */}
-      <div className="section-divider mb-10">Certifications</div>
+      <div className="section-divider mb-10">{t.SECTIONS.certifications}</div>
 
       <motion.div
         initial={{ opacity: 0, y: 14 }}

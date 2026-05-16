@@ -2,39 +2,44 @@
 
 import { motion } from "framer-motion";
 import { Mail, Code2, BookOpen, FileDown } from "lucide-react";
-import { PROFILE } from "@/lib/data";
-
-const links = [
-  {
-    href: `mailto:${PROFILE.email}`,
-    icon: <Mail size={16} />,
-    label: "Email",
-    sub: PROFILE.email,
-  },
-  {
-    href: PROFILE.github,
-    icon: <Code2 size={16} />,
-    label: "GitHub",
-    sub: "Jacob-9909",
-  },
-  {
-    href: PROFILE.blog,
-    icon: <BookOpen size={16} />,
-    label: "Blog",
-    sub: "jacob-log.vercel.app",
-  },
-  {
-    href: PROFILE.resume,
-    icon: <FileDown size={16} />,
-    label: "Resume",
-    sub: "Download",
-  },
-];
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 export default function ContactSection() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const { PROFILE } = t;
+
+  const links = [
+    {
+      href: `mailto:${PROFILE.email}`,
+      icon: <Mail size={16} />,
+      label: "Email",
+      sub: PROFILE.email,
+    },
+    {
+      href: PROFILE.github,
+      icon: <Code2 size={16} />,
+      label: "GitHub",
+      sub: "Jacob-9909",
+    },
+    {
+      href: PROFILE.blog,
+      icon: <BookOpen size={16} />,
+      label: "Blog",
+      sub: "jacob-log.vercel.app",
+    },
+    {
+      href: PROFILE.resume,
+      icon: <FileDown size={16} />,
+      label: "Resume",
+      sub: "Download",
+    },
+  ];
+
   return (
     <section id="contact" className="px-4 md:px-6 lg:px-8 py-16">
-      <div className="section-divider mb-10">Contact</div>
+      <div className="section-divider mb-10">{t.SECTIONS.contact}</div>
 
       <motion.div
         initial={{ opacity: 0, y: 14 }}

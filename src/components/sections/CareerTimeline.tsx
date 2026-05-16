@@ -1,17 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CAREER, EDUCATION } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 export default function CareerTimeline() {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const { CAREER, EDUCATION } = t;
+
   return (
     <section id="career" className="px-6 md:px-12 lg:px-20 py-16">
-      <div className="section-divider mb-10">Career</div>
+      <div className="section-divider mb-10">{t.SECTIONS.career}</div>
 
       {/* Work Experience */}
       <div className="max-w-3xl">
         <h3 className="text-t-muted text-xs uppercase tracking-widest mb-6">
-          Work Experience
+          {t.SECTIONS.workExperience}
         </h3>
         <div className="relative border-l border-t-border pl-6 space-y-10">
           {CAREER.map((item, i) => (
@@ -73,7 +78,7 @@ export default function CareerTimeline() {
 
         {/* Education */}
         <h3 className="text-t-muted text-xs uppercase tracking-widest mt-12 mb-6">
-          Education
+          {t.SECTIONS.education}
         </h3>
         <div className="relative border-l border-t-border pl-6 space-y-6">
           {EDUCATION.map((item, i) => (

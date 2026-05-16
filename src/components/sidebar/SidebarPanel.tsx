@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { Mail, BookOpen, FileDown, Code2 } from "lucide-react";
 import { motion } from "framer-motion";
 import ToothlessPixel from "./ToothlessPixel";
-import { PROFILE } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 interface SidebarPanelProps {
   activeSection: string;
@@ -19,18 +20,22 @@ const SECTION_LABELS: Record<string, string> = {
   contact: "~/contact",
 };
 
-const QUICK_LINKS = [
-  { href: `mailto:${PROFILE.email}`, icon: <Mail size={14} />, label: "Mail" },
-  { href: PROFILE.github, icon: <Code2 size={14} />, label: "GitHub" },
-  { href: PROFILE.blog, icon: <BookOpen size={14} />, label: "Blog" },
-  { href: PROFILE.resume, icon: <FileDown size={14} />, label: "Resume" },
-];
-
 function Divider() {
   return <div className="w-full h-px bg-t-border/70" />;
 }
 
 export default function SidebarPanel({ activeSection }: SidebarPanelProps) {
+  const { lang } = useLanguage();
+  const t = translations[lang];
+  const { PROFILE } = t;
+
+  const QUICK_LINKS = [
+    { href: `mailto:${PROFILE.email}`, icon: <Mail size={14} />, label: "Mail" },
+    { href: PROFILE.github, icon: <Code2 size={14} />, label: "GitHub" },
+    { href: PROFILE.blog, icon: <BookOpen size={14} />, label: "Blog" },
+    { href: PROFILE.resume, icon: <FileDown size={14} />, label: "Resume" },
+  ];
+
   const [uptime, setUptime] = useState(0);
   const [timeStr, setTimeStr] = useState("");
 

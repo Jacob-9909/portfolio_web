@@ -3,7 +3,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, BookOpen, FileDown, Code2 } from "lucide-react";
-import { PROFILE } from "@/lib/data";
+import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
 
 interface BootingHeroProps {
   onComplete?: () => void;
@@ -58,6 +59,9 @@ interface StatusState {
 }
 
 export default function BootingHero({ onComplete }: BootingHeroProps) {
+  const { lang } = useLanguage();
+  const { PROFILE } = translations[lang];
+
   const [phase, setPhase] = useState<Phase>("init");
   const [typedInit, setTypedInit] = useState("");
   const [typedReady, setTypedReady] = useState("");
