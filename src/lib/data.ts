@@ -32,7 +32,7 @@ const PROFILE_KO = {
   email: "cj0336j@gmail.com",
   github: "https://github.com/Jacob-9909",
   blog: "https://jacob-log.vercel.app/",
-  resume: "https://drive.google.com/file/d/1YDyQ9YTVvB4BLzqKwI_zdAzH56WAXGAo/view?usp=drive_link",
+  resume: "https://drive.google.com/file/d/1-9p6MyBXtXMhgFPi1dYDymgRAVcALpDQ/view?usp=sharing",
   coreStack: [
     "Python",
     "LangGraph",
@@ -147,6 +147,15 @@ const EDUCATION_EN = [
 
 const PROJECTS_KO: ProjectItem[] = [
   {
+    title: "tablefold — 스키마 폴딩 기반 Text-to-SQL 컨텍스트 압축",
+    org: "개인 프로젝트 (Open Source)",
+    period: "2026.08 → 진행중",
+    stack: ["Python", "PostgreSQL", "LLM", "FastAPI", "Graph"],
+    description:
+      "Wren AI의 시맨틱 레이어 방식에서 착안 — 53개 물리 테이블을 7개 와이드 논리 모델(~3k 토큰)로 접고, LLM이 작성한 논리 SQL을 조인 프루닝·그레인 보존이 적용된 실행 가능한 물리 SQL로 다시 펼치는 결정론적 파이프라인",
+    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/tablefold" }],
+  },
+  {
     title: "선일다이파스 자연어 기반 SQL 생성 (Text-to-SQL)",
     org: "선일다이파스 , Didim",
     period: "2026.04 → 진행중",
@@ -242,6 +251,15 @@ const PROJECTS_KO: ProjectItem[] = [
 ];
 
 const PROJECTS_EN: ProjectItem[] = [
+  {
+    title: "tablefold — Schema Folding for Text-to-SQL Context",
+    org: "Personal Project (Open Source)",
+    period: "2026.08 → Present",
+    stack: ["Python", "PostgreSQL", "LLM", "FastAPI", "Graph"],
+    description:
+      "Inspired by Wren AI's semantic layer — folds 53 physical tables into 7 wide logical models (~3k tokens), then expands LLM-written logical SQL back into executable physical SQL with join pruning and grain preservation, fully deterministic",
+    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/tablefold" }],
+  },
   {
     title: "Seonil Dyphas Text-to-SQL",
     org: "Seonil Dyphas, Didim",
