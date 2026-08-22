@@ -6,7 +6,7 @@ export default function LanguageToggle() {
   const { lang, setLang } = useLanguage();
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center bg-t-bg/80 backdrop-blur-sm border border-t-border rounded-md overflow-hidden text-xs font-mono">
+    <div className="fixed top-4 right-16 z-50 flex items-center bg-t-bg/80 backdrop-blur-sm border border-t-border rounded-md overflow-hidden text-xs font-mono">
       <button
         onClick={() => setLang("ko")}
         className={`px-3 py-1.5 transition-colors ${

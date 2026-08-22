@@ -2,27 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme tokens ─────────────────────────────────────────
+   dark: Tokyo Night Storm / light: Tokyo Night Day (공식 변형) */
+:root {
+  --t-bg: 36 40 59;         /* #24283B */
+  --t-surface: 43 48 68;    /* #2B3044 */
+  --t-border: 65 72 104;    /* #414868 */
+  --t-amber: 224 175 104;   /* #E0AF68 */
+  --t-blue: 122 162 247;    /* #7AA2F7 */
+  --t-green: 158 206 106;   /* #9ECE6A */
+  --t-red: 247 118 142;     /* #F7768E */
+  --t-text: 200 211 245;    /* #C8D3F5 */
+  --t-muted: 130 139 184;   /* #828BB8 */
+  --t-dim: 65 72 104;       /* #414868 */
+}
+
+html.light {
+  --t-bg: 225 226 231;      /* #E1E2E7 */
+  --t-surface: 208 213 227; /* #D0D5E3 */
+  --t-border: 169 175 199;  /* #A9AFC7 */
+  --t-amber: 177 92 0;      /* #B15C00 */
+  --t-blue: 46 125 233;     /* #2E7DE9 */
+  --t-green: 88 117 57;     /* #587539 */
+  --t-red: 245 42 101;      /* #F52A65 */
+  --t-text: 55 96 191;      /* #3760BF */
+  --t-muted: 132 140 181;   /* #848CB5 */
+  --t-dim: 169 175 199;     /* #A9AFC7 */
+}
+
 @layer base {
   * {
     scrollbar-width: thin;
-    scrollbar-color: #414868 #24283b;
+    scrollbar-color: rgb(var(--t-border)) rgb(var(--t-bg));
   }
   *::-webkit-scrollbar {
     width: 6px;
   }
   *::-webkit-scrollbar-track {
-    background: #24283b;
+    background: rgb(var(--t-bg));
   }
   *::-webkit-scrollbar-thumb {
-    background: #414868;
+    background: rgb(var(--t-border));
     border-radius: 3px;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background: #828bb8;
+    background: rgb(var(--t-muted));
   }
   ::selection {
-    background: rgba(224, 175, 104, 0.25);
-    color: #e0af68;
+    background: rgba(var(--t-amber), 0.25);
+    color: rgb(var(--t-amber));
   }
 }
 

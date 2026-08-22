@@ -12,6 +12,7 @@ import ContactSection from "@/components/sections/ContactSection";
 import CommandBar from "@/components/terminal/CommandBar";
 import SidebarPanel from "@/components/sidebar/SidebarPanel";
 import LanguageToggle from "@/components/LanguageToggle";
+import ThemeToggle from "@/components/ThemeToggle";
 import { processCommand } from "@/lib/commands";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/data";
@@ -143,6 +144,7 @@ export default function Home() {
       {bootComplete && (
         <>
           <LanguageToggle />
+          <ThemeToggle />
           <SectionNav activeSection={activeSection} scrollRoot={mainRef} />
         </>
       )}

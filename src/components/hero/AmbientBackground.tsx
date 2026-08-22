@@ -8,7 +8,7 @@ export default function AmbientBackground() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 15% 10%, rgba(224,175,104,0.04) 0%, transparent 70%)",
+            "radial-gradient(ellipse 60% 50% at 15% 10%, rgba(var(--t-amber), 0.05) 0%, transparent 70%)",
         }}
       />
       {/* Secondary glow from bottom-right */}
@@ -16,7 +16,7 @@ export default function AmbientBackground() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 50% 40% at 80% 90%, rgba(122,162,247,0.03) 0%, transparent 70%)",
+            "radial-gradient(ellipse 50% 40% at 80% 90%, rgba(var(--t-blue), 0.04) 0%, transparent 70%)",
         }}
       />
       {/* Noise texture */}

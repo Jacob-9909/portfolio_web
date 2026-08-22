@@ -20,11 +20,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${jetbrainsMono.variable} h-full`}>
+    <html
+      lang="ko"
+      suppressHydrationWarning
+      className={`${jetbrainsMono.variable} h-full`}
+    >
       <head>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+        {/* 첫 페인트 전 테마 적용 (플래시 방지). 기본값은 다크 — 사이트 정체성 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.theme==="light")document.documentElement.classList.add("light")}catch(e){}`,
+          }}
         />
       </head>
       <body className="h-full bg-t-bg text-t-text font-sans antialiased overflow-hidden">

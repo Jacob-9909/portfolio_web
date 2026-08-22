@@ -5,17 +5,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        /* CSS 변수 기반 — globals.css의 :root(다크) / html.light(라이트)에서 전환.
+           <alpha-value> 지원을 위해 RGB 트리플렛 형식 유지 */
         t: {
-          bg: "#24283B",
-          surface: "#2B3044",
-          border: "#414868",
-          amber: "#E0AF68",
-          blue: "#7AA2F7",
-          green: "#9ECE6A",
-          red: "#F7768E",
-          text: "#C8D3F5",
-          muted: "#828BB8",
-          dim: "#414868",
+          bg: "rgb(var(--t-bg) / <alpha-value>)",
+          surface: "rgb(var(--t-surface) / <alpha-value>)",
+          border: "rgb(var(--t-border) / <alpha-value>)",
+          amber: "rgb(var(--t-amber) / <alpha-value>)",
+          blue: "rgb(var(--t-blue) / <alpha-value>)",
+          green: "rgb(var(--t-green) / <alpha-value>)",
+          red: "rgb(var(--t-red) / <alpha-value>)",
+          text: "rgb(var(--t-text) / <alpha-value>)",
+          muted: "rgb(var(--t-muted) / <alpha-value>)",
+          dim: "rgb(var(--t-dim) / <alpha-value>)",
         },
       },
       fontFamily: {
