@@ -19,6 +19,7 @@ export interface CommandSpec {
 export const COMMAND_SPECS: CommandSpec[] = [
   { name: "help", desc: { ko: "사용 가능한 명령어", en: "show this message" } },
   { name: "whoami", desc: { ko: "한 줄 소개", en: "one-line intro" } },
+  { name: "cat", args: "jacob.yaml", desc: { ko: "모델카드 보기", en: "view model card" } },
   { name: "about", desc: { ko: "상세 프로필 & 스토리", en: "detailed profile" } },
   { name: "career", aliases: ["experience"], desc: { ko: "경력 타임라인", en: "work experience" } },
   { name: "projects", args: "[--featured]", desc: { ko: "프로젝트 전체 목록", en: "project index" } },
@@ -48,6 +49,8 @@ export function argCandidates(cmdName: string): string[] {
       return ["--open"];
     case "system":
       return ["--status"];
+    case "cat":
+      return ["jacob.yaml"];
     default:
       return [];
   }
@@ -111,6 +114,45 @@ export function processCommand(
         "",
         `  * TAB 자동완성 · ↑↓ 커맨드 히스토리${lang === "en" ? " (tab to complete)" : ""}`,
       ].join("\n"),
+    };
+  }
+
+  /* ── cat jacob.yaml (모델카드) ─────────────────────────── */
+  if (cmd === "cat jacob.yaml" || cmd === "cat jacobian.yaml" || cmd === "cat model-card.yaml") {
+    return {
+      output: [
+        "# model card — generated from real data, not vibes",
+        "---",
+        "name: Woohyuck Jeong",
+        "alias: Jacob",
+        "version: 3.0.0          # 회계 → AI 전환을 major로",
+        "release_date: 2025-01",
+        "status: running         # didim 재직 중",
+        "base_model: 국민대 회계학과 + AI빅데이터융합경영",
+        "fine_tuned_on:",
+        "  - 농협은행 내규 문서 / 마케팅 데이터",
+        "  - Text-to-SQL · Multi-Agent 파이프라인",
+        "tools:",
+        "  - langgraph           # 멀티 에이전트 오케스트레이션",
+        "  - google-adk          # Vertex AI 에이전트",
+        "  - mcp                 # 툴 프로토콜 설계",
+        "  - fastapi/postgres    # 서빙 계층",
+        "context_window: 넓은 편. 회의록·내규·스키마 동시 처리",
+        "hallucination_rate: 낮음 — 결정론적 파이프라인 선호",
+        "known_limitations:",
+        "  - 디자인 감각은 이 사이트가 증거임",
+        "  - 새벽 2시 이후 성능 저하 (커피 의존성 존재)",
+        "intended_use: 금융/데이터 도메인의 에이전트 개발",
+        "---",
+      ].join("\n"),
+    };
+  }
+
+  if (cmd.startsWith("cat")) {
+    const file = cmd.split(/\s+/)[1] ?? "";
+    return {
+      output: `cat: ${file}: No such file\navailable: jacob.yaml`,
+      isError: true,
     };
   }
 
@@ -190,7 +232,8 @@ export function processCommand(
   if (cmd === "projects" || cmd === "projects --list") {
     const lines = [`~/projects  (${t.PROJECTS.length} entries)`, ""];
     t.PROJECTS.forEach((p, i) => {
-      lines.push(`${String(i + 1).padStart(2, "0")}  ${p.title}`);
+      const marker = p.status === "running" ? "●" : "✓";
+      lines.push(`${String(i + 1).padStart(2, "0")}  ${marker}  ${p.title}`);
       lines.push(`    ${p.org} · ${p.period}`);
       if (p.links?.length) {
         for (const link of p.links) {

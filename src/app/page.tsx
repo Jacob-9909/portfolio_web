@@ -14,6 +14,9 @@ import SidebarPanel from "@/components/sidebar/SidebarPanel";
 import LanguageToggle from "@/components/LanguageToggle";
 import { processCommand } from "@/lib/commands";
 import { useLanguage } from "@/lib/LanguageContext";
+import { translations } from "@/lib/data";
+import ScrollProgress from "@/components/motion/ScrollProgress";
+import Marquee from "@/components/motion/Marquee";
 
 interface TerminalEntry {
   id: string;
@@ -148,10 +151,12 @@ export default function Home() {
       <div className="flex flex-1 overflow-hidden relative z-10">
         {/* Left: main scrollable pane */}
         <main ref={mainRef} className="flex-1 overflow-y-auto">
+          {bootComplete && <ScrollProgress containerRef={mainRef} />}
           <BootingHero onComplete={handleBootComplete} />
 
           {bootComplete && (
             <>
+              <Marquee items={translations[lang].PROFILE.coreStack} />
               <CareerTimeline />
               <ProjectGrid />
               <SkillsSection />
@@ -178,7 +183,7 @@ export default function Home() {
             </pre>
           )}
           {entries.map((entry) => (
-            <div key={entry.id}>
+            <div key={entry.id} className="term-entry">
               <div className="text-xs font-mono">
                 <span className="text-t-amber">jacob@portfolio</span>
                 <span className="text-t-blue">:</span>

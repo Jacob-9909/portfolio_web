@@ -14,6 +14,10 @@ export interface ProjectItem {
   period: string;
   stack: string[];
   description: string;
+  /** 에이전트 스타일 상태 배지 (기본값: complete) */
+  status?: "running" | "complete";
+  /** featured 카드용 정적 파이프라인 노드 */
+  pipeline?: string[];
   links?: { label: string; url: string }[];
 }
 
@@ -153,6 +157,8 @@ const PROJECTS_KO: ProjectItem[] = [
     stack: ["Python", "PostgreSQL", "LLM", "FastAPI", "Graph"],
     description:
       "Wren AI의 시맨틱 레이어에서 착안. 53개 물리 테이블을 7개 와이드 논리 모델(약 3k 토큰)로 접고, LLM이 쓴 논리 SQL을 조인 프루닝·그레인 보존 규칙으로 실행 가능한 물리 SQL로 펼치는 결정론적 파이프라인. 스키마가 커질수록 폭발하는 프롬프트 비용을 구조로 해결한 게 포인트.",
+    status: "running",
+    pipeline: ["53 tables", "fold", "7 logical", "LLM SQL", "unfold", "physical SQL"],
     links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/tablefold" }],
   },
   {
@@ -161,6 +167,7 @@ const PROJECTS_KO: ProjectItem[] = [
     period: "2026.04 → 진행중",
     stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG"],
     description: "선일다이파스 제조 데이터를 대상으로 자연어 질의 → SQL 답변 에이전트를 구축 중. PgVector 기반 RAG로 스키마 컨텍스트를 보강합니다.",
+    status: "running",
   },
   {
     title: "농협은행 BestBanker",
@@ -258,6 +265,8 @@ const PROJECTS_EN: ProjectItem[] = [
     stack: ["Python", "PostgreSQL", "LLM", "FastAPI", "Graph"],
     description:
       "Inspired by Wren AI's semantic layer — folds 53 physical tables into 7 wide logical models (~3k tokens), then expands LLM-written logical SQL back into executable physical SQL with join pruning and grain preservation. The point: solving exploding prompt cost with structure, not bigger context windows.",
+    status: "running",
+    pipeline: ["53 tables", "fold", "7 logical", "LLM SQL", "unfold", "physical SQL"],
     links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/tablefold" }],
   },
   {
@@ -266,6 +275,7 @@ const PROJECTS_EN: ProjectItem[] = [
     period: "2026.04 → Present",
     stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG"],
     description: "Manufacturing data, natural-language in, SQL out — currently building the agent, with PgVector-backed RAG supplying schema context.",
+    status: "running",
   },
   {
     title: "NH Bank BestBanker",
@@ -408,15 +418,15 @@ export const translations = {
     CERTIFICATIONS: CERTIFICATIONS_KO,
     SIDE_PROJECTS: SIDE_PROJECTS_KO,
     SECTIONS: {
-      career: "Career",
-      workExperience: "Work Experience",
-      education: "Education",
-      projects: "Projects",
-      skills: "Skills",
-      sideProjects: "Side Projects",
-      certifications: "Certifications",
-      contact: "Contact",
-      home: "Home",
+      career: "career.log",
+      workExperience: "work-experience",
+      education: "education",
+      projects: "projects/",
+      skills: "tools.yaml",
+      sideProjects: "experiments/",
+      certifications: "certs",
+      contact: "contact --open",
+      home: "~",
     }
   },
   en: {
@@ -428,15 +438,15 @@ export const translations = {
     CERTIFICATIONS: CERTIFICATIONS_EN,
     SIDE_PROJECTS: SIDE_PROJECTS_EN,
     SECTIONS: {
-      career: "Career",
-      workExperience: "Work Experience",
-      education: "Education",
-      projects: "Projects",
-      skills: "Skills",
-      sideProjects: "Side Projects",
-      certifications: "Certifications",
-      contact: "Contact",
-      home: "Home",
+      career: "career.log",
+      workExperience: "work-experience",
+      education: "education",
+      projects: "projects/",
+      skills: "tools.yaml",
+      sideProjects: "experiments/",
+      certifications: "certs",
+      contact: "contact --open",
+      home: "~",
     }
   }
 };

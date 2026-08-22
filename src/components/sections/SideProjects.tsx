@@ -3,6 +3,7 @@
 import { ExternalLink } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/data";
+import Reveal from "@/components/motion/Reveal";
 
 export default function SideProjects() {
   const { lang } = useLanguage();
@@ -16,29 +17,30 @@ export default function SideProjects() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {SIDE_PROJECTS.map((project, i) => (
-            <a
-              key={project.title}
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="card-surface p-4 flex items-start justify-between gap-3 group"
-            >
-              <span className="flex flex-col gap-1 min-w-0">
-                <span className="text-t-text/90 text-sm leading-snug group-hover:text-t-amber transition-colors">
-                  <span className="font-mono text-xs text-t-muted/70 mr-2 select-none">
-                    {String(i + 1).padStart(2, "0")}
+            <Reveal key={project.title} delay={(i % 2) * 0.06}>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-surface p-4 flex items-start justify-between gap-3 group h-full"
+              >
+                <span className="flex flex-col gap-1 min-w-0">
+                  <span className="text-t-text/90 text-sm leading-snug group-hover:text-t-amber transition-colors">
+                    <span className="font-mono text-xs text-t-muted/70 mr-2 select-none">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {project.title}
                   </span>
-                  {project.title}
+                  <span className="font-mono text-[11px] text-t-muted leading-relaxed line-clamp-2">
+                    {project.note}
+                  </span>
                 </span>
-                <span className="font-mono text-[11px] text-t-muted leading-relaxed line-clamp-2">
-                  {project.note}
-                </span>
-              </span>
-              <ExternalLink
-                size={13}
-                className="text-t-muted shrink-0 mt-1 group-hover:text-t-amber transition-colors"
-              />
-            </a>
+                <ExternalLink
+                  size={13}
+                  className="text-t-muted shrink-0 mt-1 group-hover:text-t-amber transition-colors"
+                />
+              </a>
+            </Reveal>
           ))}
         </div>
       </div>

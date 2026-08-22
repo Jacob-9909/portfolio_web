@@ -12,12 +12,12 @@ interface SidebarPanelProps {
 }
 
 const SECTION_LABELS: Record<string, string> = {
-  home: "~/home",
-  career: "~/career",
-  projects: "~/projects",
-  skills: "~/skills",
-  "side-projects": "~/side-projects",
-  contact: "~/contact",
+  home: "~",
+  career: "~/career.log",
+  projects: "~/projects/",
+  skills: "~/tools.yaml",
+  "side-projects": "~/experiments/",
+  contact: "contact --open",
 };
 
 function Divider() {
@@ -151,23 +151,24 @@ export default function SidebarPanel({ activeSection }: SidebarPanelProps) {
 
       <Divider />
 
-      {/* System status */}
+      {/* Agent runtime */}
       <div className="px-5 py-3 font-mono space-y-2">
         <p className="text-xs text-t-muted uppercase tracking-widest mb-3">
-          System
+          Agent
         </p>
 
         {/* Runtime info */}
         <div className="space-y-1.5 pb-2.5 border-b border-t-border/50">
-          <Row label="status"  value="● online"        cls="text-t-green" />
+          <Row label="model"   value="jacob-agent v3.0"  cls="text-t-text" />
+          <Row label="status"  value="● online"          cls="text-t-green" />
           <Row label="uptime"  value={formatUptime(uptime)} cls="text-t-text" />
           <Row label="time"    value={timeStr || "--:--:--"} cls="text-t-text" />
         </div>
 
         {/* Environment info */}
         <div className="space-y-1.5 pt-1">
-          <Row label="region"  value="Seoul, KR"       cls="text-t-blue" />
-          <Row label="tool"    value="Claude Code"    cls="text-t-text" />
+          <Row label="region"  value="Seoul, KR"         cls="text-t-blue" />
+          <Row label="tool"    value="Claude Code"       cls="text-t-text" />
         </div>
       </div>
     </motion.div>

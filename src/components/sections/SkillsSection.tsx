@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/data";
+import Reveal from "@/components/motion/Reveal";
 
 export default function SkillsSection() {
   const { lang } = useLanguage();
@@ -16,23 +17,25 @@ export default function SkillsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-14">
           {SKILLS.map((group, i) => (
-            <div key={group.category} className="card-surface p-4">
-              <div className="flex items-baseline justify-between gap-2">
-                <span className="font-mono text-xs text-t-text font-medium">
-                  {group.category}
-                </span>
-                <span className="font-mono text-[10px] text-t-muted/60 select-none">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                {group.items.map((item) => (
-                  <span key={item} className="tag-pill">
-                    {item}
+            <Reveal key={group.category} delay={(i % 2) * 0.06}>
+              <div className="card-surface p-4 h-full">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-mono text-xs text-t-text font-medium">
+                    {group.category}
                   </span>
-                ))}
+                  <span className="font-mono text-[10px] text-t-muted/60 select-none">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {group.items.map((item) => (
+                    <span key={item} className="tag-pill">
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
 

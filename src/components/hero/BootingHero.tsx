@@ -31,13 +31,14 @@ function formatSeoulYmdDots(d: Date): string {
 }
 
 const STATUS_LINES_TAIL: readonly StatusLine[] = [
-  { text: "[BOOT] Initializing modules...", type: "info" },
-  { text: "[  OK  ] Python 3.13 \u00b7 LangGraph \u00b7 FastAPI", type: "ok" },
-  { text: "[  OK  ] GCP Vertex AI \u00b7 Cloud Run", type: "ok" },
-  { text: "[  OK  ] Multi-Agent System", type: "ok" },
-  { text: "[  OK  ] RAG Engine: Online", type: "ok" },
+  { text: "[BOOT] mounting tools... langgraph · google-adk · mcp", type: "info" },
+  { text: "[  OK  ] tools registered", type: "ok" },
+  { text: "[BOOT] restoring memory... pgvector · rag-index", type: "info" },
+  { text: "[  OK  ] retrieval ready", type: "ok" },
+  { text: "[BOOT] spawning jacob-agent", type: "info" },
+  { text: "[  OK  ] multi-agent runtime online", type: "ok" },
   { text: "", type: "spacer" },
-  { text: "[BOOT] All systems operational.", type: "success" },
+  { text: "[BOOT] all systems operational.", type: "success" },
 ];
 
 const READY_TEXT = "> READY";

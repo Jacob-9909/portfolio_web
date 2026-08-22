@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/data";
+import Reveal from "@/components/motion/Reveal";
 
 export default function CareerTimeline() {
   const { lang } = useLanguage();
@@ -15,9 +16,9 @@ export default function CareerTimeline() {
 
         {/* Work Experience — 2열 카드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-start">
-          {CAREER.map((item) => (
+          {CAREER.map((item, i) => (
+            <Reveal key={item.company} delay={i * 0.08}>
             <article
-              key={item.company}
               className={`card-surface p-5 relative ${
                 item.active ? "border-t-amber/40" : ""
               }`}
@@ -61,6 +62,7 @@ export default function CareerTimeline() {
                 {item.stack.join(" / ")}
               </p>
             </article>
+            </Reveal>
           ))}
         </div>
 

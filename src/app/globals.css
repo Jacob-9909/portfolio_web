@@ -51,4 +51,29 @@
   .tag-pill {
     @apply font-mono text-[11px] px-2 py-0.5 rounded bg-t-border/50 text-t-text/80;
   }
+
+  /* 터미널 출력 — 스트리밍처럼 살짝 떠오르는 등장 */
+  .term-entry {
+    animation: term-in 0.25s ease-out;
+  }
+}
+
+@keyframes term-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 모션 최소화 선호 시 — 애니메이션 전부 비활성 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .term-entry,
+  .animate-cursor-blink {
+    animation: none !important;
+  }
 }

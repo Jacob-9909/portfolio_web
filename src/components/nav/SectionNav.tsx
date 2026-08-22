@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/data";
 
@@ -42,12 +43,19 @@ export default function SectionNav({
           <button
             key={tab.id}
             onClick={() => scrollTo(tab.id)}
-            className={`shrink-0 px-4 py-2.5 text-xs font-mono transition-colors duration-150 border-b-2 ${
+            className={`relative shrink-0 px-4 py-2.5 text-xs font-mono transition-colors duration-150 ${
               activeSection === tab.id
-                ? "border-t-amber text-t-amber"
-                : "border-transparent text-t-muted hover:text-t-text"
+                ? "text-t-amber"
+                : "text-t-muted hover:text-t-text"
             }`}
           >
+            {activeSection === tab.id && (
+              <motion.span
+                layoutId="nav-indicator"
+                className="absolute left-3 right-3 bottom-0 h-[2px] bg-t-amber"
+                transition={{ type: "spring", stiffness: 400, damping: 32 }}
+              />
+            )}
             {tab.label}
           </button>
         ))}

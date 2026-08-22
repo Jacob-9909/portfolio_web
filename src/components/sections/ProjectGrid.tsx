@@ -3,6 +3,7 @@
 import { ExternalLink } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations, type ProjectItem } from "@/lib/data";
+import Reveal from "@/components/motion/Reveal";
 
 export default function ProjectGrid() {
   const { lang } = useLanguage();
@@ -20,7 +21,9 @@ export default function ProjectGrid() {
         {/* 나머지 — 2열 카드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-8">
           {rest.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i + 1} />
+            <Reveal key={project.title} delay={(i % 2) * 0.06} className="h-full">
+              <ProjectCard project={project} index={i + 1} />
+            </Reveal>
           ))}
         </div>
       </div>
@@ -58,6 +61,45 @@ function Meta({ project }: { project: ProjectItem }) {
   );
 }
 
+function StatusBadge({ status }: { status?: "running" | "complete" }) {
+  if (status === "running") {
+    return (
+      <span className="font-mono text-[10px] text-t-amber shrink-0 flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-t-amber animate-pulse" />
+        running
+      </span>
+    );
+  }
+  return (
+    <span className="font-mono text-[10px] text-t-green/80 shrink-0">
+      ✓ complete
+    </span>
+  );
+}
+
+function Pipeline({ nodes }: { nodes: string[] }) {
+  return (
+    <div className="flex items-center gap-1.5 mt-5 overflow-x-auto pb-1">
+      {nodes.map((node, i) => (
+        <span key={i} className="flex items-center gap-1.5 shrink-0">
+          <span
+            className={`font-mono text-[11px] px-2 py-1 rounded border ${
+              i % 2 === 0
+                ? "bg-t-bg border-t-border text-t-muted"
+                : "border-t-amber/40 text-t-amber bg-t-amber/5"
+            }`}
+          >
+            {node}
+          </span>
+          {i < nodes.length - 1 && (
+            <span className="font-mono text-[10px] text-t-dim select-none">-&gt;</span>
+          )}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function FeaturedCard({ project }: { project: ProjectItem }) {
   return (
     <article className="card-surface relative p-6 md:p-8">
@@ -67,10 +109,15 @@ function FeaturedCard({ project }: { project: ProjectItem }) {
         <h3 className="text-t-text font-semibold text-lg md:text-xl leading-snug">
           {project.title}
         </h3>
-        <ProjectLinks project={project} />
+        <div className="flex items-center gap-3 pt-1">
+          <StatusBadge status={project.status} />
+          <ProjectLinks project={project} />
+        </div>
       </div>
 
       <Meta project={project} />
+
+      {project.pipeline && <Pipeline nodes={project.pipeline} />}
 
       <p className="text-t-text/80 text-sm leading-relaxed mt-4">
         {project.description}
@@ -89,7 +136,7 @@ function FeaturedCard({ project }: { project: ProjectItem }) {
 
 function ProjectCard({ project, index }: { project: ProjectItem; index: number }) {
   return (
-    <article className="card-surface p-5 flex flex-col group">
+    <article className="card-surface p-5 flex flex-col group h-full">
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-t-text/90 text-sm font-medium leading-snug min-w-0">
           <span className="font-mono text-xs text-t-muted/70 mr-2 select-none">
@@ -97,7 +144,8 @@ function ProjectCard({ project, index }: { project: ProjectItem; index: number }
           </span>
           {project.title}
         </h4>
-        <div className="pt-0.5">
+        <div className="flex items-center gap-2 pt-0.5 shrink-0">
+          <StatusBadge status={project.status} />
           <ProjectLinks project={project} />
         </div>
       </div>
