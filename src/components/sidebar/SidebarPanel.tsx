@@ -119,7 +119,7 @@ export default function SidebarPanel({ activeSection }: SidebarPanelProps) {
         </p>
         <div className="flex flex-wrap gap-1.5">
           {PROFILE.coreStack.map((s) => (
-            <span key={s} className="text-xs px-2 py-0.5 rounded bg-t-border/50 text-t-text/90">
+            <span key={s} className="tag-pill">
               {s}
             </span>
           ))}
@@ -165,16 +165,9 @@ export default function SidebarPanel({ activeSection }: SidebarPanelProps) {
         </div>
 
         {/* Environment info */}
-        <div className="space-y-1.5 pt-1 pb-2.5 border-b border-t-border/50">
+        <div className="space-y-1.5 pt-1">
           <Row label="region"  value="Seoul, KR"       cls="text-t-blue" />
           <Row label="tool"    value="Claude Code"    cls="text-t-text" />
-        </div>
-
-        {/* CI / Deploy */}
-        <div className="space-y-1.5 pt-1">
-          <Row label="ci/cd"   value="GH Actions"      cls="text-t-text" />
-          <Row label="deploy"  value="✓ stable"        cls="text-t-green" />
-          <Row label="build"   value="✓ passed"        cls="text-t-green" />
         </div>
       </div>
     </motion.div>

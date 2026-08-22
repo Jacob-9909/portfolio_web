@@ -21,7 +21,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={`${jetbrainsMono.variable} h-full`}>
-      <body className="h-full bg-t-bg text-t-text font-mono antialiased overflow-hidden">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
+      <body className="h-full bg-t-bg text-t-text font-sans antialiased overflow-hidden">
         <LanguageProvider>
           {children}
         </LanguageProvider>

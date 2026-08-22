@@ -13,6 +13,7 @@ import CommandBar from "@/components/terminal/CommandBar";
 import SidebarPanel from "@/components/sidebar/SidebarPanel";
 import LanguageToggle from "@/components/LanguageToggle";
 import { processCommand } from "@/lib/commands";
+import { useLanguage } from "@/lib/LanguageContext";
 
 interface TerminalEntry {
   id: string;
@@ -35,6 +36,8 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
   const [entries, setEntries] = useState<TerminalEntry[]>([]);
   const [showOutput, setShowOutput] = useState(false);
+  const [suggestLine, setSuggestLine] = useState("");
+  const { lang } = useLanguage();
 
   const mainRef = useRef<HTMLElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
@@ -74,27 +77,53 @@ export default function Home() {
     return () => clearTimeout(timeout);
   }, [bootComplete]);
 
-  const handleCommand = useCallback((command: string) => {
-    const cmd = command.trim().toLowerCase();
-
-    if (cmd === "clear") {
-      setEntries([]);
-      setShowOutput(false);
-      return;
-    }
-
-    const result = processCommand(command);
-    setEntries((prev) => [
-      ...prev,
-      {
-        id: `${Date.now()}-${Math.random()}`,
-        command,
-        output: result.output,
-        isError: result.isError,
-      },
-    ]);
-    setShowOutput(true);
+  const scrollToSection = useCallback((id: string) => {
+    const container = mainRef.current;
+    const el = document.getElementById(id);
+    if (!container || !el) return;
+    const containerRect = container.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    container.scrollTo({
+      top: container.scrollTop + (elRect.top - containerRect.top),
+      behavior: "smooth",
+    });
   }, []);
+
+  const handleCommand = useCallback(
+    (command: string) => {
+      const cmd = command.trim().toLowerCase();
+
+      if (cmd === "clear") {
+        setEntries([]);
+        setShowOutput(false);
+        return;
+      }
+
+      setSuggestLine("");
+
+      const result = processCommand(command, lang);
+      if (result.output || result.isError) {
+        setEntries((prev) => [
+          ...prev,
+          {
+            id: `${Date.now()}-${Math.random()}`,
+            command,
+            output: result.output,
+            isError: result.isError,
+          },
+        ]);
+        setShowOutput(true);
+      }
+      if (result.navigate) {
+        // 섹션이 아직 DOM에 없을 수 있으므로 다음 프레임에 스크롤
+        requestAnimationFrame(() => scrollToSection(result.navigate!));
+      }
+      if (result.url && typeof window !== "undefined") {
+        window.open(result.url, "_blank", "noopener,noreferrer");
+      }
+    },
+    [lang, scrollToSection]
+  );
 
   // 새 커맨드 실행 시 출력 패널 맨 아래로 스크롤
   useEffect(() => {
@@ -141,8 +170,13 @@ export default function Home() {
       </div>
 
       {/* Terminal output panel */}
-      {showOutput && entries.length > 0 && (
+      {(showOutput && entries.length > 0) || suggestLine ? (
         <div ref={outputRef} className="relative z-50 max-h-[40vh] overflow-y-auto bg-t-bg/95 backdrop-blur-sm border-t border-t-border px-4 md:px-8 py-3 space-y-3 shrink-0">
+          {suggestLine && (
+            <pre className="text-xs whitespace-pre-wrap font-mono text-t-muted/80 select-none">
+              {suggestLine}
+            </pre>
+          )}
           {entries.map((entry) => (
             <div key={entry.id}>
               <div className="text-xs font-mono">
@@ -165,17 +199,24 @@ export default function Home() {
             onClick={() => {
               setEntries([]);
               setShowOutput(false);
+              setSuggestLine("");
             }}
             className="text-[10px] text-t-muted hover:text-t-amber transition-colors"
           >
             [clear]
           </button>
         </div>
-      )}
+      ) : null}
 
       {/* Command bar */}
       <div className="relative z-50 shrink-0">
-        <CommandBar onCommand={handleCommand} />
+        <CommandBar
+          onCommand={handleCommand}
+          onSuggest={(line) => {
+            setSuggestLine(line.replace("\t", "  "));
+            setShowOutput(true);
+          }}
+        />
       </div>
     </div>
   );

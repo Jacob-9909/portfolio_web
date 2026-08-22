@@ -5,42 +5,31 @@
 @layer base {
   * {
     scrollbar-width: thin;
-    scrollbar-color: #3b4261 #1a1b26;
+    scrollbar-color: #414868 #24283b;
   }
   *::-webkit-scrollbar {
     width: 6px;
   }
   *::-webkit-scrollbar-track {
-    background: #1a1b26;
+    background: #24283b;
   }
   *::-webkit-scrollbar-thumb {
-    background: #3b4261;
+    background: #414868;
     border-radius: 3px;
   }
   *::-webkit-scrollbar-thumb:hover {
-    background: #565f89;
+    background: #828bb8;
   }
   ::selection {
-    background: rgba(212, 151, 108, 0.2);
-    color: #d4976c;
+    background: rgba(224, 175, 104, 0.25);
+    color: #e0af68;
   }
 }
 
 @layer components {
-  .text-glow-amber {
-    text-shadow:
-      0 0 8px rgba(212, 151, 108, 0.3),
-      0 0 24px rgba(212, 151, 108, 0.06);
-  }
-  .text-glow-blue {
-    text-shadow:
-      0 0 8px rgba(122, 162, 247, 0.3),
-      0 0 24px rgba(122, 162, 247, 0.06);
-  }
-  .text-glow-green {
-    text-shadow:
-      0 0 8px rgba(158, 206, 106, 0.3),
-      0 0 24px rgba(158, 206, 106, 0.06);
+  /* mono는 터미널·메타데이터 전용 */
+  .terminal-text {
+    @apply font-mono text-sm leading-relaxed;
   }
 
   .section-divider {
@@ -54,11 +43,12 @@
   .card-surface {
     @apply bg-t-surface border border-t-border rounded-lg transition-colors duration-200;
   }
-  .card-surface:hover {
+  /* 인터랙티브(클릭 가능한) 카드에만 호버 반응 */
+  a.card-surface:hover {
     @apply border-t-amber/40;
   }
 
   .tag-pill {
-    @apply text-xs px-2 py-0.5 rounded bg-t-border/50 text-t-text/80;
+    @apply font-mono text-[11px] px-2 py-0.5 rounded bg-t-border/50 text-t-text/80;
   }
 }

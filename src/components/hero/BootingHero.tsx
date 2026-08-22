@@ -44,10 +44,10 @@ const READY_TEXT = "> READY";
 type Phase = "init" | "status" | "ready" | "hero";
 
 const lineClass: Record<string, string> = {
-  header: "text-t-amber font-bold text-glow-amber",
+  header: "text-t-amber font-bold",
   info: "text-t-text",
   ok: "text-t-green",
-  success: "text-t-green font-bold text-glow-green",
+  success: "text-t-green font-bold",
   spacer: "h-2",
 };
 
@@ -73,6 +73,29 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
     };
     return [header, ...STATUS_LINES_TAIL];
   }, []);
+
+  // 부트 시퀀스 skip — 아무 키/클릭으로 즉시 진입
+  useEffect(() => {
+    if (phase === "hero") return;
+    const skip = () => {
+      setTypedInit(INIT_CMD);
+      setTypedReady(READY_TEXT);
+      setSs({
+        completed: statusLines,
+        lineIdx: statusLines.length,
+        charIdx: 0,
+        done: true,
+      });
+      setPhase("hero");
+      onComplete?.();
+    };
+    window.addEventListener("keydown", skip);
+    window.addEventListener("click", skip);
+    return () => {
+      window.removeEventListener("keydown", skip);
+      window.removeEventListener("click", skip);
+    };
+  }, [phase, onComplete, statusLines]);
 
   // Phase 2 — character-by-character per line
   const [ss, setSs] = useState<StatusState>({
@@ -180,7 +203,7 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
       id="home"
       className="min-h-[85vh] flex flex-col justify-center px-6 md:px-12 lg:px-20 py-16 relative z-10"
     >
-      <div className="text-sm leading-relaxed max-w-2xl">
+      <div className="terminal-text max-w-2xl">
 
         {/* $ jacob --init */}
         <div className="mb-1">
@@ -214,11 +237,15 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
         {/* > READY */}
         {(phase === "ready" || phase === "hero") && (
           <div className="mb-4 mt-1">
-            <span className="text-t-green font-bold text-glow-green">
-              {typedReady}
-            </span>
+            <span className="text-t-green font-bold">{typedReady}</span>
             {phase === "ready" && <Cursor />}
           </div>
+        )}
+
+        {phase !== "hero" && (
+          <p className="mt-6 text-[11px] text-t-muted/50 select-none">
+            {"// press any key to skip"}
+          </p>
         )}
       </div>
 
@@ -231,69 +258,31 @@ export default function BootingHero({ onComplete }: BootingHeroProps) {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="mt-8 max-w-2xl"
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.4 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-t-text tracking-tight leading-none"
-            >
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-t-text tracking-tight leading-none">
               {PROFILE.name}
               <span className="text-t-muted font-normal text-lg md:text-xl ml-3">
                 ({PROFILE.alias})
               </span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.25, duration: 0.4 }}
-              className="text-base md:text-lg text-t-blue text-glow-blue mt-3"
-            >
-              {PROFILE.role}{" "}
-              <span className="text-t-muted">@</span>{" "}
+            <p className="font-mono text-sm md:text-base text-t-muted mt-3">
+              {PROFILE.role}
+              {" @ "}
               <span className="text-t-amber">{PROFILE.company}</span>
-            </motion.p>
+            </p>
 
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.4, duration: 0.4 }}
-              className="h-px bg-gradient-to-r from-t-amber/50 via-t-border to-transparent max-w-md mt-5 origin-left"
-            />
+            <div className="border-t border-dashed border-t-border max-w-md mt-5" />
 
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55, duration: 0.4 }}
-              className="text-t-muted mt-5 text-sm md:text-base italic leading-relaxed whitespace-pre-line"
-            >
-              &ldquo;{PROFILE.narrative}&rdquo;
-            </motion.p>
+            <p className="text-t-muted mt-5 text-sm md:text-base leading-relaxed whitespace-pre-line">
+              {PROFILE.narrative}
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.4 }}
-              className="mt-6 flex flex-wrap gap-3"
-            >
+            <div className="mt-6 flex flex-wrap gap-3">
               <QuickLink href={`mailto:${PROFILE.email}`} icon={<Mail size={14} />} label="Email" />
               <QuickLink href={PROFILE.github} icon={<Code2 size={14} />} label="GitHub" />
               <QuickLink href={PROFILE.blog} icon={<BookOpen size={14} />} label="Blog" />
               <QuickLink href={PROFILE.resume} icon={<FileDown size={14} />} label="Resume" />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.85, duration: 0.4 }}
-              className="mt-5 flex flex-wrap gap-2"
-            >
-              {PROFILE.coreStack.map((s) => (
-                <span key={s} className="tag-pill">
-                  {s}
-                </span>
-              ))}
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

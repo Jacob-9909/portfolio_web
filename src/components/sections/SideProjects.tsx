@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { translations } from "@/lib/data";
@@ -11,36 +10,37 @@ export default function SideProjects() {
   const { SIDE_PROJECTS } = t;
 
   return (
-    <section id="side-projects" className="px-4 md:px-6 lg:px-8 py-16">
-      <div className="section-divider mb-10">{t.SECTIONS.sideProjects}</div>
+    <section id="side-projects" className="px-6 md:px-12 lg:px-20 py-16">
+      <div className="max-w-4xl">
+        <div className="section-divider mb-10">{t.SECTIONS.sideProjects}</div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-        {SIDE_PROJECTS.map((project, i) => (
-          <motion.a
-            key={project.title}
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-30px" }}
-            transition={{ delay: (i % 3) * 0.06, duration: 0.3 }}
-            className="card-surface p-4 flex items-start justify-between gap-2 group"
-          >
-            <span className="flex flex-col gap-1 min-w-0">
-              <span className="text-t-text/80 text-xs leading-relaxed group-hover:text-t-amber transition-colors">
-                {project.title}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {SIDE_PROJECTS.map((project, i) => (
+            <a
+              key={project.title}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-surface p-4 flex items-start justify-between gap-3 group"
+            >
+              <span className="flex flex-col gap-1 min-w-0">
+                <span className="text-t-text/90 text-sm leading-snug group-hover:text-t-amber transition-colors">
+                  <span className="font-mono text-xs text-t-muted/70 mr-2 select-none">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {project.title}
+                </span>
+                <span className="font-mono text-[11px] text-t-muted leading-relaxed line-clamp-2">
+                  {project.note}
+                </span>
               </span>
-              <span className="text-t-muted text-[11px] leading-snug line-clamp-2">
-                {project.note}
-              </span>
-            </span>
-            <ExternalLink
-              size={12}
-              className="text-t-muted shrink-0 mt-0.5 group-hover:text-t-amber transition-colors"
-            />
-          </motion.a>
-        ))}
+              <ExternalLink
+                size={13}
+                className="text-t-muted shrink-0 mt-1 group-hover:text-t-amber transition-colors"
+              />
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
