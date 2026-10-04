@@ -21,6 +21,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // 스크린리더 발음이 표시 언어를 따라가도록 동기화
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const handleSetLang = (newLang: Language) => {
     setLang(newLang);
     localStorage.setItem("lang", newLang);

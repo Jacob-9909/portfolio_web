@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "범농협 영업점 어시스턴트",
+    "animation": "none",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "ingest",
+      "label": "문서를 지식으로"
+    },
+    {
+      "id": "answer",
+      "label": "질문에서 답변까지"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "docs",
+      "lane": "ingest",
+      "col": 0,
+      "type": "external",
+      "label": "업무방법서",
+      "sublabel": "60개, 3,000쪽"
+    },
+    {
+      "id": "ocr",
+      "lane": "ingest",
+      "col": 1,
+      "type": "cloud",
+      "label": "Vision OCR",
+      "sublabel": "레이아웃 보존",
+      "width": 112
+    },
+    {
+      "id": "chunk",
+      "lane": "ingest",
+      "col": 3,
+      "type": "backend",
+      "label": "조항 단위 청킹",
+      "sublabel": "문서명, 페이지 유지",
+      "width": 110
+    },
+    {
+      "id": "index",
+      "lane": "ingest",
+      "col": 5,
+      "type": "database",
+      "label": "검색 인덱스"
+    },
+    {
+      "id": "search",
+      "lane": "answer",
+      "col": 5,
+      "type": "backend",
+      "label": "근거 검색",
+      "sublabel": "영업점 직원 질문"
+    },
+    {
+      "id": "llm",
+      "lane": "answer",
+      "col": 3,
+      "type": "cloud",
+      "label": "LLM",
+      "sublabel": "답변 생성"
+    },
+    {
+      "id": "ui",
+      "lane": "answer",
+      "col": 0,
+      "type": "frontend",
+      "label": "답변 화면",
+      "sublabel": "문서명, 페이지 표시"
+    }
+  ],
+  "edges": [
+    {
+      "from": "docs",
+      "to": "ocr",
+      "route": "straight"
+    },
+    {
+      "from": "ocr",
+      "to": "chunk",
+      "route": "straight"
+    },
+    {
+      "from": "chunk",
+      "to": "index",
+      "route": "straight"
+    },
+    {
+      "from": "index",
+      "to": "search"
+    },
+    {
+      "from": "search",
+      "to": "llm",
+      "route": "straight"
+    },
+    {
+      "from": "llm",
+      "to": "ui",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ]
+}

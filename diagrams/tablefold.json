@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "tablefold",
+    "animation": "none",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "tf",
+      "label": "tablefold"
+    },
+    {
+      "id": "out",
+      "label": "바깥"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "schema",
+      "lane": "tf",
+      "col": 0,
+      "type": "database",
+      "label": "물리 스키마",
+      "sublabel": "테이블 53개"
+    },
+    {
+      "id": "fold",
+      "lane": "tf",
+      "col": 1,
+      "type": "backend",
+      "label": "접기 (fold)",
+      "sublabel": "FK 복구, 앵커 선정",
+      "width": 110
+    },
+    {
+      "id": "models",
+      "lane": "tf",
+      "col": 3,
+      "type": "database",
+      "label": "논리 모델",
+      "sublabel": "넓은 표 몇 개"
+    },
+    {
+      "id": "expand",
+      "lane": "tf",
+      "col": 5,
+      "type": "backend",
+      "label": "펼치기",
+      "sublabel": "조인 프루닝"
+    },
+    {
+      "id": "llm",
+      "lane": "out",
+      "col": 3,
+      "type": "cloud",
+      "label": "LLM",
+      "sublabel": "논리 SQL 작성"
+    },
+    {
+      "id": "db",
+      "lane": "out",
+      "col": 5,
+      "type": "database",
+      "label": "실제 DB",
+      "sublabel": "물리 SQL 실행"
+    }
+  ],
+  "edges": [
+    {
+      "from": "schema",
+      "to": "fold"
+    },
+    {
+      "from": "fold",
+      "to": "models"
+    },
+    {
+      "from": "models",
+      "to": "llm"
+    },
+    {
+      "from": "llm",
+      "to": "expand"
+    },
+    {
+      "from": "expand",
+      "to": "db",
+      "variant": "emphasis"
+    }
+  ]
+}

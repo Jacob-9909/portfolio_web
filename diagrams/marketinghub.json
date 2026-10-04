@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "농협은행 마케팅허브 Text-to-SQL",
+    "animation": "none",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "에이전트"
+    },
+    {
+      "id": "res",
+      "label": "폐쇄망 자원"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "q",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "현업 질의",
+      "sublabel": "자연어"
+    },
+    {
+      "id": "retrieve",
+      "lane": "flow",
+      "col": 1,
+      "type": "backend",
+      "label": "메타데이터 검색",
+      "width": 110
+    },
+    {
+      "id": "gen",
+      "lane": "flow",
+      "col": 3,
+      "type": "backend",
+      "label": "SQL 생성",
+      "sublabel": "Pseudo-SQL 먼저"
+    },
+    {
+      "id": "explain",
+      "lane": "flow",
+      "col": 5,
+      "type": "security",
+      "label": "검증",
+      "sublabel": "SQL Explain"
+    },
+    {
+      "id": "admin",
+      "lane": "res",
+      "col": 0,
+      "type": "frontend",
+      "label": "메타 어드민",
+      "sublabel": "현업이 직접 등록"
+    },
+    {
+      "id": "meta",
+      "lane": "res",
+      "col": 1,
+      "type": "database",
+      "label": "메타 DB",
+      "sublabel": "KURE-V1 임베딩"
+    },
+    {
+      "id": "llm",
+      "lane": "res",
+      "col": 3,
+      "type": "cloud",
+      "label": "GPT-oss-120b",
+      "sublabel": "vLLM 서빙",
+      "width": 120
+    },
+    {
+      "id": "oracle",
+      "lane": "res",
+      "col": 5,
+      "type": "database",
+      "label": "Oracle",
+      "sublabel": "마케팅허브 DB"
+    }
+  ],
+  "edges": [
+    {
+      "from": "q",
+      "to": "retrieve",
+      "route": "straight"
+    },
+    {
+      "from": "retrieve",
+      "to": "gen",
+      "route": "straight"
+    },
+    {
+      "from": "gen",
+      "to": "explain",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "admin",
+      "to": "meta",
+      "route": "straight"
+    },
+    {
+      "from": "retrieve",
+      "to": "meta"
+    },
+    {
+      "from": "gen",
+      "to": "llm"
+    },
+    {
+      "from": "explain",
+      "to": "oracle"
+    },
+    {
+      "from": "explain",
+      "to": "gen",
+      "label": "오류면 3회까지",
+      "role": "error",
+      "variant": "security",
+      "route": "up-channel",
+      "fromSide": "top",
+      "toSide": "top"
+    }
+  ]
+}

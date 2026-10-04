@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Midas Touch",
+    "animation": "none",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "ask",
+      "label": "질문"
+    },
+    {
+      "id": "tools",
+      "label": "도구 12종, 필요한 것만 동시에"
+    },
+    {
+      "id": "write",
+      "label": "작문"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "q",
+      "lane": "ask",
+      "col": 0,
+      "type": "external",
+      "label": "질문"
+    },
+    {
+      "id": "intent",
+      "lane": "ask",
+      "col": 1,
+      "type": "cloud",
+      "label": "intent 분류",
+      "sublabel": "LLM 1회",
+      "width": 112
+    },
+    {
+      "id": "rag",
+      "lane": "tools",
+      "col": 1,
+      "type": "database",
+      "label": "RAG 3종",
+      "sublabel": "pgvector, Neo4j"
+    },
+    {
+      "id": "lookup",
+      "lane": "tools",
+      "col": 3,
+      "type": "messagebus",
+      "label": "조회, 리서치 7종",
+      "sublabel": "세법, 청약, 주식",
+      "width": 116
+    },
+    {
+      "id": "calc",
+      "lane": "tools",
+      "col": 5,
+      "type": "backend",
+      "label": "코드 계산",
+      "sublabel": "세금, 사기 판정 2종"
+    },
+    {
+      "id": "synth",
+      "lane": "write",
+      "col": 3,
+      "type": "cloud",
+      "label": "synthesize",
+      "sublabel": "LLM 1회",
+      "width": 112
+    },
+    {
+      "id": "answer",
+      "lane": "write",
+      "col": 5,
+      "type": "frontend",
+      "label": "답변",
+      "sublabel": "출처, 방어 증명"
+    }
+  ],
+  "edges": [
+    {
+      "from": "q",
+      "to": "intent"
+    },
+    {
+      "from": "intent",
+      "to": "rag"
+    },
+    {
+      "from": "intent",
+      "to": "lookup"
+    },
+    {
+      "from": "intent",
+      "to": "calc"
+    },
+    {
+      "from": "rag",
+      "to": "synth"
+    },
+    {
+      "from": "lookup",
+      "to": "synth"
+    },
+    {
+      "from": "calc",
+      "to": "synth"
+    },
+    {
+      "from": "synth",
+      "to": "answer",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ]
+}

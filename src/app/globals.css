@@ -2,106 +2,178 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Theme tokens ─────────────────────────────────────────
-   dark: Tokyo Night Storm / light: Tokyo Night Day (공식 변형) */
+/* 글 중심 문서형 페이지. 참고: eugeneyan.com/about, jbee.io
+   색은 흰 바탕, 검은 글자, 링크 파랑 세 가지만 쓴다. */
 :root {
-  --t-bg: 36 40 59;         /* #24283B */
-  --t-surface: 43 48 68;    /* #2B3044 */
-  --t-border: 65 72 104;    /* #414868 */
-  --t-amber: 224 175 104;   /* #E0AF68 */
-  --t-blue: 122 162 247;    /* #7AA2F7 */
-  --t-green: 158 206 106;   /* #9ECE6A */
-  --t-red: 247 118 142;     /* #F7768E */
-  --t-text: 200 211 245;    /* #C8D3F5 */
-  --t-muted: 130 139 184;   /* #828BB8 */
-  --t-dim: 65 72 104;       /* #414868 */
+  --t-bg: 255 255 255;
+  --t-text: 26 26 26;
+  --t-muted: 102 102 102;
+  --t-border: 229 229 229;
+  --t-code: 247 247 247;
+  --t-link: 10 91 211;
 }
 
-html.light {
-  --t-bg: 225 226 231;      /* #E1E2E7 */
-  --t-surface: 208 213 227; /* #D0D5E3 */
-  --t-border: 169 175 199;  /* #A9AFC7 */
-  --t-amber: 177 92 0;      /* #B15C00 */
-  --t-blue: 46 125 233;     /* #2E7DE9 */
-  --t-green: 88 117 57;     /* #587539 */
-  --t-red: 245 42 101;      /* #F52A65 */
-  --t-text: 55 96 191;      /* #3760BF */
-  --t-muted: 132 140 181;   /* #848CB5 */
-  --t-dim: 169 175 199;     /* #A9AFC7 */
+html.dark {
+  --t-bg: 22 23 26;
+  --t-text: 230 230 230;
+  --t-muted: 160 160 160;
+  --t-border: 46 46 46;
+  --t-code: 30 31 35;
+  --t-link: 138 180 248;
 }
 
 @layer base {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: rgb(var(--t-border)) rgb(var(--t-bg));
+  html {
+    scroll-behavior: smooth;
   }
-  *::-webkit-scrollbar {
-    width: 6px;
+  a,
+  button.text-link {
+    color: rgb(var(--t-link));
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
   }
-  *::-webkit-scrollbar-track {
-    background: rgb(var(--t-bg));
+  a:hover,
+  button.text-link:hover {
+    text-decoration-thickness: 2px;
   }
-  *::-webkit-scrollbar-thumb {
-    background: rgb(var(--t-border));
-    border-radius: 3px;
-  }
-  *::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--t-muted));
-  }
-  ::selection {
-    background: rgba(var(--t-amber), 0.25);
-    color: rgb(var(--t-amber));
+  :focus-visible {
+    outline: 2px solid rgb(var(--t-link));
+    outline-offset: 2px;
   }
 }
 
+/* 포인트 색은 링크 파랑 하나. 목차의 현재 노드와 타임라인 막대에만 쓴다 */
 @layer components {
-  /* mono는 터미널·메타데이터 전용 */
-  .terminal-text {
-    @apply font-mono text-sm leading-relaxed;
+  .accent-fill {
+    border-color: rgb(var(--t-link));
+    background-color: rgb(var(--t-link));
   }
-
-  .section-divider {
-    @apply flex items-center gap-3 text-t-muted text-xs uppercase tracking-widest;
+  .accent-outline {
+    border: 1px solid rgb(var(--t-link));
+    background-color: rgb(var(--t-link) / 0.28);
   }
-  .section-divider::after {
-    content: "";
-    @apply flex-1 h-px bg-t-border;
-  }
-
-  .card-surface {
-    @apply bg-t-surface border border-t-border rounded-lg transition-colors duration-200;
-  }
-  /* 인터랙티브(클릭 가능한) 카드에만 호버 반응 */
-  a.card-surface:hover {
-    @apply border-t-amber/40;
-  }
-
-  .tag-pill {
-    @apply font-mono text-[11px] px-2 py-0.5 rounded bg-t-border/50 text-t-text/80;
-  }
-
-  /* 터미널 출력 — 스트리밍처럼 살짝 떠오르는 등장 */
-  .term-entry {
-    animation: term-in 0.25s ease-out;
+  .accent-text {
+    color: rgb(var(--t-link));
   }
 }
 
-@keyframes term-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
+/* archify가 만든 SVG에 사이트 색을 입힌다. 노드 종류마다 색이 하나씩 있고,
+   그림 아래 범례도 같은 색을 쓴다. 범례 문구는 diagrams/build.py 에 있다. */
+:root {
+  --d-logic: 10 91 211;   /* 에이전트 로직 */
+  --d-llm: 194 65 12;     /* LLM, 모델 */
+  --d-db: 21 128 61;      /* DB, 인덱스 */
+  --d-guard: 190 18 60;   /* 검증 */
+  --d-tool: 14 116 144;   /* 도구, 외부 API */
+  --d-ui: 109 40 217;     /* 화면, 결과 */
+  --d-tint: 0.09;
+}
+html.dark {
+  --d-logic: 138 180 248;
+  --d-llm: 253 186 116;
+  --d-db: 134 239 172;
+  --d-guard: 253 164 175;
+  --d-tool: 103 232 249;
+  --d-ui: 196 181 253;
+  --d-tint: 0.14;
+}
+.c-backend, .s-backend { --k: var(--d-logic); }
+.c-cloud, .s-cloud { --k: var(--d-llm); }
+.c-database, .s-database { --k: var(--d-db); }
+.c-security, .s-security { --k: var(--d-guard); }
+.c-messagebus, .s-messagebus { --k: var(--d-tool); }
+.c-frontend, .s-frontend { --k: var(--d-ui); }
+.c-external, .s-external { --k: var(--t-muted); }
+
+.diagram {
+  overflow-x: auto;
+}
+.diagram svg {
+  display: block;
+  width: 100%;
+  /* 좁은 화면에서는 글자가 읽히는 크기를 지키고 가로로 넘긴다 */
+  min-width: 38rem;
+  height: auto;
+}
+.diagram .c-lane {
+  fill: none;
+  stroke: rgb(var(--t-border));
+}
+.diagram .c-mask {
+  fill: rgb(var(--t-bg));
+}
+.diagram :is(.c-backend, .c-cloud, .c-database, .c-security, .c-messagebus, .c-frontend, .c-external) {
+  fill: rgb(var(--k) / var(--d-tint));
+  stroke: rgb(var(--k));
+  stroke-width: 1.3;
+}
+.diagram .c-external {
+  fill: none;
+  stroke-dasharray: 3 3;
+}
+/* 노드 왼쪽 위의 종류 아이콘 (DB 원통, 구름 등) */
+.diagram .semantic-sigil {
+  color: rgb(var(--k));
+}
+.diagram .semantic-sigil > * {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.diagram .semantic-sigil .sigil-fill {
+  fill: currentColor;
+  stroke: none;
+}
+.diagram :is(.a-default, .a-dashed, .a-emphasis, .a-security) {
+  fill: none;
+  stroke: rgb(var(--t-muted));
+}
+.diagram .a-dashed {
+  stroke-dasharray: 4 4;
+}
+.diagram .a-emphasis {
+  stroke: rgb(var(--t-text));
+}
+.diagram .a-security {
+  stroke: rgb(var(--d-guard));
+  stroke-dasharray: 5 4;
+}
+.diagram :is(.m-default, .m-dashed) {
+  fill: rgb(var(--t-muted));
+}
+.diagram .m-emphasis {
+  fill: rgb(var(--t-text));
+}
+.diagram .m-security {
+  fill: rgb(var(--d-guard));
+}
+.diagram .t-primary {
+  fill: rgb(var(--t-text));
+}
+.diagram .t-security {
+  fill: rgb(var(--d-guard));
+}
+.diagram :is(.t-muted, .t-dim) {
+  fill: rgb(var(--t-muted));
+}
+
+/* 인쇄하거나 PDF로 저장할 때: 링크 색과 밑줄을 빼고, 프로젝트가 쪽 중간에서 잘리지 않게 한다 */
+@media print {
+  a {
+    color: inherit;
+    text-decoration: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  article {
+    break-inside: avoid;
   }
 }
 
-/* 모션 최소화 선호 시 — 애니메이션 전부 비활성 */
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .term-entry,
-  .animate-cursor-blink {
-    animation: none !important;
+  html {
+    scroll-behavior: auto;
   }
 }

@@ -1,452 +1,480 @@
-export interface CareerItem {
-  company: string;
-  role: string;
-  period: string;
-  active: boolean;
-  description: string;
-  stack: string[];
-  tasks: string[];
-}
+/* 수치, 기간, 고유명사의 원장은 ~/job/02_핵심-스펙.md 와 03_스토리뱅크.md.
+   여기 문구를 고칠 때는 원장과 먼저 대조한다.
+   소개 문단은 본문 안에 링크가 들어가서 page.tsx에 직접 적었다. */
 
-export interface ProjectItem {
-  title: string;
-  org: string;
-  period: string;
-  stack: string[];
-  description: string;
-  /** 에이전트 스타일 상태 배지 (기본값: complete) */
-  status?: "running" | "complete";
-  /** featured 카드용 정적 파이프라인 노드 */
-  pipeline?: string[];
-  links?: { label: string; url: string }[];
-}
-
-export interface SideProjectItem {
-  title: string;
+export interface LinkItem {
+  label: string;
   url: string;
-  note: string;
 }
 
-const PROFILE_KO = {
-  name: "WOOHYUCK JEONG",
-  alias: "Jacob",
-  role: "AI Engineer",
-  company: "Didim",
-  narrative: "회계학과에서 결산 보고서를 읽다가, 지금은 금융 현장의 문서와 쿼리를 읽는 AI 에이전트를 만듭니다. 틈틈이 Text-to-SQL 오픈소스 tablefold를 손보고 있습니다.",
+export interface Row {
+  period: string;
+  text: string;
+}
+
+/** 접어 두는 실제 산출물 (실행 결과, 코드) */
+export interface CodeSample {
+  label: string;
+  code: string;
+  caption: string;
+  source?: LinkItem;
+}
+
+export interface Project {
+  title: string;
+  /** 소속과 기간 */
+  meta: string;
+  summary: string;
+  points: string[];
+  /** src/lib/diagrams.ts 의 키. diagrams/<키>.json 에서 만든다 */
+  diagram: string;
+  stack: string;
+  links?: LinkItem[];
+  code?: CodeSample;
+}
+
+/** 타임라인 한 줄. 기간은 02_핵심-스펙.md의 프로젝트 표와 같다 */
+export interface Span {
+  ko: string;
+  en: string;
+  /** "YYYY.MM" */
+  start: string;
+  /** 비우면 진행 중 */
+  end?: string;
+  personal?: boolean;
+  /** 본문에서 이 일을 설명하는 위치 */
+  href: string;
+}
+
+/* 축은 2025.01 ~ 2026.12 고정. 진행 중인 막대는 NOW까지 그린다.
+   ponytail: 정적 사이트라 날짜를 계산하지 않는다. 프로젝트를 추가할 때 NOW도 같이 고친다. */
+export const TIMELINE_NOW = "2026.10";
+
+export const TIMELINE: Span[] = [
+  { ko: "Altair 시각화와 모델링", en: "Altair visualization", start: "2025.01", end: "2025.04", href: "#more" },
+  { ko: "범농협 영업점 어시스턴트", en: "Pan-NH branch assistant", start: "2025.04", end: "2025.08", href: "#p3" },
+  { ko: "농협 맛선 추천 에이전트", en: "NH Matseon agent", start: "2025.04", end: "2025.08", href: "#more" },
+  { ko: "Agent Builder", en: "Agent Builder", start: "2025.08", end: "2025.09", href: "#more" },
+  { ko: "마케팅허브 Text-to-SQL", en: "Marketing Hub Text-to-SQL", start: "2025.09", end: "2026.02", href: "#p2" },
+  { ko: "BestBanker", en: "BestBanker", start: "2026.02", end: "2026.04", href: "#more" },
+  { ko: "선일다이파스 Text-to-SQL", en: "Seonil Dyphas Text-to-SQL", start: "2026.04", end: "2026.08", href: "#p1" },
+  { ko: "Midas Touch", en: "Midas Touch", start: "2026.05", end: "2026.09", personal: true, href: "#p4" },
+  { ko: "tablefold", en: "tablefold", start: "2026.08", personal: true, href: "#p0" },
+  { ko: "중외제약 Tableau 대시보드", en: "JW Pharmaceutical Tableau", start: "2026.09", href: "#more" },
+];
+
+export interface Principle {
+  lead: string;
+  detail: string;
+}
+
+export interface Item {
+  title: string;
+  period: string;
+  note?: string;
+  links?: LinkItem[];
+}
+
+export const LINKS = {
   email: "cj0336j@gmail.com",
   github: "https://github.com/Jacob-9909",
   blog: "https://jacob-log.vercel.app/",
-  resume: "https://drive.google.com/file/d/1-9p6MyBXtXMhgFPi1dYDymgRAVcALpDQ/view?usp=sharing",
-  coreStack: [
-    "Python",
-    "LangGraph",
-    "Google ADK",
-    "FastAPI",
-    "PostgreSQL",
-    "Docker",
-    "GCP",
-    "RAG-Pipeline",
-    "vLLM",
-    "PyTorch",
-    "Fine-tuning",
+  // public/ 에 넣은 공개용 포트폴리오 PDF (전화번호 없음, 생년월일 대신 "1999년생").
+  // 앞의 /portfolio_web 은 next.config.mjs 의 basePath 와 같아야 한다.
+  // 원본을 고치면 sh scripts/web-pdf.sh 로 다시 만든다. 원본 PDF를 그대로 복사하지 않는다.
+  portfolio: "/portfolio_web/woohyuck-jeong-portfolio.pdf",
+  tablefold: "https://github.com/Jacob-9909/tablefold",
+};
+
+const TABLEFOLD_LINKS: LinkItem[] = [
+  { label: "GitHub", url: LINKS.tablefold },
+  { label: "Demo", url: "https://tablefold.vercel.app" },
+];
+
+const MIDAS_LINKS: LinkItem[] = [
+  { label: "Web", url: "https://midas-touch-five.vercel.app" },
+  { label: "GitHub", url: "https://github.com/Jacob-9909/midas-touch" },
+];
+
+/* tablefold 로컬 체크아웃(1c5b405)에서 fixtures/retail_50.sql로 직접 실행한 결과.
+   출력은 한 글자도 고치지 않았고, 명령만 읽기 쉽게 줄을 나눴다. */
+const TABLEFOLD_RUN = `$ tablefold expand "SELECT store_name, SUM(grand_total) AS revenue,
+    SUM(order_items_quantity_sum) AS units
+    FROM orders GROUP BY store_name" --ddl fixtures/retail_50.sql
+
+-- models: orders | joins 2/17 (15 pruned)
+WITH tf__orders AS (
+  SELECT
+    base.grand_total AS grand_total,
+    j_stores_store_id.name AS store_name,
+    agg_order_items_order_id.order_items_quantity_sum AS order_items_quantity_sum
+  FROM orders AS base
+  LEFT JOIN stores AS j_stores_store_id
+    ON base.store_id = j_stores_store_id.id
+  LEFT JOIN (
+    SELECT
+      order_id,
+      SUM(quantity) AS order_items_quantity_sum
+    FROM order_items
+    GROUP BY
+      order_id
+  ) AS agg_order_items_order_id
+    ON base.id = agg_order_items_order_id.order_id
+)
+SELECT
+  store_name,
+  SUM(grand_total) AS revenue,
+  SUM(order_items_quantity_sum) AS units
+FROM tf__orders AS orders
+GROUP BY
+  store_name`;
+
+/* midas-touch backend/app/services/agent/graph.py 66~76행 그대로. */
+const MIDAS_GRAPH = `builder.add_edge(START, "intent")
+# intent → 필요한 도구 노드들(fan-out) 또는 곧장 synthesize
+builder.add_conditional_edges(
+    "intent",
+    dispatch,
+    [*TOOL_NODES, "synthesize"],
+)
+# 각 도구 노드 → synthesize (여러 도구가 떴으면 모두 끝난 뒤 synthesize가 1회 실행됨)
+for tool_node in TOOL_NODES:
+    builder.add_edge(tool_node, "synthesize")
+builder.add_edge("synthesize", END)`;
+
+const MIDAS_GRAPH_SOURCE: LinkItem = {
+  label: "graph.py",
+  url: "https://github.com/Jacob-9909/midas-touch/blob/main/backend/app/services/agent/graph.py",
+};
+
+const DACON: LinkItem[] = [
+  { label: "대출등급 분류", url: "https://dacon.io/competitions/official/236214/overview/description" },
+  { label: "소득 예측", url: "https://dacon.io/competitions/official/236230/data" },
+  { label: "웹 로그 조회수 예측", url: "https://dacon.io/competitions/official/236226/overview/description" },
+  { label: "제주 특산물 가격 예측", url: "https://dacon.io/competitions/official/236176/overview/description" },
+  { label: "FSI AIxData Challenge 2024", url: "https://dacon.io/competitions/official/236297/overview/description" },
+  { label: "Samsung AI Challenge", url: "https://dacon.io/competitions/official/236323/overview/description" },
+];
+
+const DACON_EN: LinkItem[] = [
+  "loan grade classification",
+  "income prediction",
+  "web log view-count prediction",
+  "Jeju specialty price prediction",
+  "FSI AIxData Challenge 2024",
+  "Samsung AI Challenge",
+].map((label, i) => ({ label, url: DACON[i].url }));
+
+const ko = {
+  name: "정우혁",
+  role: "AI Engineer, Didim",
+  location: "서울",
+  headings: {
+    intro: "소개",
+    principles: "에이전트를 만들 때 지키는 것",
+    career: "경력",
+    projects: "프로젝트",
+    more: "그 밖에 한 일",
+    student: "학부 때",
+    skills: "기술",
+  },
+  labels: {
+    email: "이메일",
+    blog: "블로그",
+    portfolio: "포트폴리오 PDF",
+    dacon: "DACON 경진대회",
+    toc: "목차",
+    skip: "본문으로 건너뛰기",
+    top: "맨 위로",
+    theme: "밝기 전환",
+    language: "언어",
+    timeline: "2025년 1월부터 한 일",
+    work: "Didim",
+    personal: "개인 프로젝트",
+    ongoing: "진행 중",
+    months: "개월",
+  },
+  principles: [
+    { lead: "틀리면 안 되는 숫자는 코드로 계산합니다.", detail: "Midas Touch에서 세액, 84점 청약 가점, 사기 판정을 코드로 계산하고 LLM에는 의도 분류와 작문만 맡겼습니다." },
+    { lead: "도구 선택은 의도 분류 노드가 정합니다.", detail: "맛선에서 모델이 도구를 직접 고르는 Tool Calling이 느리고 응답이 매번 달라서 LangGraph 노드로 분리했습니다. Midas Touch도 같은 구조입니다." },
+    { lead: "자기수정에는 상한을 둡니다.", detail: "마케팅허브와 선일다이파스 모두 SQL 재생성을 3회로 제한했습니다." },
+    { lead: "틀린 답은 노드 단위로 추적합니다.", detail: "Opik으로 만든 사내 LLMOps 도구에서 노드별 출력을 열어 보고 어긋난 노드만 고칩니다." },
+    { lead: "답변에는 근거를 붙입니다.", detail: "범농협 RAG는 답변마다 문서명과 페이지를 표시합니다." },
+  ] as Principle[],
+  career: [
+    { period: "2025.01 ~ 현재", text: "Didim, AI Engineer (LLM, ML)" },
+    { period: "2024.09 ~ 2024.12", text: "ODOC, Associate Product Manager 인턴" },
+    { period: "2019.03 ~ 2025.02", text: "국민대학교 회계학과, AI빅데이터융합경영학과 복수전공" },
+  ] as Row[],
+  projects: [
+    {
+      title: "tablefold",
+      meta: "개인 오픈소스, 2026.08 ~ 진행 중",
+      summary:
+        "테이블 수십 개짜리 스키마를 LLM이 읽기 쉬운 넓은 논리 모델 몇 개로 접고, LLM이 쓴 논리 SQL을 물리 SQL로 펼치는 오픈소스입니다.",
+      points: [
+        "물리 테이블 53개를 논리 모델 7개(약 3k 토큰)로 압축",
+        "조인 경로와 집계 단위는 그래프 알고리즘이 정하고, LLM은 조인 없이 SQL 작성",
+        "골드셋 50문항을 결과 값까지 비교, 테스트 410개를 CI로 실행",
+      ],
+      diagram: "tablefold",
+      stack: "Python, PostgreSQL, FastAPI, 그래프 알고리즘",
+      links: TABLEFOLD_LINKS,
+      code: {
+        label: "실제 실행 결과 보기",
+        code: TABLEFOLD_RUN,
+        caption:
+          "저장소의 예제 스키마로 직접 실행한 결과입니다. 조인 17개 중 쓰인 2개만 남고, 1:N 자식인 order_items는 먼저 집계한 뒤 조인됩니다.",
+      },
+    },
+    {
+      title: "선일다이파스 Text-to-SQL",
+      meta: "Didim, 2026.04 ~ 2026.08",
+      summary: "SQL을 모르는 제조 현장 실무진이 ERP 데이터를 자연어로 직접 조회하는 에이전트입니다.",
+      points: [
+        "조회 대기가 2~3일에서 30초로 줄었고, 현장 실무진 120명이 월 600회 사용",
+        "진천공장 실무진을 직접 인터뷰해 요구를 확인",
+        "결과가 0행이면 이전 월 조회 같은 대안을 되묻기",
+      ],
+      diagram: "seonil",
+      stack: "Python, LangGraph, FastAPI, PgVector, 온프레미스",
+    },
+    {
+      title: "농협은행 마케팅허브 Text-to-SQL",
+      meta: "Didim, 2025.09 ~ 2026.02",
+      summary: "외부 API를 쓸 수 없는 폐쇄망에서 마케팅 담당자의 질의를 SQL로 바꾸는 에이전트입니다.",
+      points: [
+        "현업 질의 100개 테스트셋 정확도 60%에서 95~100% (팀 성과), 현업 20명이 월 200회 사용",
+        "Gemma와 EXAONE을 검토한 뒤 GPT-oss-120b 선정, KURE-V1을 금융 용어로 파인튜닝",
+        "현업이 메타데이터를 직접 등록하는 메타 어드민의 기획과 핵심 기능 개발",
+      ],
+      diagram: "marketinghub",
+      stack: "Python, LangGraph, FastAPI, PgVector, vLLM, Fine-tuning",
+    },
+    {
+      title: "범농협 영업점 어시스턴트",
+      meta: "농협중앙회, 삼일PwC, 삼정KPMG, Google과 협업, 2025.04 ~ 2025.08",
+      summary: "영업점 직원이 상호금융 규정을 물으면 근거 문서와 페이지를 붙여 답하는 RAG입니다.",
+      points: [
+        "업무방법서 약 60개, 3,000페이지가 대상",
+        "표와 2단 레이아웃을 지키려고 수치 테이블 파이프라인을 분리하고 Vision OCR로 마크다운 변환",
+        "출처를 누르면 원문 해당 위치가 열리는 기능을 요구서 밖에서 제안",
+      ],
+      diagram: "nh-rag",
+      stack: "Python, GCP, Google ADK, LangGraph, React",
+    },
+    {
+      title: "Midas Touch",
+      meta: "개인 프로젝트, 2026.05 ~ 2026.09",
+      summary: "세율과 공제 숫자를 지어내지 않는 금융 비서입니다. 2026 금융 AI Challenge에 출품했습니다.",
+      points: [
+        "도구 12종 중 필요한 것만 동시에 실행하고, LLM 호출은 질문당 최대 2회",
+        "세액, 84점 청약 가점, 사기 판정은 코드로 계산",
+        "주가 진단 적중률 58.4%가 항상 관망한 경우(57.7%)와 차이 없다는 채점 결과를 그대로 공개",
+      ],
+      diagram: "midas",
+      stack: "Python, LangGraph, FastAPI, PgVector, Neo4j, Next.js",
+      links: MIDAS_LINKS,
+      code: {
+        label: "그래프 배선 코드 보기",
+        code: MIDAS_GRAPH,
+        caption: "에이전트 그래프를 조립하는 코드의 일부입니다.",
+        source: MIDAS_GRAPH_SOURCE,
+      },
+    },
+    {
+      title: "KoFinSQL",
+      meta: "연구, 제1저자, NeurIPS 2026 제출",
+      summary: "한국어 금융 Text-to-SQL에 맞춘 3B 소형 모델 연구입니다.",
+      points: [
+        "Accuracy 8.20/10, 비교한 3B 이하 모델 5개 중 1위",
+        "1단계는 기재부 경제 용어 3,031개와 KDB 금융 리스크 용어 202개로 학습",
+        "2단계는 DART 재무공시로 만든 SQL 중 실제 DB에서 실행 검증된 쌍만 사용",
+      ],
+      diagram: "kofinsql",
+      stack: "Python, Fine-tuning, LangChain Deep Agent, BM25와 벡터 RRF",
+    },
+  ] as Project[],
+  more: [
+    { title: "중외제약 Tableau 대시보드", period: "2026.09 ~ 진행 중", note: "ERP에서 내려받아 수기 엑셀로 만들던 경영 리포트를 7개 계열사 대시보드로 옮기는 중입니다." },
+    { title: "농협은행 BestBanker", period: "2026.02 ~ 2026.04", note: "내규 문서 RAG와 멀티 에이전트로 영업점 직원의 실적 점수를 계산하고, 승진에 유리한 상품을 추천합니다." },
+    { title: "Agent Builder", period: "2025.08 ~ 2025.09", note: "사내 솔루션 경진대회 우수상. Notion, Tavily, Slack, RAG MCP 툴을 만들었습니다." },
+    { title: "농협 맛선 상품 추천 에이전트", period: "2025.04 ~ 2025.08", note: "12가지 고객 페르소나와 하이브리드 RAG로 쌀과 잡곡을 추천합니다. Tool Calling이 느리고 응답이 매번 달라서 LangGraph 의도 분류 노드로 바꿨습니다." },
+    { title: "Altair 시각화와 모델링", period: "2025.01 ~ 2025.04", note: "AI Studio와 Panopticon으로 주식, 산불 예측 모델과 재고 관리 모델을 만들었습니다." },
+  ] as Item[],
+  student: [
+    { title: "BDA 데이터분석 공모전", period: "2023", note: "60개 팀 중 상위 8팀에 선정돼 CJ 본사에서 발표했습니다.", links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/CJ_bda_proj" }] },
+    { title: "K리그 승률예측, 한이음", period: "2024", links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/K_league_soccer_AI" }, { label: "YouTube", url: "https://youtu.be/CRZJHyEIVEk?si=A8kmmgZGdbYJezqY" }] },
+    { title: "LG Aimers, Display Glass 불량 예측", period: "2024", links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/LG_aimers" }] },
+    { title: "미래에셋 AI Data Festival", period: "2024" },
+    { title: "국민대학교 AI빅데이터분석 경진대회", period: "2024" },
+    { title: "K-Water 물 빅데이터 공모전", period: "2023", links: [{ label: "자료", url: "https://drive.google.com/file/d/10xv5OkwS867kudIYXibXxxYiwniu4B3N/view?usp=drive_link" }] },
+  ] as Item[],
+  dacon: DACON,
+  skills: [
+    { period: "언어", text: "Python, Java, SQL" },
+    { period: "AI", text: "LangGraph, RAG, Fine-tuning, Google ADK, MCP, vLLM, Deep Agent, PyTorch" },
+    { period: "백엔드", text: "FastAPI, PostgreSQL, PgVector, Neo4j, Oracle, MSSQL" },
+    { period: "인프라", text: "GCP (Vertex AI), Docker, Kubernetes, Prometheus, Opik" },
+    { period: "도구", text: "Tableau, React, Next.js, Claude Code, Codex, Gemini, Kiro" },
+    { period: "자격", text: "빅데이터분석기사, SQLD, ADsP, 컴퓨터활용능력 1급, TOEIC Speaking AL" },
+  ] as Row[],
+};
+
+const en: typeof ko = {
+  name: "Woohyuck Jeong",
+  role: "AI Engineer, Didim",
+  location: "Seoul",
+  headings: {
+    intro: "About",
+    principles: "How I build agents",
+    career: "Experience",
+    projects: "Projects",
+    more: "Other work",
+    student: "As a student",
+    skills: "Skills",
+  },
+  labels: {
+    email: "Email",
+    blog: "Blog",
+    portfolio: "Portfolio PDF",
+    dacon: "DACON competitions",
+    toc: "Contents",
+    skip: "Skip to content",
+    top: "Back to top",
+    theme: "Toggle theme",
+    language: "Language",
+    timeline: "Work since January 2025",
+    work: "Didim",
+    personal: "Personal project",
+    ongoing: "ongoing",
+    months: " mo",
+  },
+  principles: [
+    { lead: "Numbers that must be right are computed in code.", detail: "In Midas Touch, tax amounts, the 84-point housing subscription score and fraud checks run in code. The LLM only classifies intent and writes." },
+    { lead: "An intent node picks the tools.", detail: "On Matseon, letting the model call tools directly was slow and gave a different answer each time, so I moved routing into a LangGraph node. Midas Touch has the same structure." },
+    { lead: "Self-correction has a cap.", detail: "Both Marketing Hub and Seonil Dyphas limit SQL regeneration to 3 tries." },
+    { lead: "Wrong answers are traced node by node.", detail: "With our in-house LLMOps tool built on Opik, I open each node's output and change only the node that was off." },
+    { lead: "Answers carry their sources.", detail: "The Pan-NH RAG shows the document name and page with every answer." },
+  ],
+  career: [
+    { period: "2025.01 ~ now", text: "Didim, AI Engineer (LLM, ML)" },
+    { period: "2024.09 ~ 2024.12", text: "ODOC, Associate Product Manager intern" },
+    { period: "2019.03 ~ 2025.02", text: "Kookmin University, Accounting with a double major in AI Big Data Convergence Management" },
+  ],
+  projects: [
+    {
+      title: "tablefold",
+      meta: "personal open source, 2026.08 ~ ongoing",
+      summary:
+        "Open source that folds a schema of dozens of tables into a few wide logical models an LLM can read, then expands the LLM's logical SQL into physical SQL.",
+      points: [
+        "53 physical tables compressed into 7 logical models (about 3k tokens)",
+        "Graph algorithms decide join paths and grain, so the LLM writes SQL without joins",
+        "A 50-question gold set compared down to result values, 410 tests in CI",
+      ],
+      diagram: "tablefold",
+      stack: "Python, PostgreSQL, FastAPI, graph algorithms",
+      links: TABLEFOLD_LINKS,
+      code: {
+        label: "Show a real run",
+        code: TABLEFOLD_RUN,
+        caption:
+          "A real run on the example schema in the repo. Of 17 joins only the 2 that are used remain, and the 1:N child order_items is aggregated before it is joined.",
+      },
+    },
+    {
+      title: "Seonil Dyphas Text-to-SQL",
+      meta: "Didim, 2026.04 ~ 2026.08",
+      summary: "An agent that lets factory staff who do not know SQL query ERP data in plain language.",
+      points: [
+        "Wait for a data request went from 2 to 3 days to 30 seconds; 120 people run 600 queries a month",
+        "I interviewed staff at the Jincheon plant myself to confirm what they needed",
+        "On zero rows it asks back with an alternative such as the previous month",
+      ],
+      diagram: "seonil",
+      stack: "Python, LangGraph, FastAPI, PgVector, on-premise",
+    },
+    {
+      title: "NH Bank Marketing Hub Text-to-SQL",
+      meta: "Didim, 2025.09 ~ 2026.02",
+      summary: "An agent that turns marketers' questions into SQL inside a closed network with no external APIs.",
+      points: [
+        "Accuracy on a 100-question test set from business users went from 60% to 95~100% (team result); 20 people use it 200 times a month",
+        "Chose GPT-oss-120b after evaluating Gemma and EXAONE, and fine-tuned KURE-V1 on financial terms",
+        "Planning and core features for Meta Admin, where business users register metadata themselves",
+      ],
+      diagram: "marketinghub",
+      stack: "Python, LangGraph, FastAPI, PgVector, vLLM, fine-tuning",
+    },
+    {
+      title: "Pan-NH branch assistant",
+      meta: "with NACF, Samil PwC, Samjong KPMG and Google, 2025.04 ~ 2025.08",
+      summary: "RAG that answers branch staff's questions on mutual-finance regulations with the source document and page.",
+      points: [
+        "About 60 operation manuals, 3,000 pages",
+        "A separate pipeline for numeric tables and Vision OCR to markdown, to keep tables and two-column layouts intact",
+        "Proposed opening the source at the cited position, outside the requirements",
+      ],
+      diagram: "nh-rag",
+      stack: "Python, GCP, Google ADK, LangGraph, React",
+    },
+    {
+      title: "Midas Touch",
+      meta: "personal project, 2026.05 ~ 2026.09",
+      summary: "A finance assistant that does not invent tax rates or deductions. Entered in the 2026 Financial AI Challenge.",
+      points: [
+        "Runs only the needed tools out of 12 in parallel, with at most 2 LLM calls per question",
+        "Tax amounts, the 84-point housing subscription score and fraud checks are computed in code",
+        "Published as is: its stock hit rate of 58.4% was no better than always holding (57.7%)",
+      ],
+      diagram: "midas",
+      stack: "Python, LangGraph, FastAPI, PgVector, Neo4j, Next.js",
+      links: MIDAS_LINKS,
+      code: {
+        label: "Show the graph wiring code",
+        code: MIDAS_GRAPH,
+        caption: "Part of the code that wires the agent graph.",
+        source: MIDAS_GRAPH_SOURCE,
+      },
+    },
+    {
+      title: "KoFinSQL",
+      meta: "research, first author, submitted to NeurIPS 2026",
+      summary: "Research on a 3B small model tuned for Korean financial Text-to-SQL.",
+      points: [
+        "Accuracy 8.20/10, first among the five models of 3B or smaller that I compared",
+        "Stage 1 trains on 3,031 economic terms from the Ministry of Economy and Finance and 202 KDB financial risk terms",
+        "Stage 2 uses only SQL pairs from DART disclosures that executed correctly on a real database",
+      ],
+      diagram: "kofinsql",
+      stack: "Python, fine-tuning, LangChain Deep Agent, BM25 and vector RRF",
+    },
+  ],
+  more: [
+    { title: "JW Pharmaceutical Tableau dashboards", period: "2026.09 ~ ongoing", note: "Moving management reports built by hand in Excel from ERP exports into dashboards for 7 affiliates." },
+    { title: "NH Bank BestBanker", period: "2026.02 ~ 2026.04", note: "Scores branch employees' performance with RAG over internal regulations and a multi-agent setup, and recommends products that help toward promotion." },
+    { title: "Agent Builder", period: "2025.08 ~ 2025.09", note: "Excellence Award at the in-house solution contest. I built the Notion, Tavily, Slack and RAG MCP tools." },
+    { title: "NH Matseon product recommendation agent", period: "2025.04 ~ 2025.08", note: "Recommends rice and grains with 12 customer personas and hybrid RAG. Tool calling was slow and inconsistent, so I replaced it with a LangGraph intent-classification node." },
+    { title: "Altair visualization and modeling", period: "2025.01 ~ 2025.04", note: "Stock and wildfire prediction models and an inventory model with AI Studio and Panopticon." },
+  ],
+  student: [
+    { title: "BDA Data Analysis Contest", period: "2023", note: "Top 8 of 60 teams, presented at CJ headquarters.", links: ko.student[0].links },
+    { title: "K-League win rate prediction, Hanium", period: "2024", links: ko.student[1].links },
+    { title: "LG Aimers, display glass defect prediction", period: "2024", links: ko.student[2].links },
+    { title: "Mirae Asset AI Data Festival", period: "2024" },
+    { title: "Kookmin University AI Big Data Contest", period: "2024" },
+    { title: "K-Water Water Big Data Contest", period: "2023", links: [{ label: "Slides", url: ko.student[5].links![0].url }] },
+  ],
+  dacon: DACON_EN,
+  skills: [
+    { period: "Languages", text: "Python, Java, SQL" },
+    { period: "AI", text: "LangGraph, RAG, fine-tuning, Google ADK, MCP, vLLM, Deep Agent, PyTorch" },
+    { period: "Backend", text: "FastAPI, PostgreSQL, PgVector, Neo4j, Oracle, MSSQL" },
+    { period: "Infra", text: "GCP (Vertex AI), Docker, Kubernetes, Prometheus, Opik" },
+    { period: "Tools", text: "Tableau, React, Next.js, Claude Code, Codex, Gemini, Kiro" },
+    { period: "Certificates", text: "Big Data Analysis Engineer, SQLD, ADsP, Computer Literacy Level 1, TOEIC Speaking AL" },
   ],
 };
 
-const PROFILE_EN = {
-  ...PROFILE_KO,
-  narrative: "I studied accounting and read financial statements. Now I build agents that read documents and SQL for a living — and maintain tablefold, an open-source Text-to-SQL pipeline, on the side.",
-};
-
-const CAREER_KO: CareerItem[] = [
-  {
-    company: "Didim",
-    role: "AI Engineer (LLM, ML)",
-    period: "2025.01 → now",
-    active: true,
-    description: "AI , Big Data , Cloud 매니지먼트 전문기업",
-    stack: [
-      "Python", "Java", "PostgreSQL", "FastAPI", "LangGraph", "RAG", "GCP", "Google ADK", "React", "Docker", "MCP"
-    ],
-    tasks: [
-      "농협은행 BestBanker 실적 계산 멀티 에이전트 개발",
-      "범농협 (농협중앙회 , 삼일PWC , 삼정KPMG , Google) AI 도입 및 생성형 AI 구축",
-      "농협은행 마케팅허브: 데이터 기반 자연어 SQL 생성 Text-to-SQL",
-      "자체 솔루션 Agent Builder 개발",
-      "Altair: 솔루션 기반 데이터 시각화 및 ML 모델링",
-    ],
-  },
-  {
-    company: "ODOC",
-    role: "Intern: Associate Product Manager",
-    period: "2024.09 → 2024.12",
-    active: false,
-    description: "AX-ONE 생성형 AI 교육 플랫폼 서비스",
-    stack: ["Python", "SQL", "DataGrip", "Jira", "Figma"],
-    tasks: [
-      "Contents Data 영상 수집 및 DB화",
-      "교육 플랫폼 Curriculum 기획",
-      "Log data & User flow 분석",
-    ],
-  },
-];
-
-const CAREER_EN: CareerItem[] = [
-  {
-    company: "Didim",
-    role: "AI Engineer (LLM, ML)",
-    period: "2025.01 → now",
-    active: true,
-    description: "AI, Big Data, Cloud Management Specialized Company",
-    stack: [
-      "Python", "Java", "PostgreSQL", "FastAPI", "LangGraph", "RAG", "GCP", "Google ADK", "React", "Docker", "MCP"
-    ],
-    tasks: [
-      "Developed multi-agent for calculating NH Bank BestBanker performance",
-      "Introduced and built generative AI for Pan-NH (NH NACF, Samil PwC, Samjong KPMG, Google)",
-      "NH Bank Marketing Hub: Developed data-driven natural language Text-to-SQL",
-      "Developed in-house solution Agent Builder",
-      "Altair: Solution-based data visualization and ML modeling",
-    ],
-  },
-  {
-    company: "ODOC",
-    role: "Intern: Associate Product Manager",
-    period: "2024.09 → 2024.12",
-    active: false,
-    description: "AX-ONE Generative AI Education Platform Service",
-    stack: ["Python", "SQL", "DataGrip", "Jira", "Figma"],
-    tasks: [
-      "Collected contents data (video) and built DB",
-      "Planned curriculum for education platform",
-      "Analyzed log data & user flow",
-    ],
-  },
-];
-
-const EDUCATION_KO = [
-  {
-    school: "국민대학교",
-    major: "회계학과 & AI빅데이터융합경영학과",
-    period: "2019.03 → 2025.02",
-  },
-  {
-    school: "동두천외국어고등학교",
-    major: "영어 & 중국어",
-    period: "2015.03 → 2018.02",
-  },
-];
-
-const EDUCATION_EN = [
-  {
-    school: "Kookmin University",
-    major: "Accounting & AI Big Data Convergence Management",
-    period: "2019.03 → 2025.02",
-  },
-  {
-    school: "Dongducheon Foreign Language High School",
-    major: "English & Chinese",
-    period: "2015.03 → 2018.02",
-  },
-];
-
-const PROJECTS_KO: ProjectItem[] = [
-  {
-    title: "tablefold — 스키마 폴딩 기반 Text-to-SQL 컨텍스트 압축",
-    org: "개인 프로젝트 (Open Source)",
-    period: "2026.08 → 진행중",
-    stack: ["Python", "PostgreSQL", "LLM", "FastAPI", "Graph"],
-    description:
-      "Wren AI의 시맨틱 레이어에서 착안. 53개 물리 테이블을 7개 와이드 논리 모델(약 3k 토큰)로 접고, LLM이 쓴 논리 SQL을 조인 프루닝·그레인 보존 규칙으로 실행 가능한 물리 SQL로 펼치는 결정론적 파이프라인. 스키마가 커질수록 폭발하는 프롬프트 비용을 구조로 해결한 게 포인트.",
-    status: "running",
-    pipeline: ["53 tables", "fold", "7 logical", "LLM SQL", "unfold", "physical SQL"],
-    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/tablefold" }],
-  },
-  {
-    title: "선일다이파스 자연어 기반 SQL 생성 (Text-to-SQL)",
-    org: "선일다이파스 , Didim",
-    period: "2026.04 → 진행중",
-    stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG"],
-    description: "선일다이파스 제조 데이터를 대상으로 자연어 질의 → SQL 답변 에이전트를 구축 중. PgVector 기반 RAG로 스키마 컨텍스트를 보강합니다.",
-    status: "running",
-  },
-  {
-    title: "농협은행 BestBanker",
-    org: "농협은행 , Didim",
-    period: "2026.02 → 2026.04",
-    stack: ["Python", "Google ADK", "PgVector", "RAG", "GCP"],
-    description: "영업점 직원의 내규 문서를 읽고 실적 계산을 대신 수행하는 에이전트. GCP Vertex AI 기반 어시스턴트로 구축했습니다.",
-  },
-  {
-    title: "농협은행 자연어 기반 SQL 생성 (Text-to-SQL)",
-    org: "농협은행 마케팅허브 , Didim",
-    period: "2025.09 → 2026.02",
-    stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG", "Fine-tuning"],
-    description: "마케팅허브 데이터에 자연어로 질문하면 SQL로 답하는 서비스. 금융 도메인 Fine-tuning으로 모델 정확도를 끌어올렸습니다.",
-  },
-  {
-    title: "Agent Builder (내부 솔루션)",
-    org: "Didim",
-    period: "2025.06 → 2025.07",
-    stack: ["Python", "TypeScript", "Google ADK", "MCP"],
-    description: "MCP 프로토콜 기반 툴 파트 담당 — Notion, Tavily, Slack, RAG MCP tool을 만들고 DB 연결과 Metric 관리까지 맡았습니다.",
-  },
-  {
-    title: "범농협 생성형 AI 도입 및 구축",
-    org: "범농협 (농협중앙회 , 삼일PWC , 삼정KPMG , Google)",
-    period: "2025.04 → 2025.08",
-    stack: ["Python", "GCP", "Google ADK", "LangGraph", "React", "MCP"],
-    description: "범농협(농협중앙회, 삼일PWC, 삼정KPMG, Google) 생성형 AI 도입. GCP Vertex AI 기반 영업점 질의응답 어시스턴트와 상품 큐레이션 챗봇을 구축했습니다.",
-  },
-  {
-    title: "Altair 솔루션 기반 시각화 및 모델링",
-    org: "Altair",
-    period: "2025.01 → 2025.04",
-    stack: ["Python", "PostgreSQL", "Altair", "ML", "PyTorch"],
-    description: "AI Studio & Panopticon으로 주식·산불 예측 모델을 만들고, Artbox 판매 데이터로 재고 관리 모델까지 확장했습니다.",
-  },
-  {
-    title: "제2회 국민대학교 AI빅데이터분석 경진대회",
-    org: "국민대학교",
-    period: "2024.10 → 2024.11",
-    stack: ["Python"],
-    description: "한국기계산업진흥회 후원 — 주요 5개 산업 품목 1개년 무역량 예측 알고리즘 개발",
-  },
-  {
-    title: "K리그 승률예측 프로그램 개발",
-    org: "한이음",
-    period: "2024.04 → 2024.11",
-    stack: ["Python", "Tableau", "GCP", "MySQL"],
-    description: "GCP 위에 머신러닝/딥러닝 파이프라인을 올려 K리그 경기 승률과 순위를 예측한 프로젝트.",
-    links: [
-      { label: "GitHub", url: "https://github.com/Jacob-9909/K_league_soccer_AI" },
-      { label: "YouTube", url: "https://youtu.be/CRZJHyEIVEk?si=A8kmmgZGdbYJezqY" },
-    ],
-  },
-  {
-    title: "LG Aimers: Display Glass 불량 예측",
-    org: "LG",
-    period: "2024.07 → 2024.09",
-    stack: ["Python", "Tableau"],
-    description: "Automotive Display Glass Sub assembly Line 불량 예측 AI 모델 및 범용 프로세스 개발",
-    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/LG_aimers" }],
-  },
-  {
-    title: "미래에셋 AI Data Festival",
-    org: "미래에셋증권 , Naver Cloud",
-    period: "2024.07 → 2024.08",
-    stack: ["Python", "Tableau"],
-    description: "미래에셋증권 데이터 기반 HyperClova X 활용 금융 투자 교육 AI 서비스 개발",
-  },
-  {
-    title: "K-Water 대국민 물 빅데이터 공모전",
-    org: "K-Water",
-    period: "2023.06 → 2023.08",
-    stack: ["Excel", "Python", "Tableau"],
-    description: "전국 단위 농업 용수 사용 최적화를 위한 데이터 구축 및 가뭄 예방 시스템 제안",
-    links: [
-      { label: "Link", url: "https://drive.google.com/file/d/10xv5OkwS867kudIYXibXxxYiwniu4B3N/view?usp=drive_link" },
-    ],
-  },
-  {
-    title: "BDA 데이터분석 활용 공모전",
-    org: "CJ제일제당 , 한국빅데이터학회",
-    period: "2023.04 → 2023.06",
-    stack: ["Excel", "Python", "Tableau"],
-    description: "CJ제일제당 11번가/네이버 소비자 주문 내역 기반 마케팅 프로모션 제안",
-    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/CJ_bda_proj" }],
-  },
-];
-
-const PROJECTS_EN: ProjectItem[] = [
-  {
-    title: "tablefold — Schema Folding for Text-to-SQL Context",
-    org: "Personal Project (Open Source)",
-    period: "2026.08 → Present",
-    stack: ["Python", "PostgreSQL", "LLM", "FastAPI", "Graph"],
-    description:
-      "Inspired by Wren AI's semantic layer — folds 53 physical tables into 7 wide logical models (~3k tokens), then expands LLM-written logical SQL back into executable physical SQL with join pruning and grain preservation. The point: solving exploding prompt cost with structure, not bigger context windows.",
-    status: "running",
-    pipeline: ["53 tables", "fold", "7 logical", "LLM SQL", "unfold", "physical SQL"],
-    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/tablefold" }],
-  },
-  {
-    title: "Seonil Dyphas Text-to-SQL",
-    org: "Seonil Dyphas, Didim",
-    period: "2026.04 → Present",
-    stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG"],
-    description: "Manufacturing data, natural-language in, SQL out — currently building the agent, with PgVector-backed RAG supplying schema context.",
-    status: "running",
-  },
-  {
-    title: "NH Bank BestBanker",
-    org: "NH Bank, Didim",
-    period: "2026.02 → 2026.04",
-    stack: ["Python", "Google ADK", "PgVector", "RAG", "GCP"],
-    description: "An agent that reads NH Bank's internal regulation documents and calculates employee performance on their behalf. Runs on GCP Vertex AI.",
-  },
-  {
-    title: "NH Bank Text-to-SQL",
-    org: "NH Bank Marketing Hub, Didim",
-    period: "2025.09 → 2026.02",
-    stack: ["Python", "LangGraph", "FastAPI", "PgVector", "RAG", "Fine-tuning"],
-    description: "Natural-language questions over Marketing Hub data, answered in SQL. Improved accuracy with financial-domain fine-tuning.",
-  },
-  {
-    title: "Agent Builder (Internal Solution)",
-    org: "Didim",
-    period: "2025.06 → 2025.07",
-    stack: ["Python", "TypeScript", "Google ADK", "MCP"],
-    description: "Owned the MCP tool layer — Notion, Tavily, Slack and RAG tools, plus DB connections and metric management.",
-  },
-  {
-    title: "Pan-NH Generative AI Introduction",
-    org: "Pan-NH (NH NACF, PwC, KPMG, Google)",
-    period: "2025.04 → 2025.08",
-    stack: ["Python", "GCP", "Google ADK", "LangGraph", "React", "MCP"],
-    description: "Introduced generative AI across Pan-NH (NH NACF, PwC, KPMG, Google) — a Vertex AI query assistant and a product curation chatbot.",
-  },
-  {
-    title: "Altair Visualization & Modeling",
-    org: "Altair",
-    period: "2025.01 → 2025.04",
-    stack: ["Python", "PostgreSQL", "Altair", "ML", "PyTorch"],
-    description: "Built stock and wildfire prediction models with AI Studio & Panopticon, then extended into an inventory model on Artbox sales data.",
-  },
-  {
-    title: "Kookmin Univ AI Big Data Contest",
-    org: "Kookmin University",
-    period: "2024.10 → 2024.11",
-    stack: ["Python"],
-    description: "Sponsored by KOAMI — Developed 1-year trade volume prediction algorithm for 5 major industry items",
-  },
-  {
-    title: "K-League Win Rate Prediction",
-    org: "Hanium",
-    period: "2024.04 → 2024.11",
-    stack: ["Python", "Tableau", "GCP", "MySQL"],
-    description: "K-League match and ranking prediction — ML/DL pipelines running on GCP, results visualized in Tableau.",
-    links: [
-      { label: "GitHub", url: "https://github.com/Jacob-9909/K_league_soccer_AI" },
-      { label: "YouTube", url: "https://youtu.be/CRZJHyEIVEk?si=A8kmmgZGdbYJezqY" },
-    ],
-  },
-  {
-    title: "LG Aimers: Display Glass Defect Prediction",
-    org: "LG",
-    period: "2024.07 → 2024.09",
-    stack: ["Python", "Tableau"],
-    description: "Defect prediction for automotive display glass sub-assembly lines, packaged as a reusable process.",
-    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/LG_aimers" }],
-  },
-  {
-    title: "Mirae Asset AI Data Festival",
-    org: "Mirae Asset Securities, Naver Cloud",
-    period: "2024.07 → 2024.08",
-    stack: ["Python", "Tableau"],
-    description: "Developed financial investment education AI service using HyperClova X",
-  },
-  {
-    title: "K-Water Water Big Data Contest",
-    org: "K-Water",
-    period: "2023.06 → 2023.08",
-    stack: ["Excel", "Python", "Tableau"],
-    description: "Constructed data for optimizing agricultural water usage and proposed a drought prevention system",
-    links: [
-      { label: "Link", url: "https://drive.google.com/file/d/10xv5OkwS867kudIYXibXxxYiwniu4B3N/view?usp=drive_link" },
-    ],
-  },
-  {
-    title: "BDA Data Analysis Contest",
-    org: "CJ CheilJedang, KSBDA",
-    period: "2023.04 → 2023.06",
-    stack: ["Excel", "Python", "Tableau"],
-    description: "Proposed marketing promotions based on consumer order history from 11st/Naver for CJ",
-    links: [{ label: "GitHub", url: "https://github.com/Jacob-9909/CJ_bda_proj" }],
-  },
-];
-
-const SKILLS = [
-  { category: "Languages", items: ["Python", "Java", "SQL"] },
-  { category: "AI / ML", items: ["LangGraph", "RAG", "Fine-tuning", "Google ADK", "PyTorch", "MCP"] },
-  { category: "Backend", items: ["FastAPI", "PostgreSQL"] },
-  { category: "Cloud", items: ["GCP", "Vertex AI", "Cloud Run"] },
-  { category: "DevOps", items: ["Docker", "Kubernetes"] },
-  { category: "Frontend", items: ["React", "Next.js", "Tailwind CSS"] },
-  { category: "Tools", items: ["Tableau", "Figma", "Git", "Claude Code"] },
-];
-
-const CERTIFICATIONS_KO = [
-  "빅데이터 분석기사",
-  "데이터분석 준전문가 (ADsP)",
-  "SQL 개발자 (SQLD)",
-  "컴퓨터활용능력 1급",
-  "TOEIC 880",
-];
-
-const CERTIFICATIONS_EN = [
-  "Big Data Analytics Professional",
-  "Advanced Data Analytics Semi-Professional (ADsP)",
-  "SQL Developer (SQLD)",
-  "Computer Literacy Level 1",
-];
-
-const SIDE_PROJECTS_KO: SideProjectItem[] = [
-  { title: "고객 대출등급 분류 ML Model", url: "https://dacon.io/competitions/official/236214/overview/description", note: "DACON 공식 경진 — 분류·검증 파이프라인 설계 후 제출" },
-  { title: "소득 예측 ML Model", url: "https://dacon.io/competitions/official/236230/data", note: "DACON 공식 경진 — 회귀와 특성 엔지니어링 위주로 접근" },
-  { title: "웹 로그 기반 조회수 예측 ML Model", url: "https://dacon.io/competitions/official/236226/overview/description", note: "DACON 공식 경진 — 로그·시계열 특성 가공이 핵심이었던 대회" },
-  { title: "제주 특산물 가격 예측 ML Model", url: "https://dacon.io/competitions/official/236176/overview/description", note: "DACON 공식 경진 — 파생 변수 만들기로 점수를 끌어올린 케이스" },
-  { title: "FSI AIxData Challenge 2024", url: "https://dacon.io/competitions/official/236297/overview/description", note: "금융 도메인 경진 — 데이터 생성부터 모델링까지 전 과정 참여" },
-  { title: "Samsung AI Challenge: Black-box Optimization", url: "https://dacon.io/competitions/official/236323/overview/description", note: "블랙박스 최적화 트랙 — 탐색 전략과 제약 조건 실험" },
-];
-
-const SIDE_PROJECTS_EN: SideProjectItem[] = [
-  { title: "Customer Loan Rating ML Model", url: "https://dacon.io/competitions/official/236214/overview/description", note: "DACON official — designed the classification & validation pipeline" },
-  { title: "Income Prediction ML Model", url: "https://dacon.io/competitions/official/236230/data", note: "DACON official — regression with heavy feature engineering" },
-  { title: "Web Log Based View Prediction ML Model", url: "https://dacon.io/competitions/official/236226/overview/description", note: "DACON official — log & time-series feature processing" },
-  { title: "Jeju Specialty Product Price Prediction ML Model", url: "https://dacon.io/competitions/official/236176/overview/description", note: "DACON official — derived variables did the heavy lifting" },
-  { title: "FSI AIxData Challenge 2024", url: "https://dacon.io/competitions/official/236297/overview/description", note: "Finance-domain challenge — from data generation to modeling" },
-  { title: "Samsung AI Challenge: Black-box Optimization", url: "https://dacon.io/competitions/official/236323/overview/description", note: "Black-box optimization track — search strategy & constraint experiments" },
-];
-
-export const translations = {
-  ko: {
-    PROFILE: PROFILE_KO,
-    CAREER: CAREER_KO,
-    EDUCATION: EDUCATION_KO,
-    PROJECTS: PROJECTS_KO,
-    SKILLS,
-    CERTIFICATIONS: CERTIFICATIONS_KO,
-    SIDE_PROJECTS: SIDE_PROJECTS_KO,
-    SECTIONS: {
-      career: "career.log",
-      workExperience: "work-experience",
-      education: "education",
-      projects: "projects/",
-      skills: "tools.yaml",
-      sideProjects: "experiments/",
-      certifications: "certs",
-      contact: "contact --open",
-      home: "~",
-    }
-  },
-  en: {
-    PROFILE: PROFILE_EN,
-    CAREER: CAREER_EN,
-    EDUCATION: EDUCATION_EN,
-    PROJECTS: PROJECTS_EN,
-    SKILLS,
-    CERTIFICATIONS: CERTIFICATIONS_EN,
-    SIDE_PROJECTS: SIDE_PROJECTS_EN,
-    SECTIONS: {
-      career: "career.log",
-      workExperience: "work-experience",
-      education: "education",
-      projects: "projects/",
-      skills: "tools.yaml",
-      sideProjects: "experiments/",
-      certifications: "certs",
-      contact: "contact --open",
-      home: "~",
-    }
-  }
-};
+export const translations = { ko, en };

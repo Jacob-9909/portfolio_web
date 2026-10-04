@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "선일다이파스 Text-to-SQL",
+    "animation": "none",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "flow",
+      "label": "에이전트"
+    },
+    {
+      "id": "res",
+      "label": "온프레미스 자원"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "q",
+      "lane": "flow",
+      "col": 0,
+      "type": "external",
+      "label": "현업 질문",
+      "sublabel": "자연어"
+    },
+    {
+      "id": "gen",
+      "lane": "flow",
+      "col": 1,
+      "type": "backend",
+      "label": "SQL 생성",
+      "sublabel": "의도 분류, 스키마 선택",
+      "width": 116
+    },
+    {
+      "id": "check",
+      "lane": "flow",
+      "col": 3,
+      "type": "security",
+      "label": "사전 검증",
+      "sublabel": "sqlglot, NOEXEC"
+    },
+    {
+      "id": "answer",
+      "lane": "flow",
+      "col": 5,
+      "type": "frontend",
+      "label": "답변",
+      "sublabel": "0행이면 되묻기"
+    },
+    {
+      "id": "llm",
+      "lane": "res",
+      "col": 1,
+      "type": "cloud",
+      "label": "LLM",
+      "sublabel": "온프레미스"
+    },
+    {
+      "id": "erp",
+      "lane": "res",
+      "col": 3,
+      "type": "database",
+      "label": "ERP DB",
+      "sublabel": "MSSQL"
+    }
+  ],
+  "edges": [
+    {
+      "from": "q",
+      "to": "gen",
+      "route": "straight"
+    },
+    {
+      "from": "gen",
+      "to": "check",
+      "route": "straight"
+    },
+    {
+      "from": "check",
+      "to": "answer",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "gen",
+      "to": "llm"
+    },
+    {
+      "from": "check",
+      "to": "erp"
+    },
+    {
+      "from": "check",
+      "to": "gen",
+      "label": "실패 시 3회까지",
+      "role": "error",
+      "variant": "security",
+      "route": "up-channel",
+      "fromSide": "top",
+      "toSide": "top"
+    }
+  ]
+}

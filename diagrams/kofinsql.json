@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "KoFinSQL",
+    "animation": "none",
+    "quality_profile": "showcase"
+  },
+  "lanes": [
+    {
+      "id": "train",
+      "label": "학습"
+    },
+    {
+      "id": "infer",
+      "label": "추론"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "base",
+      "lane": "train",
+      "col": 0,
+      "type": "cloud",
+      "label": "기반 모델",
+      "sublabel": "Qwen2.5-Coder 3B"
+    },
+    {
+      "id": "s1",
+      "lane": "train",
+      "col": 1,
+      "type": "backend",
+      "label": "1단계 학습",
+      "sublabel": "금융 용어"
+    },
+    {
+      "id": "s2",
+      "lane": "train",
+      "col": 3,
+      "type": "backend",
+      "label": "2단계 학습",
+      "sublabel": "검증된 SQL 쌍"
+    },
+    {
+      "id": "model",
+      "lane": "train",
+      "col": 5,
+      "type": "cloud",
+      "label": "KoFinSQL",
+      "sublabel": "3B 특화 모델"
+    },
+    {
+      "id": "q",
+      "lane": "infer",
+      "col": 0,
+      "type": "external",
+      "label": "금융 질의"
+    },
+    {
+      "id": "retr",
+      "lane": "infer",
+      "col": 1,
+      "type": "database",
+      "label": "하이브리드 검색",
+      "sublabel": "BM25, 벡터, RRF",
+      "width": 110
+    },
+    {
+      "id": "agent",
+      "lane": "infer",
+      "col": 3,
+      "type": "backend",
+      "label": "Deep Agent",
+      "sublabel": "계획, 실행, 반성"
+    },
+    {
+      "id": "sql",
+      "lane": "infer",
+      "col": 5,
+      "type": "frontend",
+      "label": "SQL",
+      "sublabel": "Accuracy 8.20/10"
+    }
+  ],
+  "edges": [
+    {
+      "from": "base",
+      "to": "s1"
+    },
+    {
+      "from": "s1",
+      "to": "s2"
+    },
+    {
+      "from": "s2",
+      "to": "model",
+      "route": "straight"
+    },
+    {
+      "from": "model",
+      "to": "agent"
+    },
+    {
+      "from": "q",
+      "to": "retr"
+    },
+    {
+      "from": "retr",
+      "to": "agent"
+    },
+    {
+      "from": "agent",
+      "to": "sql",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ]
+}
