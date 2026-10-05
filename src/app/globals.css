@@ -11,9 +11,13 @@
   --t-border: 229 229 229;
   --t-code: 247 247 247;
   --t-link: 10 91 211;
+  color-scheme: light;
+  accent-color: rgb(var(--t-link));
+  scrollbar-color: rgb(var(--t-border)) transparent;
 }
 
 html.dark {
+  color-scheme: dark;
   --t-bg: 22 23 26;
   --t-text: 230 230 230;
   --t-muted: 160 160 160;
@@ -25,6 +29,15 @@ html.dark {
 @layer base {
   html {
     scroll-behavior: smooth;
+  }
+  ::selection {
+    background-color: rgb(var(--t-link) / 0.25);
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p, li {
+    text-wrap: pretty;
   }
   a,
   button.text-link {
@@ -93,8 +106,14 @@ html.dark {
   display: block;
   width: 100%;
   /* 좁은 화면에서는 글자가 읽히는 크기를 지키고 가로로 넘긴다 */
-  min-width: 38rem;
+  min-width: 44rem;
   height: auto;
+}
+/* 데스크톱 최소 폭(약 1024px)에서는 본문 칸이 약 42rem 이라 가로 스크롤이 생기지 않게 한다 */
+@media (min-width: 1024px) {
+  .diagram svg {
+    min-width: 40rem;
+  }
 }
 .diagram .c-lane {
   fill: none;

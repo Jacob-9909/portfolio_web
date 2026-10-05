@@ -22,6 +22,19 @@ const PROJECT_IDS = translations.ko.projects.map((_, i) => `p${i}`);
 /** 화면에 놓인 순서. 사이드바가 지나온 구간과 남은 구간을 이 순서로 가린다 */
 const SECTION_IDS = ["intro", "principles", "career", "projects", ...PROJECT_IDS, "more", "skills"];
 
+/** "Text-to-SQL" 같은 하이픈 낱말이 줄 끝에서 하이픈 자리로 끊기지 않게 묶는다 */
+function nb(text: string): React.ReactNode {
+  return text.split(/(Text-to-SQL)/g).map((part, i) =>
+    i % 2 ? (
+      <span key={i} className="whitespace-nowrap">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+}
+
 function Ext({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer">
@@ -50,7 +63,7 @@ function Rows({ rows }: { rows: Row[] }) {
       {rows.map((row) => (
         <div key={row.period} className="sm:grid sm:grid-cols-[9.5rem_1fr] sm:gap-4">
           <dt className="tabular-nums text-t-muted">{row.period}</dt>
-          <dd>{row.text}</dd>
+          <dd>{nb(row.text)}</dd>
         </div>
       ))}
     </dl>
@@ -64,7 +77,7 @@ function Items({ items }: { items: Item[] }) {
         <li key={item.title}>
           <span className="font-semibold">{item.title}</span>{" "}
           <span className="text-t-muted">({item.period})</span>
-          {item.note && <> {item.note}</>}
+          {item.note && <> {nb(item.note)}</>}
           <InlineLinks links={item.links} />
         </li>
       ))}
@@ -113,7 +126,7 @@ function Icon({ name, className }: { name: keyof typeof ICON_PATHS; className?: 
 }
 
 const ICON_BUTTON =
-  "flex h-8 w-8 items-center justify-center rounded-md border border-t-border text-t-muted hover:bg-t-code hover:text-t-text";
+  "flex h-10 w-10 items-center justify-center rounded-md lg:h-8 lg:w-8 border border-t-border text-t-muted hover:bg-t-code hover:text-t-text";
 
 function toggleTheme() {
   const dark = document.documentElement.classList.toggle("dark");
@@ -132,14 +145,14 @@ function Controls({ t }: { t: T }) {
       <div
         role="group"
         aria-label={t.labels.language}
-        className="flex h-8 overflow-hidden rounded-md border border-t-border text-xs"
+        className="flex h-10 overflow-hidden rounded-md border border-t-border text-xs lg:h-8"
       >
         {(["ko", "en"] as const).map((code) => (
           <button
             key={code}
             onClick={() => setLang(code)}
             aria-pressed={lang === code}
-            className={`px-2.5 ${
+            className={`px-3 lg:px-2.5 ${
               lang === code
                 ? "bg-t-text font-semibold text-t-bg"
                 : "text-t-muted hover:bg-t-code hover:text-t-text"
@@ -234,7 +247,7 @@ function Toc({
     { id: "skills", label: t.headings.skills },
   ];
 
-  const cap = "pl-5 font-mono text-[10px] tracking-wider text-t-muted";
+  const cap = "pl-5 font-mono text-xs tracking-wider text-t-muted";
 
   return (
     <nav aria-label={t.labels.toc} className={className}>
@@ -253,7 +266,7 @@ function Toc({
                   href={`#${item.id}`}
                   onClick={onNavigate}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative flex items-center py-1.5 pl-5 text-sm no-underline hover:text-t-text ${
+                  className={`relative flex items-center py-1.5 [@media(max-height:820px)]:py-1 pl-5 text-sm no-underline hover:text-t-text ${
                     isActive ? "font-semibold text-t-text" : "text-t-muted"
                   }`}
                 >
@@ -267,7 +280,7 @@ function Toc({
                           : "border-t-muted bg-t-bg"
                     }`}
                   />
-                  {item.label}
+                  {nb(item.label)}
                 </a>
                 {item.children && (
                   <ol className="pb-1">
@@ -286,7 +299,7 @@ function Toc({
                             aria-hidden
                             className="absolute left-0 top-[0.95em] w-5 border-t border-t-border"
                           />
-                          {child.label}
+                          {nb(child.label)}
                         </a>
                       </li>
                     ))}
@@ -370,9 +383,9 @@ function Timeline({ t, lang }: { t: T; lang: "ko" | "en" }) {
               <a
                 href={span.href}
                 title={span[lang]}
-                className="truncate py-2 font-medium text-t-text no-underline hover:underline"
+                className="py-2 font-medium leading-snug text-t-text no-underline hover:underline sm:truncate"
               >
-                {span[lang]}
+                {nb(span[lang])}
               </a>
               <div className="relative">
                 {grid}
@@ -455,10 +468,10 @@ function BioKo() {
       <p>
         디딤에서 AI Engineer로 일하고 있습니다. 금융과 제조 고객사의 현업
         담당자가 개발자에게 요청하지 않고 직접 데이터를 조회하고 규정을
-        찾아보도록 Text-to-SQL과 RAG 에이전트를 만듭니다.
+        찾아보도록 {nb("Text-to-SQL")}과 RAG 에이전트를 만듭니다.
       </p>
       <p>
-        농협은행 마케팅허브와 선일다이파스에 구축한 Text-to-SQL은 지금 현업
+        농협은행 마케팅허브와 선일다이파스에 구축한 {nb("Text-to-SQL")}은 지금 현업
         140명이 월 800회 씁니다.
       </p>
       <p>
@@ -470,8 +483,8 @@ function BioKo() {
       </p>
       <p>
         회사 밖에서는 스키마를 접어 LLM 컨텍스트를 줄이는 오픈소스{" "}
-        <Ext href={LINKS.tablefold}>tablefold</Ext>를 만들고 있고, 한국어 금융
-        Text-to-SQL용 소형 모델 연구를 제1저자로 NeurIPS 2026에 제출했습니다.
+        <Ext href={LINKS.tablefold}>tablefold</Ext>를 만들고 있고, 한국어 금융{" "}
+        {nb("Text-to-SQL")}용 소형 모델 연구를 제1저자로 NeurIPS 2026에 제출했습니다.
         글은 <Ext href={LINKS.blog}>블로그</Ext>에 씁니다. 고등학생 때 시작한
         달리기를 지금도 꾸준히 합니다.
       </p>
@@ -483,12 +496,12 @@ function BioEn() {
   return (
     <>
       <p>
-        I work as an AI Engineer at Didim. I build Text-to-SQL and RAG agents so
+        I work as an AI Engineer at Didim. I build {nb("Text-to-SQL")} and RAG agents so
         that people in finance and manufacturing can query data and look up
         regulations themselves, without filing a request to a developer.
       </p>
       <p>
-        The Text-to-SQL systems I built for NH Bank Marketing Hub and Seonil
+        The {nb("Text-to-SQL")} systems I built for NH Bank Marketing Hub and Seonil
         Dyphas are now used by 140 people, 800 times a month.
       </p>
       <p>
@@ -502,8 +515,8 @@ function BioEn() {
       <p>
         Outside work I build <Ext href={LINKS.tablefold}>tablefold</Ext>, an
         open-source tool that folds a database schema to shrink LLM context, and
-        I submitted a first-author paper on a small model for Korean financial
-        Text-to-SQL to NeurIPS 2026. I write on my{" "}
+        I submitted a first-author paper on a small model for Korean financial{" "}
+        {nb("Text-to-SQL")} to NeurIPS 2026. I write on my{" "}
         <Ext href={LINKS.blog}>blog</Ext>. I started running in high school and
         still run regularly.
       </p>
@@ -537,7 +550,7 @@ export default function Home() {
 
       {/* 모바일 상단 바 — 데스크톱은 사이드바가 같은 역할을 한다 */}
       <header className="sticky top-0 z-20 border-b border-t-border bg-t-bg/90 backdrop-blur lg:hidden print:hidden">
-        <div className="flex h-12 items-center justify-between px-5">
+        <div className="flex h-14 items-center justify-between px-5">
           <a href="#top" className="font-bold text-t-text no-underline">
             {t.name}
           </a>
@@ -563,9 +576,9 @@ export default function Home() {
 
       <div
         id="top"
-        className="mx-auto max-w-[80rem] px-5 py-8 text-[16px] leading-[1.75] lg:grid lg:grid-cols-[15rem_minmax(0,56rem)] lg:gap-x-16 lg:py-16 print:block print:py-0"
+        className="mx-auto max-w-[80rem] px-5 py-8 text-[16px] leading-[1.75] lg:grid lg:grid-cols-[15rem_minmax(0,56rem)] lg:gap-x-12 xl:gap-x-16 lg:py-16 print:block print:py-0"
       >
-        <aside className="lg:sticky lg:top-12 lg:max-h-[calc(100vh-6rem)] lg:self-start lg:overflow-y-auto">
+        <aside className="lg:sticky lg:top-8 lg:max-h-[calc(100vh-4rem)] lg:self-start lg:overflow-y-auto">
           <div className="flex items-center gap-5 lg:block">
             <Image
               src={profile}
@@ -573,7 +586,7 @@ export default function Home() {
               width={84}
               height={112}
               priority
-              className="rounded"
+              className="h-auto rounded [@media(max-height:820px)]:w-16"
             />
             <div className="lg:mt-4">
               <h1 className="text-2xl font-bold leading-tight">
@@ -587,15 +600,15 @@ export default function Home() {
             </div>
           </div>
 
-          <Toc t={t} active={active} className="mt-8 hidden lg:block print:hidden" />
+          <Toc t={t} active={active} className="mt-8 hidden lg:block print:hidden [@media(max-height:820px)]:mt-5" />
 
-          <div className="mt-6 hidden lg:block print:hidden">
+          <div className="mt-6 hidden lg:block print:hidden [@media(max-height:820px)]:mt-4">
             <Controls t={t} />
           </div>
         </aside>
 
         <main id="main" className="mt-10 lg:mt-0">
-        <section id="intro" className={`${PROSE} scroll-mt-16 lg:scroll-mt-8 space-y-4`}>
+        <section id="intro" className={`${PROSE} scroll-mt-16 lg:scroll-mt-8 space-y-4 [&>p:first-child]:text-[1.1875rem] [&>p:first-child]:leading-[1.7]`}>
           {lang === "ko" ? <BioKo /> : <BioEn />}
         </section>
 
@@ -603,7 +616,7 @@ export default function Home() {
           <ul className="list-disc space-y-2 pl-5">
             {t.principles.map((item) => (
               <li key={item.lead}>
-                <span className="font-semibold">{item.lead}</span> {item.detail}
+                <span className="font-semibold">{nb(item.lead)}</span> {nb(item.detail)}
               </li>
             ))}
           </ul>
@@ -619,21 +632,21 @@ export default function Home() {
             {t.projects.map((project, i) => (
               <article key={project.title} id={PROJECT_IDS[i]} className="scroll-mt-16 lg:scroll-mt-8 py-8">
                 <h3 className="group text-lg font-semibold">
-                  {project.title}{" "}
+                  {nb(project.title)}{" "}
                   <span className="text-base font-normal text-t-muted">
                     ({project.meta})
                   </span>
                   <HashLink id={PROJECT_IDS[i]} />
                 </h3>
-                <p className={`${PROSE} mt-1.5`}>{project.summary}</p>
+                <p className={`${PROSE} mt-1.5`}>{nb(project.summary)}</p>
                 {/* archify로 만든 정적 SVG. 내용은 diagrams/*.json 에서만 나온다 */}
                 <div
                   className="diagram mt-4"
-                  dangerouslySetInnerHTML={{ __html: DIAGRAMS[project.diagram] }}
+                  dangerouslySetInnerHTML={{ __html: DIAGRAMS[lang][project.diagram] }}
                 />
                 <ul className={`${PROSE} mt-4 list-disc space-y-1 pl-5`}>
                   {project.points.map((point) => (
-                    <li key={point}>{point}</li>
+                    <li key={point}>{nb(point)}</li>
                   ))}
                 </ul>
                 {project.code && <CodeDetails sample={project.code} />}

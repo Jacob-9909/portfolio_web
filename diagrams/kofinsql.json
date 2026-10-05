@@ -71,7 +71,8 @@
       "col": 3,
       "type": "backend",
       "label": "Deep Agent",
-      "sublabel": "계획, 실행, 반성"
+      "sublabel": "계획, 실행, 반성",
+      "width": 108
     },
     {
       "id": "sql",
@@ -98,7 +99,19 @@
     },
     {
       "from": "model",
-      "to": "agent"
+      "to": "agent",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          625,
+          166
+        ],
+        [
+          430,
+          166
+        ]
+      ]
     },
     {
       "from": "q",

@@ -91,15 +91,51 @@
     },
     {
       "from": "intent",
-      "to": "lookup"
+      "to": "lookup",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          220,
+          166
+        ],
+        [
+          430,
+          166
+        ]
+      ]
     },
     {
       "from": "intent",
-      "to": "calc"
+      "to": "calc",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          220,
+          166
+        ],
+        [
+          625,
+          166
+        ]
+      ]
     },
     {
       "from": "rag",
-      "to": "synth"
+      "to": "synth",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          220,
+          290
+        ],
+        [
+          430,
+          290
+        ]
+      ]
     },
     {
       "from": "lookup",
@@ -107,7 +143,19 @@
     },
     {
       "from": "calc",
-      "to": "synth"
+      "to": "synth",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "via": [
+        [
+          625,
+          290
+        ],
+        [
+          430,
+          290
+        ]
+      ]
     },
     {
       "from": "synth",

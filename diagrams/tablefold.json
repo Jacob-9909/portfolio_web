@@ -82,7 +82,19 @@
     },
     {
       "from": "llm",
-      "to": "expand"
+      "to": "expand",
+      "fromSide": "right",
+      "toSide": "left",
+      "via": [
+        [
+          528,
+          243
+        ],
+        [
+          528,
+          119
+        ]
+      ]
     },
     {
       "from": "expand",
