@@ -7,11 +7,13 @@
 import { useReducer, useRef, useState, type KeyboardEvent } from "react";
 import type { T } from "@/lib/data";
 import { FLOWS } from "@/lib/flows";
-import { stageReducer, type StageAction, type StageState } from "@/lib/stage";
+import { isAccordionOpen, stageReducer, type StageAction, type StageState } from "@/lib/stage";
 import { FlowDiagram } from "./FlowDiagram";
 
 type Lang = "ko" | "en";
 
+/* 끝 단계에서도 disabled 를 쓰지 않는다: disabled 가 되면 포커스가 body 로 빠져 ← → 가 끊긴다.
+   리듀서가 범위를 잡아 주므로 눌러도 아무 일이 없다 */
 function StepControls({
   t,
   step,
@@ -46,16 +48,16 @@ function StepControls({
         <button
           type="button"
           onClick={() => dispatch({ type: "prev" })}
-          disabled={step === 0}
-          className="py-1 hover:text-t-text disabled:opacity-40 disabled:hover:text-t-muted"
+          aria-disabled={step === 0}
+          className="py-1 hover:text-t-text aria-disabled:opacity-40 aria-disabled:hover:text-t-muted"
         >
           ← {t.labels.prev}
         </button>
         <button
           type="button"
           onClick={() => dispatch({ type: "next" })}
-          disabled={step === count - 1}
-          className="py-1 hover:text-t-text disabled:opacity-40 disabled:hover:text-t-muted"
+          aria-disabled={step === count - 1}
+          className="py-1 hover:text-t-text aria-disabled:opacity-40 aria-disabled:hover:text-t-muted"
         >
           {t.labels.next} →
         </button>
@@ -128,7 +130,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
                 }`}
               >
                 <span className="block text-[15px] leading-snug">{p.title}</span>
-                <span className={`mt-1 block text-[13px] ${selected ? "text-t-hi" : "text-t-dim"}`}>{p.number}</span>
+                <span className={`mt-1 block text-[13px] ${selected ? "text-t-hi" : "text-t-muted"}`}>{p.number}</span>
               </button>
             );
           })}
@@ -151,7 +153,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
       {/* 모바일: 목록을 펼친다 */}
       <ul className="mt-6 border-t border-t-line lg:hidden">
         {t.projects.map((p, i) => {
-          const open = mobileOpen === i;
+          const open = isAccordionOpen(mobileOpen, state, i);
           const f = FLOWS[p.id];
           return (
             <li key={p.id} className="border-b border-t-line">

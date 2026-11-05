@@ -47,13 +47,13 @@ const MAIN = { y: 128, h: 44 };
 const RES = { y: 232, h: 40 };
 
 const seonil: Flow = {
-  width: 600,
+  width: 620,
   height: 320,
   nodes: [
-    { id: "q", role: "human", step: 0, x: 0, w: 120, ...MAIN, label: { ko: "현업 질문", en: "User query" }, sub: { ko: "자연어", en: "Natural language" } },
+    { id: "q", role: "human", step: 0, x: 0, w: 128, ...MAIN, label: { ko: "현업 질문", en: "User query" }, sub: { ko: "자연어", en: "Natural language" } },
     { id: "gen", role: "agent", step: 1, x: 168, w: 124, ...MAIN, label: { ko: "SQL 생성", en: "Write SQL" }, sub: { ko: "의도 분류 · 스키마 선택", en: "Intent · schema selection" } },
     { id: "check", role: "guard", step: 2, x: 340, w: 124, ...MAIN, label: { ko: "사전 검증", en: "Pre-check" }, sub: { ko: "sqlglot · NOEXEC", en: "sqlglot · NOEXEC" } },
-    { id: "answer", role: "out", step: 3, x: 504, w: 96, ...MAIN, label: { ko: "답변", en: "Answer" }, sub: { ko: "0행이면 되묻기", en: "Asks back on 0 rows" } },
+    { id: "answer", role: "out", step: 3, x: 496, w: 108, ...MAIN, label: { ko: "답변", en: "Answer" }, sub: { ko: "0행이면 되묻기", en: "Asks back on 0 rows" } },
     { id: "llm", role: "llm", step: 1, x: 180, w: 100, ...RES, label: { ko: "LLM", en: "LLM" }, sub: { ko: "온프레미스", en: "On-premises" } },
     { id: "erp", role: "db", step: 2, x: 352, w: 100, ...RES, label: { ko: "ERP DB", en: "ERP DB" }, sub: { ko: "MSSQL", en: "MSSQL" } },
   ],
@@ -98,7 +98,7 @@ const marketinghub: Flow = {
     { id: "gen", role: "agent", step: 2, x: 370, w: 124, ...MAIN, label: { ko: "SQL 생성", en: "Write SQL" }, sub: { ko: "Pseudo-SQL 먼저", en: "Pseudo-SQL first" } },
     { id: "explain", role: "guard", step: 3, x: 534, w: 110, ...MAIN, label: { ko: "검증", en: "Validate" }, sub: { ko: "SQL Explain", en: "SQL Explain" } },
     { id: "admin", role: "out", step: 1, x: 10, w: 150, ...RES, label: { ko: "메타 어드민", en: "Meta admin" }, sub: { ko: "현업이 직접 등록", en: "Users register" } },
-    { id: "meta", role: "db", step: 1, x: 200, w: 100, ...RES, label: { ko: "메타 DB", en: "Meta DB" }, sub: { ko: "KURE-V1 임베딩", en: "KURE-V1 vectors" } },
+    { id: "meta", role: "db", step: 1, x: 194, w: 112, ...RES, label: { ko: "메타 DB", en: "Meta DB" }, sub: { ko: "KURE-V1 임베딩", en: "KURE-V1 vectors" } },
     { id: "llm", role: "llm", step: 2, x: 357, w: 150, ...RES, label: { ko: "GPT-oss-120b", en: "GPT-oss-120b" }, sub: { ko: "vLLM 서빙", en: "vLLM serving" } },
     { id: "oracle", role: "db", step: 3, x: 539, w: 100, ...RES, label: { ko: "Oracle", en: "Oracle" }, sub: { ko: "마케팅허브 DB", en: "Marketing Hub DB" } },
   ],
@@ -192,7 +192,7 @@ const matseon: Flow = {
     { id: "taste", role: "human", step: 0, x: 0, w: 120, ...MAIN, label: { ko: "고객 취향", en: "Taste" }, sub: { ko: "게임하기 UI", en: "Game-style UI" } },
     { id: "intent", role: "agent", step: 1, x: 156, w: 130, ...MAIN, label: { ko: "의도 분류", en: "Intent" }, sub: { ko: "LangGraph 노드", en: "LangGraph node" } },
     { id: "rag", role: "agent", step: 2, x: 322, w: 220, ...MAIN, label: { ko: "하이브리드 RAG", en: "Hybrid RAG" }, sub: { ko: "페르소나 12종", en: "12 personas" } },
-    { id: "answer", role: "out", step: 3, x: 578, w: 130, ...MAIN, label: { ko: "추천 답변", en: "Recommendation" }, sub: { ko: "React 스트리밍", en: "React streaming" } },
+    { id: "answer", role: "out", step: 3, x: 578, w: 140, ...MAIN, label: { ko: "추천 답변", en: "Suggestions" }, sub: { ko: "React 스트리밍", en: "React streaming" } },
     { id: "vsearch", role: "db", step: 2, x: 252, w: 190, ...RES, label: { ko: "Vertex AI Search", en: "Vertex AI Search" }, sub: { ko: "사내 상품", en: "In-house products" } },
     { id: "gsearch", role: "tool", step: 2, x: 452, w: 160, ...RES, label: { ko: "Google Search", en: "Google Search" }, sub: { ko: "외부 정보", en: "Outside info" } },
   ],

@@ -32,3 +32,9 @@ export function nodeState(itemStep: number, current: number): "future" | "curren
   if (itemStep > current) return "future";
   return itemStep === current ? "current" : "past";
 }
+
+/** 모바일 목록의 i번째 칸이 열려 있는지. 데스크톱 무대에서 다른 프로젝트를 고른 뒤
+    화면 폭이 줄어도, 열린 칸이 남의 단계 번호를 쓰지 않도록 무대의 프로젝트와 같을 때만 연다 */
+export function isAccordionOpen(openIndex: number | null, state: StageState, i: number): boolean {
+  return openIndex === i && state.project === i;
+}

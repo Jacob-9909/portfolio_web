@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { stageReducer, nodeState } from "../src/lib/stage.ts";
+import { stageReducer, nodeState, isAccordionOpen } from "../src/lib/stage.ts";
 
 const counts = [5, 3];
 
@@ -29,4 +29,11 @@ test("nodeState", () => {
   assert.equal(nodeState(3, 2), "future");
   assert.equal(nodeState(2, 2), "current");
   assert.equal(nodeState(1, 2), "past");
+});
+
+test("accordion row is open only when it is also the stage's project", () => {
+  // 모바일에서 4번째를 열고, 데스크톱에서 1번째의 5단계로 간 뒤 돌아온 상황
+  assert.equal(isAccordionOpen(3, { project: 0, step: 4 }, 3), false);
+  assert.equal(isAccordionOpen(3, { project: 3, step: 1 }, 3), true);
+  assert.equal(isAccordionOpen(null, { project: 3, step: 1 }, 3), false);
 });
