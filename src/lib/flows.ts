@@ -99,7 +99,7 @@ const marketinghub: Flow = {
     { id: "explain", role: "guard", step: 3, x: 534, w: 110, ...MAIN, label: { ko: "검증", en: "Validate" }, sub: { ko: "SQL Explain", en: "SQL Explain" } },
     { id: "admin", role: "out", step: 1, x: 10, w: 150, ...RES, label: { ko: "메타 어드민", en: "Meta admin" }, sub: { ko: "현업이 직접 등록", en: "Users register" } },
     { id: "meta", role: "db", step: 1, x: 200, w: 100, ...RES, label: { ko: "메타 DB", en: "Meta DB" }, sub: { ko: "KURE-V1 임베딩", en: "KURE-V1 vectors" } },
-    { id: "llm", role: "llm", step: 2, x: 372, w: 120, ...RES, label: { ko: "GPT-oss-120b", en: "GPT-oss-120b" }, sub: { ko: "vLLM 서빙", en: "vLLM serving" } },
+    { id: "llm", role: "llm", step: 2, x: 357, w: 150, ...RES, label: { ko: "GPT-oss-120b", en: "GPT-oss-120b" }, sub: { ko: "vLLM 서빙", en: "vLLM serving" } },
     { id: "oracle", role: "db", step: 3, x: 539, w: 100, ...RES, label: { ko: "Oracle", en: "Oracle" }, sub: { ko: "마케팅허브 DB", en: "Marketing Hub DB" } },
   ],
   edges: [
@@ -193,7 +193,7 @@ const matseon: Flow = {
     { id: "intent", role: "agent", step: 1, x: 156, w: 130, ...MAIN, label: { ko: "의도 분류", en: "Intent" }, sub: { ko: "LangGraph 노드", en: "LangGraph node" } },
     { id: "rag", role: "agent", step: 2, x: 322, w: 220, ...MAIN, label: { ko: "하이브리드 RAG", en: "Hybrid RAG" }, sub: { ko: "페르소나 12종", en: "12 personas" } },
     { id: "answer", role: "out", step: 3, x: 578, w: 130, ...MAIN, label: { ko: "추천 답변", en: "Recommendation" }, sub: { ko: "React 스트리밍", en: "React streaming" } },
-    { id: "vsearch", role: "db", step: 2, x: 262, w: 170, ...RES, label: { ko: "Vertex AI Search", en: "Vertex AI Search" }, sub: { ko: "사내 상품", en: "In-house products" } },
+    { id: "vsearch", role: "db", step: 2, x: 252, w: 190, ...RES, label: { ko: "Vertex AI Search", en: "Vertex AI Search" }, sub: { ko: "사내 상품", en: "In-house products" } },
     { id: "gsearch", role: "tool", step: 2, x: 452, w: 160, ...RES, label: { ko: "Google Search", en: "Google Search" }, sub: { ko: "외부 정보", en: "Outside info" } },
   ],
   edges: [

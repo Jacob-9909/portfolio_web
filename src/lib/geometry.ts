@@ -60,7 +60,7 @@ function bubble({ x, y, w, h }: Box, tail: "left" | "right"): string {
   );
 }
 
-const CYL_RY = 9;
+const CYL_RY = 6;
 
 /** 역할별 노드 외곽선 */
 export function shapePath(role: Role, b: Box): string {
