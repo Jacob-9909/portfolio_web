@@ -1,18 +1,22 @@
 import type { Config } from "tailwindcss";
 
+const token = (name: string) => `rgb(var(--t-${name}) / <alpha-value>)`;
+
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
-  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        /* CSS 변수 기반 — globals.css의 :root(라이트) / html.dark(다크)에서 전환 */
+        /* 값은 globals.css 의 :root. 다크 한 벌만 쓴다 */
         t: {
-          bg: "rgb(var(--t-bg) / <alpha-value>)",
-          text: "rgb(var(--t-text) / <alpha-value>)",
-          muted: "rgb(var(--t-muted) / <alpha-value>)",
-          border: "rgb(var(--t-border) / <alpha-value>)",
-          code: "rgb(var(--t-code) / <alpha-value>)",
+          bg: token("bg"),
+          panel: token("panel"),
+          text: token("text"),
+          body: token("body"),
+          muted: token("muted"),
+          dim: token("dim"),
+          line: token("line"),
+          hi: token("hi"),
         },
       },
       fontFamily: {
@@ -25,6 +29,7 @@ const config: Config = {
           "Malgun Gothic",
           "sans-serif",
         ],
+        serif: ["Hahmlet", "serif"],
       },
     },
   },
