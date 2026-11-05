@@ -151,10 +151,18 @@ export function FlowDiagram({ flow, step, lang, title }: { flow: Flow; step: num
   const uid = useId().replace(/:/g, "");
   const byId = new Map(flow.nodes.map((n) => [n.id, n]));
   const node = (id: string) => byId.get(id)!;
+  /* 위쪽 빈 공간을 잘라 낸다: 역할 이름(노드 위 24) 과 고리 안내 문구(고리 위 62+14) 중 가장 높은 곳 */
+  const top = Math.max(
+    0,
+    Math.min(
+      ...flow.nodes.map((n) => n.y - 24),
+      ...flow.loops.map((l) => Math.min(node(l.from).y, node(l.to).y) - 76),
+    ),
+  );
 
   return (
     <svg
-      viewBox={`0 0 ${flow.width} ${flow.height}`}
+      viewBox={`0 ${top} ${flow.width} ${flow.height - top}`}
       role="img"
       aria-labelledby={`${uid}-t ${uid}-d`}
       className="block h-auto w-full overflow-visible"
