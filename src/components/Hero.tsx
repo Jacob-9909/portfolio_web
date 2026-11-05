@@ -76,7 +76,7 @@ export function Hero({ t, lang }: { t: T; lang: Lang }) {
   }, [open]);
 
   return (
-    <section className="relative mx-auto flex min-h-[92vh] max-w-[72rem] flex-col justify-center px-6 lg:px-10">
+    <section className="relative mx-auto flex min-h-[92vh] max-w-[72rem] flex-col justify-center px-6 lg:px-10 print:min-h-0 print:pb-6 print:pt-4">
       <nav className="absolute inset-x-6 top-7 flex items-center justify-between text-sm text-t-muted lg:inset-x-10 print:hidden">
         <span className="font-semibold text-t-text">{t.name}</span>
         <div className="flex items-center gap-5">
