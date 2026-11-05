@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { edgePath, loopPath, shapePath } from "../src/lib/geometry.ts";
+import { edgePath, linkPath, loopPath, shapePath } from "../src/lib/geometry.ts";
 
 const A = { x: 0, y: 128, w: 120, h: 44 };
 const B = { x: 168, y: 128, w: 124, h: 44 };
@@ -18,3 +18,8 @@ test("decimals are trimmed", () => assert.equal(edgePath({ x: 0, y: 0, w: 15, h:
 test("every role gives a path", () => {
   for (const r of ["human", "agent", "guard", "out", "llm", "db", "tool"] as const) assert.match(shapePath(r, A), /^M/);
 });
+
+test("link drops straight from parent to resource", () =>
+  assert.equal(linkPath({ x: 322, y: 128, w: 220, h: 44 }, { x: 262, y: 232, w: 170, h: 40 }), "M347 172 V232"));
+test("link x stays inside the parent", () =>
+  assert.equal(linkPath({ x: 322, y: 128, w: 220, h: 44 }, { x: 0, y: 232, w: 100, h: 40 }), "M334 172 V232"));

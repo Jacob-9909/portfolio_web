@@ -25,6 +25,12 @@ export function edgePath(a: Box, b: Box): string {
   return `M${f(sx)} ${f(cy(a))} H${f(cx(b))} V${f(ey)}`;
 }
 
+/** 노드와 그 노드가 쓰는 자원(LLM, DB)을 잇는 세로 점선. x는 부모 상자 안쪽 12px 이내로 붙잡는다 */
+export function linkPath(parent: Box, res: Box): string {
+  const x = Math.min(Math.max(cx(res), parent.x + 12), parent.x + parent.w - 12);
+  return `M${f(x)} ${f(parent.y + parent.h)} V${f(res.y)}`;
+}
+
 /** 재생성 같은 되돌림 고리. 두 상자의 위쪽 가운데를 위로 솟은 곡선으로 잇는다 */
 export function loopPath(from: Box, to: Box, lift = 58): string {
   const fy = from.y;
