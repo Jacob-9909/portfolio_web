@@ -4,7 +4,9 @@ import { FlowDiagram } from "@/components/FlowDiagram";
 import { AppWindow, Clients } from "@/components/AppWindow";
 import { Hero } from "@/components/Hero";
 import { IconSprite } from "@/components/icons";
+import { Principles } from "@/components/Principles";
 import { ProjectStage } from "@/components/ProjectStage";
+import { Section } from "@/components/Section";
 import { SiteNav } from "@/components/SiteNav";
 import { LINKS, translations, type T } from "@/lib/data";
 import { FLOWS } from "@/lib/flows";
@@ -85,6 +87,9 @@ export default function Home() {
         <Hero t={t} />
         <AppWindow t={t} lang={lang} />
         <Clients t={t} />
+        <Section no="01" label={t.sections.how} tone="base">
+          <Principles t={t} />
+        </Section>
         <ProjectStage t={t} lang={lang} />
         <PrintProjects t={t} lang={lang} />
         <Rows id="career" title={t.nav.career} rows={t.career.map((c) => ({ k: c.period, v: `${c.org}, ${c.role}` }))} />
