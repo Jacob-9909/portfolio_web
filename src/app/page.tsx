@@ -2,10 +2,12 @@
 
 import { FlowDiagram } from "@/components/FlowDiagram";
 import { AppWindow, Clients } from "@/components/AppWindow";
+import { Career } from "@/components/Career";
 import { Hero } from "@/components/Hero";
 import { IconSprite } from "@/components/icons";
 import { Principles } from "@/components/Principles";
 import { ProjectStage } from "@/components/ProjectStage";
+import { Skills } from "@/components/Skills";
 import { Section } from "@/components/Section";
 import { SiteNav } from "@/components/SiteNav";
 import { LINKS, translations, type T } from "@/lib/data";
@@ -13,23 +15,6 @@ import { FLOWS } from "@/lib/flows";
 import { useLanguage } from "@/lib/LanguageContext";
 
 type Lang = "ko" | "en";
-
-/* 임시: 새 데이터 모양을 그대로 출력한다. 카드 모양은 Career, Skills 컴포넌트로 바뀐다 */
-function Rows({ id, title, rows }: { id: string; title: string; rows: { k: string; v: string }[] }) {
-  return (
-    <section id={id} className="mx-auto max-w-[80rem] scroll-mt-14 px-6 py-10 lg:px-10">
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-      <dl className="mt-6 space-y-3">
-        {rows.map((row) => (
-          <div key={row.k} className="sm:grid sm:grid-cols-[9.5rem_1fr] sm:gap-4">
-            <dt className="tabular-nums text-t-muted">{row.k}</dt>
-            <dd className="text-t-body">{row.v}</dd>
-          </div>
-        ))}
-      </dl>
-    </section>
-  );
-}
 
 /** 인쇄와 PDF 저장용: 무대 대신 네 프로젝트의 모든 단계를 펼쳐 둔다 */
 function PrintProjects({ t, lang }: { t: T; lang: Lang }) {
@@ -94,14 +79,20 @@ export default function Home() {
           <ProjectStage t={t} lang={lang} />
         </Section>
         <PrintProjects t={t} lang={lang} />
-        <Rows id="career" title={t.nav.career} rows={t.career.map((c) => ({ k: c.period, v: `${c.org}, ${c.role}` }))} />
-        <Rows id="skills" title={t.nav.skills} rows={t.skills.map((g) => ({ k: g.title, v: g.items.map((i) => i.name).join(", ") }))} />
+        <Section id="career" no="03" label={t.sections.career} tone="base">
+          <Career items={t.career} />
+        </Section>
+        <Section id="skills" no="04" label={t.sections.skills} tone="band">
+          <Skills groups={t.skills} />
+        </Section>
       </main>
-      <footer className="mx-auto mt-8 flex max-w-[80rem] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-t-line px-6 py-8 text-sm text-t-muted lg:px-10">
-        <span>
-          {t.name} · {t.role}
-        </span>
-        <span className="flex flex-wrap gap-x-5 gap-y-2">{contacts}</span>
+      <footer className="border-t border-[#1c1e22] bg-t-band">
+        <div className="mx-auto flex max-w-[80rem] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 pb-14 pt-8 text-sm text-t-muted lg:px-10">
+          <span>
+            {t.name} · {t.role}
+          </span>
+          <span className="flex flex-wrap gap-x-5 gap-y-2 text-t-body">{contacts}</span>
+        </div>
       </footer>
     </>
   );
