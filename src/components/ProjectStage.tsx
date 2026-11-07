@@ -103,7 +103,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
   return (
     <section
       id="projects"
-      className="mx-auto max-w-[72rem] px-6 py-16 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:px-10 lg:py-10 print:hidden"
+      className="mx-auto max-w-[80rem] scroll-mt-14 px-6 py-12 lg:px-10 print:hidden"
     >
       <h2 className="font-serif text-2xl font-normal">{t.nav.projects}</h2>
 
@@ -140,7 +140,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
           <p className="text-sm text-t-muted">{project.meta}</p>
           <h3 className="mt-2 font-serif text-[1.6rem] font-normal leading-snug">{project.headline}</h3>
           <p className="mt-2 text-[13px] text-t-muted">{project.stack}</p>
-          <div className="mt-6 max-w-[42rem]">
+          <div className="mt-6">
             <FlowDiagram flow={flow} step={state.step} lang={lang} title={project.title} />
           </div>
           <p aria-live="polite" className="mt-5 min-h-[5.5rem] max-w-[40em] text-[1.02rem] leading-[1.75] text-t-body">

@@ -4,10 +4,8 @@
    마우스는 올리면, 키보드는 포커스하면, 터치는 탭하면 열린다. */
 
 import { useEffect, useState } from "react";
-import { LINKS, type Seg, type T } from "@/lib/data";
-import { useLanguage } from "@/lib/LanguageContext";
+import type { Seg, T } from "@/lib/data";
 
-type Lang = "ko" | "en";
 type Open = { key: string; left: number; top: number } | null;
 
 const NOTE_W = 272;
@@ -58,8 +56,7 @@ function Phrases({ segs, prefix, open, setOpen }: { segs: Seg[]; prefix: string;
   );
 }
 
-export function Hero({ t, lang }: { t: T; lang: Lang }) {
-  const { setLang } = useLanguage();
+export function Hero({ t }: { t: T }) {
   const [open, setOpen] = useState<Open>(null);
 
   // 스크롤하거나 Esc 를 누르면 메모를 닫는다 (fixed 위치가 문구에서 떨어지지 않게)
@@ -76,32 +73,7 @@ export function Hero({ t, lang }: { t: T; lang: Lang }) {
   }, [open]);
 
   return (
-    <section className="relative mx-auto flex min-h-[92vh] max-w-[72rem] flex-col justify-center px-6 lg:px-10 print:min-h-0 print:pb-6 print:pt-4">
-      <nav className="absolute inset-x-6 top-7 flex items-center justify-between text-sm text-t-muted lg:inset-x-10 print:hidden">
-        <span className="font-semibold text-t-text">{t.name}</span>
-        <div className="flex items-center gap-5">
-          <a href="#projects" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.projects}</a>
-          <a href="#career" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.career}</a>
-          <a href="#skills" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.skills}</a>
-          <a href={LINKS.blog} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-t-text">
-            {t.nav.blog}
-          </a>
-          <div role="group" aria-label={t.nav.language} className="flex gap-1">
-            {(["ko", "en"] as const).map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => setLang(code)}
-                aria-pressed={lang === code}
-                className={`px-1 py-2 ${lang === code ? "text-t-text" : "hover:text-t-text"}`}
-              >
-                {code.toUpperCase()}
-              </button>
-            ))}
-          </div>
-        </div>
-      </nav>
-
+    <section className="mx-auto flex min-h-[60vh] lg:min-h-[calc(78vh-3.5rem)] max-w-[80rem] flex-col justify-center px-6 lg:px-10 print:min-h-0 print:pb-6 print:pt-4">
       <h1 className="max-w-[15em] font-serif text-[clamp(2.4rem,5.4vw,4.6rem)] font-light leading-[1.22] tracking-[-0.025em]">
         <Phrases segs={t.hero.title} prefix="t" open={open} setOpen={setOpen} />
       </h1>

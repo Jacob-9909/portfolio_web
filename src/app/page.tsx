@@ -12,7 +12,7 @@ type Lang = "ko" | "en";
 
 function Rows({ id, title, rows }: { id: string; title: string; rows: Row[] }) {
   return (
-    <section id={id} className="mx-auto max-w-[72rem] scroll-mt-8 px-6 py-12 lg:px-10">
+    <section id={id} className="mx-auto max-w-[80rem] scroll-mt-14 px-6 py-10 lg:px-10">
       <div className="max-w-[46rem]">
         <h2 className="font-serif text-2xl font-normal">{title}</h2>
         <dl className="mt-6 space-y-3">
@@ -59,7 +59,7 @@ function PrintProjects({ t, lang }: { t: T; lang: Lang }) {
 }
 
 export default function Home() {
-  const { lang } = useLanguage();
+  const { lang, setLang } = useLanguage();
   const t = translations[lang];
   const contacts = (
     <>
@@ -79,14 +79,40 @@ export default function Home() {
         {t.labels.skip}
       </a>
       <IconSprite />
+      <header className="sticky top-0 z-20 border-b border-t-line/60 bg-t-bg/85 backdrop-blur-md print:hidden">
+        <nav className="mx-auto flex h-14 max-w-[80rem] items-center justify-between px-6 text-sm text-t-muted lg:px-10">
+          <a href="#main" className="font-semibold text-t-text no-underline">{t.name}</a>
+          <div className="flex items-center gap-5">
+            <a href="#projects" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.projects}</a>
+            <a href="#career" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.career}</a>
+            <a href="#skills" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.skills}</a>
+            <a href={LINKS.blog} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-t-text">
+              {t.nav.blog}
+            </a>
+            <div role="group" aria-label={t.nav.language} className="flex gap-1">
+              {(["ko", "en"] as const).map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => setLang(code)}
+                  aria-pressed={lang === code}
+                  className={`px-1 py-2 ${lang === code ? "text-t-text" : "hover:text-t-text"}`}
+                >
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+        </nav>
+      </header>
       <main id="main">
-        <Hero t={t} lang={lang} />
+        <Hero t={t} />
         <ProjectStage t={t} lang={lang} />
         <PrintProjects t={t} lang={lang} />
         <Rows id="career" title={t.nav.career} rows={t.career} />
         <Rows id="skills" title={t.nav.skills} rows={t.skills} />
       </main>
-      <footer className="mx-auto mt-12 flex max-w-[72rem] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-t-line px-6 py-8 text-sm text-t-muted lg:px-10">
+      <footer className="mx-auto mt-8 flex max-w-[80rem] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-t-line px-6 py-8 text-sm text-t-muted lg:px-10">
         <span>
           {t.name} · {t.role}
         </span>
