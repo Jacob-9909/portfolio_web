@@ -4,7 +4,7 @@ import { LanguageProvider } from "@/lib/LanguageContext";
 
 const TITLE = "정우혁 (Jacob)";
 const DESCRIPTION =
-  "디딤 AI Engineer 정우혁입니다. 금융과 제조 현업이 직접 쓰는 Text-to-SQL, RAG 에이전트를 만듭니다.";
+  "디딤 AI Engineer 정우혁입니다. 은행 폐쇄망과 공장에서 Text-to-SQL 에이전트를 만들어 왔습니다.";
 
 export const metadata: Metadata = {
   // GitHub Pages 주소. 링크를 공유했을 때 미리보기에 쓰인다
@@ -22,10 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#16171a" },
-  ],
+  themeColor: "#1b1915",
 };
 
 export default function RootLayout({
@@ -34,17 +31,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" suppressHydrationWarning>
+    <html lang="ko">
       <head>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
-        {/* 첫 페인트 전 테마 적용 (플래시 방지). 저장값이 없으면 시스템 설정을 따른다 */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.theme;if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`,
-          }}
+        {/* App Router 의 root layout 이라 모든 페이지에 적용된다. 이 규칙은 pages/_document 기준이다.
+            next/font 는 한글 글리프 범위를 보장하지 않아 CSS 링크를 쓴다 */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&display=swap"
         />
       </head>
       <body className="break-keep bg-t-bg font-sans text-t-text antialiased">
