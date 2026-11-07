@@ -1,38 +1,26 @@
 "use client";
 
 import { FlowDiagram } from "@/components/FlowDiagram";
+import { AppWindow, Clients } from "@/components/AppWindow";
+import { Career } from "@/components/Career";
 import { Hero } from "@/components/Hero";
 import { IconSprite } from "@/components/icons";
+import { Principles } from "@/components/Principles";
 import { ProjectStage } from "@/components/ProjectStage";
-import { LINKS, translations, type Row, type T } from "@/lib/data";
+import { Skills } from "@/components/Skills";
+import { Section } from "@/components/Section";
+import { SiteNav } from "@/components/SiteNav";
+import { LINKS, translations, type T } from "@/lib/data";
 import { FLOWS } from "@/lib/flows";
 import { useLanguage } from "@/lib/LanguageContext";
 
 type Lang = "ko" | "en";
 
-function Rows({ id, title, rows }: { id: string; title: string; rows: Row[] }) {
-  return (
-    <section id={id} className="mx-auto max-w-[80rem] scroll-mt-14 px-6 py-10 lg:px-10">
-      <div className="max-w-[46rem]">
-        <h2 className="font-serif text-2xl font-normal">{title}</h2>
-        <dl className="mt-6 space-y-3">
-          {rows.map((row) => (
-            <div key={row.period} className="sm:grid sm:grid-cols-[9.5rem_1fr] sm:gap-4">
-              <dt className="tabular-nums text-t-muted">{row.period}</dt>
-              <dd className="text-t-body">{row.text}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </section>
-  );
-}
-
 /** 인쇄와 PDF 저장용: 무대 대신 네 프로젝트의 모든 단계를 펼쳐 둔다 */
 function PrintProjects({ t, lang }: { t: T; lang: Lang }) {
   return (
     <section className="hidden px-6 print:block">
-      <h2 className="break-after-avoid font-serif text-2xl font-normal">{t.nav.projects}</h2>
+      <h2 className="break-after-avoid text-2xl font-semibold tracking-tight">{t.nav.projects}</h2>
       {t.projects.map((p) => {
         const flow = FLOWS[p.id];
         return (
@@ -74,49 +62,37 @@ export default function Home() {
     <>
       <a
         href="#projects"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-40 focus:rounded-md focus:bg-t-panel focus:px-3 focus:py-2"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-40 focus:rounded-md focus:bg-t-raise focus:px-3 focus:py-2"
       >
         {t.labels.skip}
       </a>
       <IconSprite />
-      <header className="sticky top-0 z-20 border-b border-t-line/60 bg-t-bg/85 backdrop-blur-md print:hidden">
-        <nav className="mx-auto flex h-14 max-w-[80rem] items-center justify-between px-6 text-sm text-t-muted lg:px-10">
-          <a href="#main" className="font-semibold text-t-text no-underline">{t.name}</a>
-          <div className="flex items-center gap-5">
-            <a href="#projects" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.projects}</a>
-            <a href="#career" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.career}</a>
-            <a href="#skills" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.skills}</a>
-            <a href={LINKS.blog} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-t-text">
-              {t.nav.blog}
-            </a>
-            <div role="group" aria-label={t.nav.language} className="flex gap-1">
-              {(["ko", "en"] as const).map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => setLang(code)}
-                  aria-pressed={lang === code}
-                  className={`px-1 py-2 ${lang === code ? "text-t-text" : "hover:text-t-text"}`}
-                >
-                  {code.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-        </nav>
-      </header>
+      <SiteNav t={t} lang={lang} setLang={setLang} />
       <main id="main">
         <Hero t={t} />
-        <ProjectStage t={t} lang={lang} />
+        <AppWindow t={t} lang={lang} />
+        <Clients t={t} />
+        <Section no="01" label={t.sections.how} tone="base">
+          <Principles t={t} />
+        </Section>
+        <Section id="projects" no="02" label={t.sections.projects} tone="band" className="print:hidden">
+          <ProjectStage t={t} lang={lang} />
+        </Section>
         <PrintProjects t={t} lang={lang} />
-        <Rows id="career" title={t.nav.career} rows={t.career} />
-        <Rows id="skills" title={t.nav.skills} rows={t.skills} />
+        <Section id="career" no="03" label={t.sections.career} tone="base">
+          <Career items={t.career} />
+        </Section>
+        <Section id="skills" no="04" label={t.sections.skills} tone="band">
+          <Skills groups={t.skills} />
+        </Section>
       </main>
-      <footer className="mx-auto mt-8 flex max-w-[80rem] flex-wrap items-center justify-between gap-x-6 gap-y-3 border-t border-t-line px-6 py-8 text-sm text-t-muted lg:px-10">
-        <span>
-          {t.name} · {t.role}
-        </span>
-        <span className="flex flex-wrap gap-x-5 gap-y-2">{contacts}</span>
+      <footer className="border-t border-[#1c1e22] bg-t-band">
+        <div className="mx-auto flex max-w-[80rem] flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 pb-14 pt-8 text-sm text-t-muted lg:px-10">
+          <span>
+            {t.name} · {t.role}
+          </span>
+          <span className="flex flex-wrap gap-x-5 gap-y-2 text-t-body">{contacts}</span>
+        </div>
       </footer>
     </>
   );

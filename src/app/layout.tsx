@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1b1915",
+  themeColor: "#08090a",
 };
 
 export default function RootLayout({
@@ -36,13 +36,6 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-        />
-        {/* App Router 의 root layout 이라 모든 페이지에 적용된다. 이 규칙은 pages/_document 기준이다.
-            next/font 는 한글 글리프 범위를 보장하지 않아 CSS 링크를 쓴다 */}
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&display=swap"
         />
       </head>
       <body className="break-keep bg-t-bg font-sans text-t-text antialiased">
