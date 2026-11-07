@@ -1,68 +1,87 @@
 "use client";
 
-/* 프로젝트 목록과 고정 무대. 데스크톱은 왼쪽 목록에서 고르고 오른쪽 무대에서 단계를 넘긴다.
-   스크롤로는 단계가 넘어가지 않는다. 화살표 키는 이 영역에 포커스가 있을 때만 먹는다.
-   lg 미만에서는 목록을 펼치는 방식으로 바뀐다. 상태는 언어와 무관하다. */
+/* 02 프로젝트 · 어떻게 돌아가나. 첫 화면 앱 창이 "무엇이 나오나"라면 여기는 "구조"다.
+   데스크톱: 위에 프로젝트 알약 탭, 아래 왼쪽은 한 줄 소개·숫자 카드·정보, 오른쪽은 다이어그램 카드와 단계 카드.
+   ← → 는 탭 줄에서는 프로젝트를, 다이어그램 카드 안에서는 단계를 옮긴다 (서로 섞이지 않는다).
+   lg 미만에서는 목록을 펼치는 방식이다. 상태는 언어와 무관하다. */
 
-import { useReducer, useRef, useState, type KeyboardEvent } from "react";
-import type { T } from "@/lib/data";
-import { FLOWS } from "@/lib/flows";
-import { isAccordionOpen, stageReducer, type StageAction, type StageState } from "@/lib/stage";
+import { useReducer, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import type { Project, T } from "@/lib/data";
+import { FLOWS, type Flow } from "@/lib/flows";
+import { isAccordionOpen, stageReducer, stepTitle, type StageAction, type StageState } from "@/lib/stage";
 import { FlowDiagram } from "./FlowDiagram";
 
 type Lang = "ko" | "en";
+const ROLES = ["human", "agent", "guard", "out", "res"] as const;
 
-/* 끝 단계에서도 disabled 를 쓰지 않는다: disabled 가 되면 포커스가 body 로 빠져 ← → 가 끊긴다.
-   리듀서가 범위를 잡아 주므로 눌러도 아무 일이 없다 */
-function StepControls({
-  t,
+function Metrics({ p }: { p: Project }) {
+  return (
+    <div className="grid gap-2.5">
+      {p.metrics.map((m, i) => (
+        <div key={m.label} className="flex items-baseline justify-between gap-3 rounded-[10px] border border-t-line bg-[#141518] px-3.5 py-3">
+          <b className={`text-xl font-bold tracking-tight ${i === 0 ? "text-t-hi" : "text-t-text"}`}>{m.value}</b>
+          <span className="text-right text-[13px] text-t-muted">{m.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* 단계 버튼 줄(번호 + 짧은 제목)과 지금 단계의 설명 카드. 설명은 문장이 길어서 한 칸에 크게 보여 준다 */
+function Steps({
+  flow,
   step,
-  count,
+  lang,
+  t,
   dispatch,
+  refs,
 }: {
-  t: T;
+  flow: Flow;
   step: number;
-  count: number;
+  lang: Lang;
+  t: T;
   dispatch: (a: StageAction) => void;
+  /** 데스크톱에서 ← → 로 단계를 옮길 때 포커스도 함께 옮기려고 받는다 */
+  refs?: { current: (HTMLButtonElement | null)[] };
 }) {
   return (
-    <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-t-muted">
-      <div className="flex gap-1.5">
-        {Array.from({ length: count }, (_, i) => (
-          <button
-            key={i}
-            type="button"
-            aria-label={`${t.labels.step} ${i + 1}`}
-            aria-current={i === step ? "step" : undefined}
-            onClick={() => dispatch({ type: "goto", step: i })}
-            className="flex h-6 items-center"
-          >
-            <span className={`block h-[3px] w-6 transition-colors duration-150 ${i <= step ? "bg-t-hi" : "bg-t-line"}`} />
-          </button>
-        ))}
-      </div>
-      <span className="tabular-nums">
-        {step + 1} / {count}
-      </span>
-      <div className="flex gap-4">
-        <button
-          type="button"
-          onClick={() => dispatch({ type: "prev" })}
-          aria-disabled={step === 0}
-          className="py-1 hover:text-t-text aria-disabled:opacity-40 aria-disabled:hover:text-t-muted"
-        >
-          ← {t.labels.prev}
-        </button>
-        <button
-          type="button"
-          onClick={() => dispatch({ type: "next" })}
-          aria-disabled={step === count - 1}
-          className="py-1 hover:text-t-text aria-disabled:opacity-40 aria-disabled:hover:text-t-muted"
-        >
-          {t.labels.next} →
-        </button>
-      </div>
-    </div>
+    <>
+      <ol className="mt-1.5 grid gap-2 sm:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" style={{ "--n": flow.steps.length } as CSSProperties}>
+        {flow.steps.map((_, i) => {
+          const on = i === step;
+          return (
+            <li key={i}>
+              <button
+                ref={(el) => {
+                  if (refs) refs.current[i] = el;
+                }}
+                type="button"
+                onClick={() => dispatch({ type: "goto", step: i })}
+                aria-current={on ? "step" : undefined}
+                className={`flex h-full w-full items-center gap-2 rounded-[10px] border px-3 py-2.5 text-left transition-colors duration-150 ${
+                  on ? "border-role-guard/50 bg-[#121b19]" : "border-t-line bg-[#18191d] hover:border-t-edge"
+                }`}
+              >
+                <span
+                  className={`grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full text-xs font-bold ${
+                    on ? "bg-role-guard text-t-bg" : i < step ? "bg-role-guard/20 text-role-guard" : "bg-[#26282d] text-t-text"
+                  }`}
+                >
+                  <span className="sr-only">{t.labels.step} </span>
+                  {i + 1}
+                </span>{" "}
+                <span className={`line-clamp-2 text-[13.5px] font-semibold leading-snug ${on ? "text-t-text" : "text-t-muted"}`}>
+                  {stepTitle(flow, i, lang, t.labels.result)}
+                </span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+      <p aria-live="polite" className="mt-2.5 min-h-[4.6rem] rounded-[10px] border border-t-line bg-[#18191d] px-4 py-3.5 text-[15px] leading-[1.7] text-t-body">
+        {flow.steps[step][lang]}
+      </p>
+    </>
   );
 }
 
@@ -74,42 +93,44 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
   );
   const [mobileOpen, setMobileOpen] = useState<number | null>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const stepButtons = useRef<(HTMLButtonElement | null)[]>([]);
 
   const project = t.projects[state.project];
   const flow = FLOWS[project.id];
 
-  const select = (i: number) => {
-    const next = (i + counts.length) % counts.length;
-    dispatch({ type: "selectProject", project: next });
+  /* 이미 고른 프로젝트를 다시 눌러도 단계를 처음으로 돌리지 않는다 */
+  const choose = (i: number) => i !== state.project && dispatch({ type: "selectProject", project: i });
+
+  const onTabKey = (e: KeyboardEvent) => {
+    const map: Record<string, number> = {
+      ArrowRight: state.project + 1,
+      ArrowLeft: state.project - 1,
+      Home: 0,
+      End: counts.length - 1,
+    };
+    if (!(e.key in map)) return;
+    e.preventDefault();
+    const next = (map[e.key] + counts.length) % counts.length;
+    choose(next);
     tabs.current[next]?.focus();
   };
 
-  // 목록 안에서만: ↑ ↓ 로 프로젝트를 고른다
-  const onListKey = (e: KeyboardEvent) => {
-    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      e.preventDefault();
-      select(state.project + (e.key === "ArrowDown" ? 1 : -1));
-    }
-  };
-
-  // 무대 영역 안 어디서든: ← → 로 단계를 넘긴다
   const onStageKey = (e: KeyboardEvent) => {
     if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
       e.preventDefault();
       dispatch({ type: e.key === "ArrowRight" ? "next" : "prev" });
+      /* 단계 버튼에 포커스가 있었다면 포커스도 새 단계로 옮긴다 (선택과 포커스가 어긋나지 않게) */
+      const last = flow.steps.length - 1;
+      const next = Math.min(Math.max(state.step + (e.key === "ArrowRight" ? 1 : -1), 0), last);
+      if (stepButtons.current.includes(e.target as HTMLButtonElement)) stepButtons.current[next]?.focus();
     }
   };
 
   return (
-    <section
-      id="projects"
-      className="mx-auto max-w-[72rem] px-6 py-16 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:px-10 lg:py-10 print:hidden"
-    >
-      <h2 className="font-serif text-2xl font-normal">{t.nav.projects}</h2>
-
-      {/* 데스크톱: 목록 + 고정 무대 */}
-      <div className="mt-8 hidden gap-12 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]" onKeyDown={onStageKey}>
-        <div role="tablist" aria-orientation="vertical" aria-label={t.nav.projects} onKeyDown={onListKey}>
+    <div className="print:hidden">
+      {/* 데스크톱 */}
+      <div className="hidden lg:block">
+        <div role="tablist" aria-orientation="horizontal" aria-label={t.nav.projects} onKeyDown={onTabKey} className="mb-9 flex flex-wrap gap-2">
           {t.projects.map((p, i) => {
             const selected = i === state.project;
             return (
@@ -124,39 +145,68 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
                 aria-selected={selected}
                 aria-controls="stage-panel"
                 tabIndex={selected ? 0 : -1}
-                onClick={() => dispatch({ type: "selectProject", project: i })}
-                className={`block w-full border-l-2 py-3 pl-4 text-left transition-colors duration-150 ${
-                  selected ? "border-t-hi text-t-text" : "border-t-line text-t-muted hover:text-t-text"
+                onClick={() => choose(i)}
+                className={`rounded-full border px-3.5 py-2 text-[13.5px] transition-colors duration-150 ${
+                  selected ? "border-t-text bg-t-text text-t-bg" : "border-t-line text-t-muted hover:text-t-text"
                 }`}
               >
-                <span className="block text-[15px] leading-snug">{p.title}</span>
-                <span className={`mt-1 block text-[13px] ${selected ? "text-t-hi" : "text-t-muted"}`}>{p.number}</span>
+                {p.title.replace(` ${p.kindLabel}`, "")}
+                <span className={`ml-1.5 text-xs ${selected ? "text-[#555]" : "text-t-dim"}`}>{p.kindLabel}</span>
               </button>
             );
           })}
         </div>
 
-        <div id="stage-panel" role="tabpanel" aria-labelledby={`tab-${project.id}`} tabIndex={0} className="min-w-0">
-          <p className="text-sm text-t-muted">{project.meta}</p>
-          <h3 className="mt-2 font-serif text-[1.6rem] font-normal leading-snug">{project.headline}</h3>
-          <p className="mt-2 text-[13px] text-t-muted">{project.stack}</p>
-          <div className="mt-6 max-w-[42rem]">
-            <FlowDiagram flow={flow} step={state.step} lang={lang} title={project.title} />
+        <div className="grid grid-cols-[330px_minmax(0,1fr)] items-start gap-7">
+          <div>
+            <h3 className="text-[26px] font-bold leading-[1.35] tracking-tight">{project.headline}</h3>
+            <div className="mt-6">
+              <Metrics p={project} />
+            </div>
+            <dl className="mt-5 text-[13.5px] text-t-body">
+              {project.facts.slice(1).map((f) => (
+                <div key={f.label} className="flex gap-3 border-t border-[#1f2125] py-2.5">
+                  <dt className="w-11 shrink-0 text-[12.5px] font-semibold text-t-dim">{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <p aria-live="polite" className="mt-5 min-h-[5.5rem] max-w-[40em] text-[1.02rem] leading-[1.75] text-t-body">
-            {flow.steps[state.step][lang]}
-          </p>
-          <StepControls t={t} step={state.step} count={flow.steps.length} dispatch={dispatch} />
+
+          <div
+            id="stage-panel"
+            role="tabpanel"
+            aria-labelledby={`tab-${project.id}`}
+            tabIndex={0}
+            onKeyDown={onStageKey}
+            className="min-w-0 rounded-[14px] border border-[#2a2c31] bg-[#121316] px-[22px] pb-[22px] pt-5"
+          >
+            <div className="flex items-center justify-between text-[14.5px]">
+              <b className="font-bold">{t.labels.howItWorks}</b>
+              <span className="flex items-center gap-3 text-[12.5px] text-t-muted">
+                {ROLES.map((r) => (
+                  <span key={r} className="flex items-center gap-1.5">
+                    <i className="inline-block h-[9px] w-[9px] rounded-[3px]" style={{ background: `rgb(var(--r-${r}))` }} />
+                    {t.labels.roles[r]}
+                  </span>
+                ))}
+              </span>
+            </div>
+            <div className="my-3">
+              <FlowDiagram flow={flow} step={state.step} lang={lang} title={project.title} />
+            </div>
+            <Steps flow={flow} step={state.step} lang={lang} t={t} dispatch={dispatch} refs={stepButtons} />
+          </div>
         </div>
       </div>
 
       {/* 모바일: 목록을 펼친다 */}
-      <ul className="mt-6 border-t border-t-line lg:hidden">
+      <ul className="grid grid-cols-[minmax(0,1fr)] gap-3 lg:hidden">
         {t.projects.map((p, i) => {
           const open = isAccordionOpen(mobileOpen, state, i);
           const f = FLOWS[p.id];
           return (
-            <li key={p.id} className="border-b border-t-line">
+            <li key={p.id} className="rounded-xl border border-t-line bg-t-card">
               <button
                 type="button"
                 aria-expanded={open}
@@ -165,31 +215,32 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
                   setMobileOpen(i);
                   dispatch({ type: "selectProject", project: i });
                 }}
-                className="flex w-full items-baseline justify-between gap-4 py-4 text-left"
+                className="flex w-full items-baseline justify-between gap-4 px-4 py-4 text-left"
               >
-                <span className="text-[15px] leading-snug text-t-text">{p.title}</span>
-                <span className="shrink-0 text-[13px] text-t-hi">{p.number}</span>
+                <span className="text-[15px] font-semibold leading-snug text-t-text">
+                  {p.title}
+                  <span className="mt-0.5 block text-xs font-normal text-t-dim">{p.kindLabel}</span>
+                </span>
+                <span className="shrink-0 text-[13px] font-semibold text-t-hi">{p.metrics[0].value}</span>
               </button>
               {open && (
-                <div className="pb-6">
-                  <p className="text-sm text-t-muted">{p.meta}</p>
-                  <h3 className="mt-2 font-serif text-xl font-normal leading-snug">{p.headline}</h3>
-                  <p className="mt-2 text-[13px] text-t-muted">{p.stack}</p>
-                  <div className="-mx-6 mt-5 overflow-x-auto px-6">
+                <div className="px-4 pb-5">
+                  <h3 className="text-lg font-bold leading-snug tracking-tight">{p.headline}</h3>
+                  <div className="mt-4">
+                    <Metrics p={p} />
+                  </div>
+                  <div className="-mx-4 mt-5 overflow-x-auto px-4">
                     <div className="min-w-[36rem]">
                       <FlowDiagram flow={f} step={state.step} lang={lang} title={p.title} />
                     </div>
                   </div>
-                  <p aria-live="polite" className="mt-4 text-[15px] leading-[1.75] text-t-body">
-                    {f.steps[state.step][lang]}
-                  </p>
-                  <StepControls t={t} step={state.step} count={f.steps.length} dispatch={dispatch} />
+                  <Steps flow={f} step={state.step} lang={lang} t={t} dispatch={dispatch} />
                 </div>
               )}
             </li>
           );
         })}
       </ul>
-    </section>
+    </div>
   );
 }

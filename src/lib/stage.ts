@@ -38,3 +38,10 @@ export function nodeState(itemStep: number, current: number): "future" | "curren
 export function isAccordionOpen(openIndex: number | null, state: StageState, i: number): boolean {
   return openIndex === i && state.project === i;
 }
+
+type Titled = { nodes: { step: number; label: { ko: string; en: string } }[] };
+
+/** 단계 카드의 짧은 제목: 그 단계에 처음 켜지는 노드의 이름. 노드가 없는 단계(결과 등)는 fallback */
+export function stepTitle(flow: Titled, i: number, lang: "ko" | "en", fallback: string): string {
+  return flow.nodes.find((n) => n.step === i)?.label[lang] ?? fallback;
+}
