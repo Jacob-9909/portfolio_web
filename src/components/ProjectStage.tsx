@@ -34,12 +34,15 @@ function Steps({
   lang,
   t,
   dispatch,
+  refs,
 }: {
   flow: Flow;
   step: number;
   lang: Lang;
   t: T;
   dispatch: (a: StageAction) => void;
+  /** 데스크톱에서 ← → 로 단계를 옮길 때 포커스도 함께 옮기려고 받는다 */
+  refs?: { current: (HTMLButtonElement | null)[] };
 }) {
   return (
     <>
@@ -49,10 +52,12 @@ function Steps({
           return (
             <li key={i}>
               <button
+                ref={(el) => {
+                  if (refs) refs.current[i] = el;
+                }}
                 type="button"
                 onClick={() => dispatch({ type: "goto", step: i })}
                 aria-current={on ? "step" : undefined}
-                aria-label={`${t.labels.step} ${i + 1}`}
                 className={`flex h-full w-full items-center gap-2 rounded-[10px] border px-3 py-2.5 text-left transition-colors duration-150 ${
                   on ? "border-role-guard/50 bg-[#121b19]" : "border-t-line bg-[#18191d] hover:border-t-edge"
                 }`}
@@ -62,9 +67,10 @@ function Steps({
                     on ? "bg-role-guard text-t-bg" : i < step ? "bg-role-guard/20 text-role-guard" : "bg-[#26282d] text-t-text"
                   }`}
                 >
+                  <span className="sr-only">{t.labels.step} </span>
                   {i + 1}
-                </span>
-                <span className={`truncate text-[13.5px] font-semibold ${on ? "text-t-text" : "text-t-muted"}`}>
+                </span>{" "}
+                <span className={`line-clamp-2 text-[13.5px] font-semibold leading-snug ${on ? "text-t-text" : "text-t-muted"}`}>
                   {stepTitle(flow, i, lang, t.labels.result)}
                 </span>
               </button>
@@ -87,6 +93,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
   );
   const [mobileOpen, setMobileOpen] = useState<number | null>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const stepButtons = useRef<(HTMLButtonElement | null)[]>([]);
 
   const project = t.projects[state.project];
   const flow = FLOWS[project.id];
@@ -112,6 +119,10 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
     if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
       e.preventDefault();
       dispatch({ type: e.key === "ArrowRight" ? "next" : "prev" });
+      /* 단계 버튼에 포커스가 있었다면 포커스도 새 단계로 옮긴다 (선택과 포커스가 어긋나지 않게) */
+      const last = flow.steps.length - 1;
+      const next = Math.min(Math.max(state.step + (e.key === "ArrowRight" ? 1 : -1), 0), last);
+      if (stepButtons.current.includes(e.target as HTMLButtonElement)) stepButtons.current[next]?.focus();
     }
   };
 
@@ -184,7 +195,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
             <div className="my-3">
               <FlowDiagram flow={flow} step={state.step} lang={lang} title={project.title} />
             </div>
-            <Steps flow={flow} step={state.step} lang={lang} t={t} dispatch={dispatch} />
+            <Steps flow={flow} step={state.step} lang={lang} t={t} dispatch={dispatch} refs={stepButtons} />
           </div>
         </div>
       </div>
