@@ -9,17 +9,19 @@ export function Section({
   label,
   tone,
   children,
+  className = "",
 }: {
   id?: string;
   no: string;
   label: string;
   tone: "base" | "band";
   children: ReactNode;
+  className?: string;
 }) {
   return (
     <section
       id={id}
-      className={`scroll-mt-14 border-t border-[#1c1e22] py-[84px] ${tone === "band" ? "bg-t-band" : "bg-t-bg"} print:border-0 print:py-8`}
+      className={`scroll-mt-14 border-t border-[#1c1e22] py-[84px] ${tone === "band" ? "bg-t-band" : "bg-t-bg"} print:border-0 print:py-8 ${className}`}
     >
       <div className="mx-auto max-w-[80rem] px-6 lg:px-10">
         <h2 className="mb-7 flex items-center gap-3">

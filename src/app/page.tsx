@@ -90,7 +90,9 @@ export default function Home() {
         <Section no="01" label={t.sections.how} tone="base">
           <Principles t={t} />
         </Section>
-        <ProjectStage t={t} lang={lang} />
+        <Section id="projects" no="02" label={t.sections.projects} tone="band" className="print:hidden">
+          <ProjectStage t={t} lang={lang} />
+        </Section>
         <PrintProjects t={t} lang={lang} />
         <Rows id="career" title={t.nav.career} rows={t.career.map((c) => ({ k: c.period, v: `${c.org}, ${c.role}` }))} />
         <Rows id="skills" title={t.nav.skills} rows={t.skills.map((g) => ({ k: g.title, v: g.items.map((i) => i.name).join(", ") }))} />

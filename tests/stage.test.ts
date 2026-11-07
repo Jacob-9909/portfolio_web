@@ -37,3 +37,18 @@ test("accordion row is open only when it is also the stage's project", () => {
   assert.equal(isAccordionOpen(3, { project: 3, step: 1 }, 3), true);
   assert.equal(isAccordionOpen(null, { project: 3, step: 1 }, 3), false);
 });
+
+test("stepTitle uses the first node that appears at the step, else the fallback", async () => {
+  const { stepTitle } = await import("../src/lib/stage.ts");
+  const flow = {
+    nodes: [
+      { step: 0, label: { ko: "질문", en: "Ask" } },
+      { step: 1, label: { ko: "생성", en: "Write" } },
+      { step: 1, label: { ko: "LLM", en: "LLM" } },
+    ],
+    steps: [{ ko: "a", en: "a" }, { ko: "b", en: "b" }, { ko: "c", en: "c" }],
+  };
+  assert.equal(stepTitle(flow, 0, "ko", "결과"), "질문");
+  assert.equal(stepTitle(flow, 1, "en", "Result"), "Write");
+  assert.equal(stepTitle(flow, 2, "ko", "결과"), "결과");
+});
