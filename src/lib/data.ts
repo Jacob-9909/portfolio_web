@@ -128,9 +128,6 @@ const ko = {
   },
   labels: {
     step: "단계",
-    example: "예시",
-    prev: "이전",
-    next: "다음",
     skip: "본문으로 건너뛰기",
     passed: "통과",
     roles: { human: "사람", agent: "에이전트", guard: "검증", out: "응답", res: "자원" },
@@ -316,9 +313,6 @@ const en: typeof ko = {
   },
   labels: {
     step: "Step",
-    example: "example",
-    prev: "Previous",
-    next: "Next",
     skip: "Skip to content",
     passed: "passed",
     roles: { human: "Person", agent: "Agent", guard: "Check", out: "Response", res: "Resource" },

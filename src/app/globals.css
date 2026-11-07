@@ -124,6 +124,14 @@
   a {
     text-decoration: none;
   }
+  /* 카드에 직접 쓴 어두운 바탕색(bg-[#...])도 인쇄에서는 흰색으로 */
+  [class*="bg-[#"],
+  [class*="bg-[linear-gradient"] {
+    background: #fff !important;
+  }
+  svg path[fill="#0b0c0e"] {
+    fill: #fff;
+  }
   .ph {
     background: none;
   }
