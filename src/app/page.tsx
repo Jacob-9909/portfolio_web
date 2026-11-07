@@ -1,9 +1,11 @@
 "use client";
 
 import { FlowDiagram } from "@/components/FlowDiagram";
+import { AppWindow, Clients } from "@/components/AppWindow";
 import { Hero } from "@/components/Hero";
 import { IconSprite } from "@/components/icons";
 import { ProjectStage } from "@/components/ProjectStage";
+import { SiteNav } from "@/components/SiteNav";
 import { LINKS, translations, type T } from "@/lib/data";
 import { FLOWS } from "@/lib/flows";
 import { useLanguage } from "@/lib/LanguageContext";
@@ -78,34 +80,11 @@ export default function Home() {
         {t.labels.skip}
       </a>
       <IconSprite />
-      <header className="sticky top-0 z-20 border-b border-t-line/60 bg-t-bg/85 backdrop-blur-md print:hidden">
-        <nav className="mx-auto flex h-14 max-w-[80rem] items-center justify-between px-6 text-sm text-t-muted lg:px-10">
-          <a href="#main" className="font-semibold text-t-text no-underline">{t.name}</a>
-          <div className="flex items-center gap-5">
-            <a href="#projects" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.projects}</a>
-            <a href="#career" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.career}</a>
-            <a href="#skills" className="hidden no-underline hover:text-t-text sm:inline">{t.nav.skills}</a>
-            <a href={LINKS.blog} target="_blank" rel="noopener noreferrer" className="no-underline hover:text-t-text">
-              {t.nav.blog}
-            </a>
-            <div role="group" aria-label={t.nav.language} className="flex gap-1">
-              {(["ko", "en"] as const).map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => setLang(code)}
-                  aria-pressed={lang === code}
-                  className={`px-1 py-2 ${lang === code ? "text-t-text" : "hover:text-t-text"}`}
-                >
-                  {code.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-        </nav>
-      </header>
+      <SiteNav t={t} lang={lang} setLang={setLang} />
       <main id="main">
         <Hero t={t} />
+        <AppWindow t={t} lang={lang} />
+        <Clients t={t} />
         <ProjectStage t={t} lang={lang} />
         <PrintProjects t={t} lang={lang} />
         <Rows id="career" title={t.nav.career} rows={t.career.map((c) => ({ k: c.period, v: `${c.org}, ${c.role}` }))} />

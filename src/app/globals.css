@@ -96,6 +96,16 @@
   }
 }
 
+/* 앱 창 추천 답변 끝의 스트리밍 커서 */
+.caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 /* 인쇄와 PDF 저장: 흰 바탕, 검은 글자 */
 @media print {
   :root {

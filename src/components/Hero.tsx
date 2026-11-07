@@ -4,7 +4,7 @@
    마우스는 올리면, 키보드는 포커스하면, 터치는 탭하면 열린다. */
 
 import { useEffect, useState } from "react";
-import type { Seg, T } from "@/lib/data";
+import { LINKS, type Seg, type T } from "@/lib/data";
 
 type Open = { key: string; left: number; top: number } | null;
 
@@ -73,13 +73,23 @@ export function Hero({ t }: { t: T }) {
   }, [open]);
 
   return (
-    <section className="mx-auto flex min-h-[60vh] lg:min-h-[calc(78vh-3.5rem)] max-w-[80rem] flex-col justify-center px-6 lg:px-10 print:min-h-0 print:pb-6 print:pt-4">
+    <section className="mx-auto max-w-[80rem] px-6 pt-20 lg:px-10 lg:pt-28 print:pt-4">
       <h1 className="max-w-[15em] text-[clamp(2.4rem,4.6vw,3.6rem)] font-semibold leading-[1.15] tracking-[-0.035em]">
         <Phrases segs={t.hero.title} prefix="t" open={open} setOpen={setOpen} />
       </h1>
-      <p className="mt-8 max-w-[34em] text-[1.2rem] leading-[1.75] text-t-body">
-        <Phrases segs={t.hero.sub} prefix="s" open={open} setOpen={setOpen} />
-      </p>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <p className="max-w-[44em] text-[1.05rem] leading-[1.75] text-t-muted">
+          <Phrases segs={t.hero.sub} prefix="s" open={open} setOpen={setOpen} />
+        </p>
+        <a
+          href={LINKS.portfolio}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shrink-0 text-sm text-t-body no-underline hover:text-t-text print:hidden"
+        >
+          {t.nav.portfolio} →
+        </a>
+      </div>
     </section>
   );
 }
