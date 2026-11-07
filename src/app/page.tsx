@@ -14,7 +14,7 @@ function Rows({ id, title, rows }: { id: string; title: string; rows: Row[] }) {
   return (
     <section id={id} className="mx-auto max-w-[80rem] scroll-mt-14 px-6 py-10 lg:px-10">
       <div className="max-w-[46rem]">
-        <h2 className="font-serif text-2xl font-normal">{title}</h2>
+        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
         <dl className="mt-6 space-y-3">
           {rows.map((row) => (
             <div key={row.period} className="sm:grid sm:grid-cols-[9.5rem_1fr] sm:gap-4">
@@ -32,7 +32,7 @@ function Rows({ id, title, rows }: { id: string; title: string; rows: Row[] }) {
 function PrintProjects({ t, lang }: { t: T; lang: Lang }) {
   return (
     <section className="hidden px-6 print:block">
-      <h2 className="break-after-avoid font-serif text-2xl font-normal">{t.nav.projects}</h2>
+      <h2 className="break-after-avoid text-2xl font-semibold tracking-tight">{t.nav.projects}</h2>
       {t.projects.map((p) => {
         const flow = FLOWS[p.id];
         return (
@@ -74,7 +74,7 @@ export default function Home() {
     <>
       <a
         href="#projects"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-40 focus:rounded-md focus:bg-t-panel focus:px-3 focus:py-2"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-40 focus:rounded-md focus:bg-t-raise focus:px-3 focus:py-2"
       >
         {t.labels.skip}
       </a>

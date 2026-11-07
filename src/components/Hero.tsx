@@ -42,7 +42,7 @@ function Phrases({ segs, prefix, open, setOpen }: { segs: Seg[]; prefix: string;
               <span
                 id={`note-${key}`}
                 role="note"
-                className="fixed z-30 block rounded-md border border-t-line bg-t-panel px-4 py-3 font-sans text-[13.5px] font-normal leading-relaxed tracking-normal text-t-body"
+                className="fixed z-30 block rounded-md border border-t-line bg-t-raise px-4 py-3 font-sans text-[13.5px] font-normal leading-relaxed tracking-normal text-t-body"
                 style={{ left: open.left, top: open.top, width: NOTE_W }}
               >
                 {seg.note}
@@ -74,7 +74,7 @@ export function Hero({ t }: { t: T }) {
 
   return (
     <section className="mx-auto flex min-h-[60vh] lg:min-h-[calc(78vh-3.5rem)] max-w-[80rem] flex-col justify-center px-6 lg:px-10 print:min-h-0 print:pb-6 print:pt-4">
-      <h1 className="max-w-[15em] font-serif text-[clamp(2.4rem,5.4vw,4.6rem)] font-light leading-[1.22] tracking-[-0.025em]">
+      <h1 className="max-w-[15em] text-[clamp(2.4rem,4.6vw,3.6rem)] font-semibold leading-[1.15] tracking-[-0.035em]">
         <Phrases segs={t.hero.title} prefix="t" open={open} setOpen={setOpen} />
       </h1>
       <p className="mt-8 max-w-[34em] text-[1.2rem] leading-[1.75] text-t-body">

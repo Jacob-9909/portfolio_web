@@ -105,7 +105,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
       id="projects"
       className="mx-auto max-w-[80rem] scroll-mt-14 px-6 py-12 lg:px-10 print:hidden"
     >
-      <h2 className="font-serif text-2xl font-normal">{t.nav.projects}</h2>
+      <h2 className="text-2xl font-semibold tracking-tight">{t.nav.projects}</h2>
 
       {/* 데스크톱: 목록 + 고정 무대 */}
       <div className="mt-8 hidden gap-12 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]" onKeyDown={onStageKey}>
@@ -138,7 +138,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
 
         <div id="stage-panel" role="tabpanel" aria-labelledby={`tab-${project.id}`} tabIndex={0} className="min-w-0">
           <p className="text-sm text-t-muted">{project.meta}</p>
-          <h3 className="mt-2 font-serif text-[1.6rem] font-normal leading-snug">{project.headline}</h3>
+          <h3 className="mt-2 text-[1.6rem] font-semibold leading-snug tracking-tight">{project.headline}</h3>
           <p className="mt-2 text-[13px] text-t-muted">{project.stack}</p>
           <div className="mt-6">
             <FlowDiagram flow={flow} step={state.step} lang={lang} title={project.title} />
@@ -173,7 +173,7 @@ export function ProjectStage({ t, lang }: { t: T; lang: Lang }) {
               {open && (
                 <div className="pb-6">
                   <p className="text-sm text-t-muted">{p.meta}</p>
-                  <h3 className="mt-2 font-serif text-xl font-normal leading-snug">{p.headline}</h3>
+                  <h3 className="mt-2 text-xl font-semibold leading-snug tracking-tight">{p.headline}</h3>
                   <p className="mt-2 text-[13px] text-t-muted">{p.stack}</p>
                   <div className="-mx-6 mt-5 overflow-x-auto px-6">
                     <div className="min-w-[36rem]">

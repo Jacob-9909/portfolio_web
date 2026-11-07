@@ -2,16 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 따뜻한 검정 바탕 한 벌. 참고: maggieappleton.com (톤), rauno.me (움직임).
+/* 차가운 검정 바탕 한 벌. 참고: linear.app (톤, 카드), rauno.me (움직임).
+   바탕(bg) < 띠(band) < 카드(card) < 올린 카드(raise) 순으로 조금씩 밝다.
    포인트 색(--t-hi)은 에이전트 역할 색과 같다. 바꿀 때는 여기 한 곳만 고친다. */
 :root {
-  --t-bg: 27 25 21;
-  --t-panel: 38 35 30;
-  --t-text: 237 231 219;
-  --t-body: 207 200 186;
-  --t-muted: 163 155 141;
-  --t-dim: 93 87 77;
-  --t-line: 58 54 47;
+  --t-bg: 8 9 10;
+  --t-band: 13 14 16;
+  --t-card: 17 18 21;
+  --t-raise: 23 24 28;
+  --t-text: 247 248 248;
+  --t-body: 208 214 224;
+  --t-muted: 155 161 171;
+  --t-dim: 98 102 109;
+  --t-line: 35 37 42;
+  --t-edge: 43 45 51;
   --t-hi: 240 134 106;
 
   /* 다이어그램 노드 역할 색 */
@@ -19,7 +23,7 @@
   --r-agent: 240 134 106;
   --r-guard: 127 200 184;
   --r-out: 157 180 255;
-  --r-res: 163 155 141;
+  --r-res: 138 143 152;
 
   color-scheme: dark;
   accent-color: rgb(var(--t-hi));
@@ -96,7 +100,10 @@
 @media print {
   :root {
     --t-bg: 255 255 255;
-    --t-panel: 255 255 255;
+    --t-band: 255 255 255;
+    --t-card: 255 255 255;
+    --t-raise: 248 248 248;
+    --t-edge: 200 200 200;
     --t-text: 20 20 20;
     --t-body: 40 40 40;
     --t-muted: 90 90 90;
